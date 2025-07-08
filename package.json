@@ -10,7 +10,13 @@
     "packages/config/*"
   ],
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev:diary": "yarn workspace ai-diary dev",
+    "dev:shop": "yarn workspace ai-img-shop dev",
+    "lint:diary": "yarn workspace ai-diary lint",
+    "lint:shop": "yarn workspace ai-img-shop lint",
+    "build:diary": "yarn workspace ai-diary build",
+    "build:shop": "yarn workspace ai-img-shop build"
   },
   "packageManager": "yarn@4.9.2",
   "devDependencies": {
