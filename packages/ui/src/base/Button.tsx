@@ -8,11 +8,14 @@ type ButtonProps = {
   className?: string;
 };
 
+/**
+ *@description 공통 컴포넌트 버튼
+ */
 export const Button = ({ children, onClick, className = "" }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`bg-blue-600 text-white font-semibold px-4 py-2 rounded hover:bg-blue-700 transition ${className}`}
+      className={`text-white font-semibold px-4 py-2 rounded hover:bg-blue-700 transition ${className}`}
     >
       {children}
     </button>
