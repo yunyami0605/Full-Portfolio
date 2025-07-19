@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".", // 앱 내 alias 유지
+    "paths": {
+      "@/*": ["./src/*"], // 기존 경로 alias 유지
+      "@my/ui": ["../../packages/ui/src"] // 🔥 루트 alias 명시적으로 다시 포함
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
