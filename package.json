@@ -13,10 +13,13 @@
     "format": "prettier --write .",
     "dev:diary": "yarn workspace ai-diary dev",
     "dev:shop": "yarn workspace ai-img-shop dev",
+    "dev:fit": "yarn workspace ai-hellofit-frontend dev",
     "lint:diary": "yarn workspace ai-diary lint",
     "lint:shop": "yarn workspace ai-img-shop lint",
+    "lint:fit": "yarn workspace ai-hellofit-frontend lint",
     "build:diary": "yarn workspace ai-diary build",
-    "build:shop": "yarn workspace ai-img-shop build"
+    "build:shop": "yarn workspace ai-img-shop build",
+    "build:fit": "yarn workspace ai-hellofit-frontend build"
   },
   "packageManager": "yarn@4.9.2",
   "devDependencies": {
@@ -28,6 +31,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.83.0",
     "clsx": "^2.1.1"
   }
 }

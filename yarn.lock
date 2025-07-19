@@ -752,6 +752,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.83.0":
+  version: 5.83.0
+  resolution: "@tanstack/query-core@npm:5.83.0"
+  checksum: 10c0/e6dc480bc99eaca552a9ad65423788b60368cf99308681252fc7dbe42a3f2c1c978db0d3471cc3349b9112cfb4d967ace4e192a1d7e987e30c5c1ff74809c77c
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.83.0":
+  version: 5.83.0
+  resolution: "@tanstack/react-query@npm:5.83.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.83.0"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10c0/883229f9219ca906a54d7caafd44d59b57db5dbe87e954f8a7027f460e9f8b97842dfbd0d676dc3111d577baf312c64f6c1fdd67cd1e4b0f0bf574e29670c606
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.9.0":
   version: 0.9.0
   resolution: "@tybys/wasm-util@npm:0.9.0"
@@ -1101,6 +1119,22 @@ __metadata:
 "ai-diary@workspace:apps/ai-diary":
   version: 0.0.0-use.local
   resolution: "ai-diary@workspace:apps/ai-diary"
+  dependencies:
+    "@my/ui": "workspace:*"
+    "@tailwindcss/postcss": "npm:^4"
+    "@types/node": "npm:^20"
+    "@types/react": "npm:^19"
+    "@types/react-dom": "npm:^19"
+    next: "npm:15.3.5"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    tailwindcss: "npm:^4"
+  languageName: unknown
+  linkType: soft
+
+"ai-hellofit-frontend@workspace:apps/ai-hellofit-frontend":
+  version: 0.0.0-use.local
+  resolution: "ai-hellofit-frontend@workspace:apps/ai-hellofit-frontend"
   dependencies:
     "@my/ui": "workspace:*"
     "@tailwindcss/postcss": "npm:^4"
@@ -3075,6 +3109,7 @@ __metadata:
   resolution: "monorepo@workspace:."
   dependencies:
     "@my-config/eslint": "workspace:^"
+    "@tanstack/react-query": "npm:^5.83.0"
     clsx: "npm:^2.1.1"
     eslint: "npm:^9.30.1"
     eslint-config-next: "npm:^15.3.5"
