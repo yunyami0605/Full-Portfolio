@@ -13,7 +13,7 @@ type TextProps = {
 /**
  * @description 공통 Text 컴포넌트
  */
-export const Text = ({ children, as = "span", weight = "medium", className = "" }: TextProps) => {
+export const Text = ({ children, as = "p", weight = "medium", className = "" }: TextProps) => {
   const Component = as;
 
   return (
