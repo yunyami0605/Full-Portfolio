@@ -1,0 +1,21 @@
+@use "@/styles/variables" as *;
+
+.page_layout {
+  padding-bottom: 2vh;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.email_login_title {
+  padding-top: 20vh;
+  padding-left: 26px;
+
+  p {
+    font-size: 3.2rem;
+    font-weight: bold;
+    color: $color-grayscale-80;
+  }
+}

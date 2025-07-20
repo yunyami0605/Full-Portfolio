@@ -1,17 +1,22 @@
-import { Button, Text } from "@my/ui";
-import React, { useState } from "react";
+import { Column } from "@my/ui";
+import React from "react";
+import clsx from "clsx";
+import styles from "./LoginPage.module.scss";
+import LoginForm from "@/features/auth/_components/form/LoginForm";
 
-interface Props {}
+/**
+ *@description email login 페이지
+ */
 function LoginPage() {
   return (
-    <div className="text-orange-0">
-      <Button>
-        <p>test2</p>
-      </Button>
+    <section className={styles.page_layout}>
+      <Column as="section" className={clsx(styles.email_login_title)}>
+        <p>나만의</p>
+        <p>AI 트레이너 밀착 관리</p>
+      </Column>
 
-      <Text>test</Text>
-      <p>test</p>
-    </div>
+      <LoginForm />
+    </section>
   );
 }
 

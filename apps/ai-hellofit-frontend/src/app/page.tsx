@@ -1,4 +1,3 @@
-import { Input } from "@my/ui";
 import { redirect } from "next/navigation";
 
 export default function Home() {
