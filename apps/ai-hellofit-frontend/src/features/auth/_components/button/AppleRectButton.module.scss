@@ -1,16 +1,15 @@
 @use "@/styles/mixin" as *;
 @use "@/styles/variables" as *;
 
-.button {
+.button.button {
   background-color: #fff;
-  width: 240px;
-  height: 40px;
+  width: 100%;
+  height: 48px;
   border-radius: 12px;
   border: 1px solid $color-grayscale-40;
   @include flex-center;
-}
 
-.text {
-  margin-left: 4px;
-  font-size: 1.6rem;
+  .text {
+    font-size: 1.6rem;
+  }
 }

@@ -7,14 +7,15 @@ import Image from "next/image";
 
 type Props = {
   onClick: () => void;
+  className?: string;
 };
 
 /**
  *@description 카카오 소셜 로그인 원형 버튼
  */
-function KakaoRoundedButton({ onClick }: Props) {
+function KakaoRoundedButton({ onClick, className }: Props) {
   return (
-    <Button className={clsx(styles.button)} onClick={onClick}>
+    <Button className={clsx(styles.button, className)} onClick={onClick}>
       <Image
         src="/images/ImageKakaoButton.png"
         alt={"카카오 소셜 로그인 버튼"}

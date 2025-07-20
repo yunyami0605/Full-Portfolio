@@ -6,20 +6,21 @@ import { Button, Text } from "@my/ui";
 import Image from "next/image";
 
 type Props = {
+  className?: string;
   onClick: () => void;
 };
 
 /**
  *@description 카카오 소셜 로그인 사각 버튼
  */
-function KakaoRectButton({ onClick }: Props) {
+function KakaoRectButton({ onClick, className }: Props) {
   return (
-    <Button className={clsx(styles.button)} onClick={onClick}>
+    <Button className={clsx(styles.button, className)} onClick={onClick}>
       <Image
         src="/icons/IconKakaoLoginButton.png"
         alt={"카카오 소셜 로그인 버튼"}
-        width={32}
-        height={32}
+        width={30}
+        height={30}
       />
 
       <Text className={clsx(styles.text)}>카카오로 시작하기</Text>
