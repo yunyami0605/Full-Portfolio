@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import clsx from "clsx";
-import styles from "./LayoutView.module.scss";
+import styles from "./Layout.module.scss";
 
 type Props = {
   children: ReactNode;
