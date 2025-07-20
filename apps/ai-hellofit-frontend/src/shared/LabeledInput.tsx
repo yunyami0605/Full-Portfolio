@@ -1,39 +1,38 @@
 import { Input, Label } from "@my/ui";
+import { InputHTMLAttributes } from "react";
+import clsx from "clsx";
+import styles from "./LabeledInput.module.scss";
 
-type LabeledInputProps = {
+type LabeledInputProps = InputHTMLAttributes<HTMLInputElement> & {
   required?: boolean;
   error?: string;
   label?: string;
   id: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  classNameContainer?: string;
+  classNameWrapper?: string;
   className?: string;
 };
 
 /**
- *@description
+ *@description label + input + error 폼 형식 컴포넌트
  */
 export const LabeledInput = ({
   id,
   required,
   error,
   label,
-  value,
-  onChange,
-  classNameContainer,
+  classNameWrapper,
   className,
+  ...inputProps
 }: LabeledInputProps) => {
   return (
-    <div className={classNameContainer}>
+    <div className={clsx(styles.input_wrapper, classNameWrapper)}>
       {label && (
-        <Label htmlFor={id}>
+        <Label htmlFor={id} required={required}>
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
         </Label>
       )}
 
-      <Input id={id} value={value} onChange={onChange} className={className} />
+      <Input {...inputProps} id={id} className={clsx(styles.input, className)} />
 
       {error && <p>{error}</p>}
     </div>
