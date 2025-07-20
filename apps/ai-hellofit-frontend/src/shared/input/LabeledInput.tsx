@@ -32,9 +32,13 @@ export const LabeledInput = ({
         </Label>
       )}
 
-      <Input {...inputProps} id={id} className={clsx(styles.input, className)} />
+      <Input
+        {...inputProps}
+        id={id}
+        className={clsx(styles.input, error && styles.error, className)}
+      />
 
-      {error && <p>{error}</p>}
+      {error && <p className={clsx(styles.error)}>{error}</p>}
     </div>
   );
 };

@@ -1,0 +1,42 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.input_wrapper {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 48px;
+  border-radius: 16px;
+  margin-bottom: 10px;
+
+  border: 3px solid $color-positive--10;
+  color: $color-grayscale-80;
+  font-size: 1.4rem;
+  padding-left: 16px;
+
+  &:placeholder-shown {
+    border: 3px solid $color-grayscale-40;
+    color: $color-grayscale-40;
+  }
+
+  &:not(:placeholder-shown) {
+    border: 3px solid $color-positive--10;
+    color: $color-grayscale-80;
+  }
+
+  &::placeholder {
+    color: $color-grayscale-40;
+  }
+
+  &.error {
+    border: 3px solid $color-orange-10;
+  }
+}
+
+.error {
+  font-size: 1.2rem;
+  color: $color-orange-10;
+  padding-left: 14px;
+}
