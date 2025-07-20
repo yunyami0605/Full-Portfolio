@@ -1,0 +1,9 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.button {
+  background-color: #fde930;
+  width: 62px;
+  height: 62px;
+  border-radius: 62px;
+}

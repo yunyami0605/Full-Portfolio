@@ -1,0 +1,16 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.button {
+  background-color: #fde930;
+
+  width: 240px;
+  height: 40px;
+  border-radius: 12px;
+  @include flex-center;
+}
+
+.text {
+  margin-left: 4px;
+  font-size: 1.6rem;
+}
