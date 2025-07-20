@@ -12,5 +12,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21"
+  },
+  "dependencies": {
+    "react-icons": "^5.5.0"
   }
 }
