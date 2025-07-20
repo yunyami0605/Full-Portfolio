@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { JSX } from "react";
+import "../globals.css";
 
 type TextProps = {
   as?: keyof JSX.IntrinsicElements;
@@ -43,7 +44,15 @@ export const Text = ({
 }: TextProps) => {
   const Component = as;
   return (
-    <Component className={clsx(sizeMap[size], colorMap[color], weightMap[weight], className)}>
+    <Component
+      className={clsx(
+        sizeMap[size],
+        colorMap[color],
+        weightMap[weight],
+        className,
+        "text-amber-950 text-lg",
+      )}
+    >
       {children}
     </Component>
   );

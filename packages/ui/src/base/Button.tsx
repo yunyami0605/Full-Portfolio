@@ -15,7 +15,7 @@ export const Button = ({ children, onClick, className = "" }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`text-white font-semibold px-4 py-2 rounded hover:bg-blue-700 transition ${className}`}
+      className={`text-amber-900 border-2 font-semibold px-4 py-2 rounded hover:bg-blue-700 transition ${className}`}
     >
       {children}
     </button>
