@@ -1,19 +1,28 @@
 @use "../variables" as *;
 
-.checkbox {
-  width: 16px;
-  height: 16px;
-  border: 1px solid $color-grayscale-60; // gray-300
-  border-radius: 4px;
-  accent-color: $color-positive--10; // blue-600
+.wrapper {
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px $color-positive-0; // focus:ring-blue-500
-  }
 }
 
-.error {
-  border-color: $color-negative--10 !important; // red-500
+.checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.icon {
+  font-size: 2rem; // 아이콘 크기
+  color: $color-grayscale-60;
+
+  &.error {
+    color: $color-orange-10;
+  }
 }
