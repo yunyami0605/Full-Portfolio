@@ -1,0 +1,19 @@
+@use "../variables" as *;
+
+.textarea {
+  border: 1px solid $color-grayscale-30;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+
+  &:focus {
+    border-color: $color-positive-10;
+    box-shadow: 0 0 0 2px rgba(0, 148, 255, 0.3); // focus:ring 효과
+  }
+}
+
+.error {
+  border-color: $color-negative-10 !important;
+}

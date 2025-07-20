@@ -6,3 +6,10 @@ export * from "./base/Textarea";
 export * from "./base/Tag";
 export * from "./base/Select";
 export * from "./base/Checkbox";
+
+// layout
+export * from "./base/layout/Box";
+export * from "./base/layout/Center";
+export * from "./base/layout/Column";
+export * from "./base/layout/Layout";
+export * from "./base/layout/Row";

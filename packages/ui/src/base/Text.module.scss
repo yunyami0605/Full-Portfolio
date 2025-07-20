@@ -1,0 +1,20 @@
+@use "../variables" as *;
+
+/* Font Weights */
+.normal {
+  font-weight: 400;
+}
+.medium {
+  font-weight: 500;
+}
+.semibold {
+  font-weight: 600;
+}
+.bold {
+  font-weight: 700;
+}
+
+.text-base {
+  color: $color-grayscale-80;
+  font-size: 1rem; // 16px
+}

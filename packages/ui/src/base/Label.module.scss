@@ -1,0 +1,13 @@
+@use "../variables" as *;
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-grayscale-80;
+}
+
+.required {
+  margin-left: 4px;
+  color: $color-negative-10;
+}

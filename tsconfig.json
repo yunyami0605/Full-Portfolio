@@ -15,7 +15,8 @@
     "incremental": true,
     "baseUrl": ".", // 🔹 alias, paths 기준
     "paths": {
-      "@my/ui": ["packages/ui/src"] // 🔹 공통 UI 경로 alias
+      "@my/ui": ["packages/ui/src"], // 🔹 공통 UI 경로 alias
+      "*": ["types/*"]
     }
   }
 }

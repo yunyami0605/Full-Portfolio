@@ -2,6 +2,7 @@
 
 import { forwardRef, SelectHTMLAttributes } from "react";
 import clsx from "clsx";
+import styles from "./Select.module.scss";
 
 type Option = {
   label: string;
@@ -14,21 +15,20 @@ type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   placeholder?: string;
 };
 
+/**
+ * @description 공통 Select 컴포넌트
+ */
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ options, className, error, ...props }, ref) => {
+  ({ options, className, error, placeholder, ...props }, ref) => {
     return (
       <select
         ref={ref}
         {...props}
-        className={clsx(
-          "border rounded px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white appearance-none",
-          error && "border-red-500",
-          className,
-        )}
+        className={clsx(styles.select, error && styles.error, className)}
       >
-        {props.placeholder && (
+        {placeholder && (
           <option value="" disabled hidden>
-            {props.placeholder}
+            {placeholder}
           </option>
         )}
         {options.map((opt) => (

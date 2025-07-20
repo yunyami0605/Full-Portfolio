@@ -1,0 +1,10 @@
+@use "../variables" as *;
+
+.button {
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}

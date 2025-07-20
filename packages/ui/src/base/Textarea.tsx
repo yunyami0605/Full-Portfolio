@@ -1,12 +1,15 @@
+"use client";
+
 import clsx from "clsx";
 import { forwardRef, TextareaHTMLAttributes } from "react";
+import styles from "./Textarea.module.scss";
 
 type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   error?: string;
 };
 
 /**
- *@description 공통 textare 컴포넌트
+ * @description 공통 Textarea 컴포넌트
  */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ error, className, ...props }, ref) => {
@@ -14,11 +17,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       <textarea
         ref={ref}
         {...props}
-        className={clsx(
-          "border rounded px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 resize-none",
-          error && "border-red-500",
-          className,
-        )}
+        className={clsx(styles.textarea, error && styles.error, className)}
       />
     );
   },

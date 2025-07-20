@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import clsx from "clsx";
+import styles from "./Button.module.scss";
 
 type ButtonProps = {
   children: React.ReactNode;
@@ -13,10 +15,7 @@ type ButtonProps = {
  */
 export const Button = ({ children, onClick, className = "" }: ButtonProps) => {
   return (
-    <button
-      onClick={onClick}
-      className={`text-amber-900 border-2 font-semibold px-4 py-2 rounded hover:bg-blue-700 transition ${className}`}
-    >
+    <button onClick={onClick} className={clsx(styles.button, children, className)}>
       {children}
     </button>
   );

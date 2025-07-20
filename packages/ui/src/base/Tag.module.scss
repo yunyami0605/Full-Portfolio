@@ -1,0 +1,64 @@
+@use "../variables" as *;
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.gray {
+  background-color: $color-grayscale-20;
+  color: $color-grayscale-90;
+}
+
+.blue {
+  background-color: $color-positive--30;
+  color: $color-positive-20;
+}
+
+.green {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.red {
+  background-color: $color-negative--30;
+  color: $color-negative-20;
+}
+
+.yellow {
+  background-color: $color-yellow--30;
+  color: $color-yellow-20;
+}
+
+// outline 스타일
+.outline {
+  background-color: white;
+
+  &.gray {
+    border: 1px solid $color-grayscale-40;
+    color: $color-grayscale-90;
+  }
+
+  &.blue {
+    border: 1px solid $color-positive-0;
+    color: $color-positive-20;
+  }
+
+  &.green {
+    border: 1px solid #86efac;
+    color: #166534;
+  }
+
+  &.red {
+    border: 1px solid $color-negative-10;
+    color: $color-negative-20;
+  }
+
+  &.yellow {
+    border: 1px solid $color-yellow-20;
+    color: $color-yellow-20;
+  }
+}

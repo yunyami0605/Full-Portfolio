@@ -2,13 +2,14 @@
 
 import { InputHTMLAttributes, forwardRef } from "react";
 import clsx from "clsx";
+import styles from "./Checkbox.module.scss";
 
 type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   error?: string;
 };
 
 /**
- *@description 공통 체크박스 컴포넌트
+ * @description 공통 체크박스 컴포넌트
  */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, error, ...props }, ref) => {
@@ -17,11 +18,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         ref={ref}
         type="checkbox"
         {...props}
-        className={clsx(
-          "w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
-          error && "border-red-500",
-          className,
-        )}
+        className={clsx(styles.checkbox, error && styles.error, className)}
       />
     );
   },

@@ -2,13 +2,14 @@
 
 import clsx from "clsx";
 import { forwardRef, InputHTMLAttributes } from "react";
+import styles from "./Input.module.scss";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string;
 };
 
 /**
- *@description 공통 Input 컴포넌트
+ * @description 공통 Input 컴포넌트
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ error, className, ...props }, ref) => {
@@ -16,11 +17,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         {...props}
-        className={clsx(
-          "border rounded px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500",
-          error && "border-red-500",
-          className,
-        )}
+        className={clsx(styles.input, error && styles.error, className)}
       />
     );
   },
