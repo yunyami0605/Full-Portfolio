@@ -1,0 +1,15 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.wrapper {
+  padding: 0 20px;
+  @include flex-column;
+}
+
+.kakao {
+  margin-bottom: 12px;
+}
+
+.apple {
+  margin-bottom: 24px;
+}
