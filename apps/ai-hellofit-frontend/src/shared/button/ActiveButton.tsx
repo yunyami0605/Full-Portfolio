@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import styles from "./ActiveButton.module.scss";
 import React from "react";

@@ -1,3 +1,5 @@
+"use client";
+
 import { Input, Label } from "@my/ui";
 import { InputHTMLAttributes } from "react";
 import clsx from "clsx";
