@@ -1,0 +1,11 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.button {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}

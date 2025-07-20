@@ -1,0 +1,27 @@
+import clsx from "clsx";
+import styles from "./Header.module.scss";
+import React, { ReactNode } from "react";
+import BackButton from "../button/BackButton";
+
+type Props = {
+  title?: string;
+  left?: ReactNode;
+  right?: ReactNode;
+  className?: string;
+  back?: boolean;
+};
+
+/**
+ *@description 페이지 헤더
+ */
+function Header({ title, left, right, className, back }: Props) {
+  return (
+    <header className={clsx(styles.header, className)}>
+      <div className={styles.left}>{back ? <BackButton /> : left}</div>
+      <div className={styles.title}>{title}</div>
+      <div className={styles.right}>{right}</div>
+    </header>
+  );
+}
+
+export default Header;
