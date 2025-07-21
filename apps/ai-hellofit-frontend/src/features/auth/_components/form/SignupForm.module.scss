@@ -1,0 +1,33 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.signup_wrapper {
+  width: 100%;
+  padding: 40px 20px;
+  flex: 1;
+  @include flex-column;
+  justify-content: space-between;
+
+  .form_wrapper {
+    width: 100%;
+  }
+}
+
+.input_margin {
+  margin-bottom: 26px;
+}
+
+.nickname_input {
+  margin-bottom: 14px;
+}
+
+.privacy_agree_wrapper {
+  .button {
+    @include flex-row;
+    gap: 4px;
+  }
+
+  & p {
+    font-size: 1.4rem;
+  }
+}

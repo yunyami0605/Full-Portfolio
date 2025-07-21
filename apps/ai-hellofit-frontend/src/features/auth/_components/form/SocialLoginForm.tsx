@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./SocialLoginForm.module.scss";
-import React, { useState } from "react";
+import React from "react";
 import KakaoRectButton from "../button/KakaoRectButton";
 import AppleRectButton from "../button/AppleRectButton";
 import TextButton from "@/shared/button/TextButton";
