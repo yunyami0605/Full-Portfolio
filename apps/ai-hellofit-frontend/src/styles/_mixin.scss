@@ -66,3 +66,15 @@ $breakpoints: (
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+@mixin page_layout_with_header {
+  width: 100%;
+  min-height: calc(100vh - 54px);
+  @include flex-column;
+}
+
+@mixin page_layout {
+  width: 100%;
+  min-height: 100vh;
+  @include flex-column;
+}

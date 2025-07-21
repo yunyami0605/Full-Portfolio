@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 function LoginForm() {
   const router = useRouter();
 
-  const onMoveSignupPagePage = useCallback(() => router.push("SignupPage"), []);
+  const onMoveSignupPagePage = useCallback(() => router.push("signup"), []);
 
   return (
     <section className={clsx(styles.wrapper)}>

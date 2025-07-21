@@ -2,7 +2,8 @@
 @use "@/styles/variables" as *;
 
 .wrapper {
-  padding: 0 20px;
+  width: 100%;
+  padding: 0 20px 40px;
   @include flex-column;
 }
 

@@ -2,7 +2,6 @@
 
 import styles from "./PrivacyPolicyPage.module.scss";
 import React from "react";
-import Header from "@/shared/layout/Header";
 import ActiveButton from "@/shared/button/ActiveButton";
 import { useRouter } from "next/navigation";
 
@@ -18,8 +17,6 @@ function PrivacyPolicyPage() {
 
   return (
     <section className={styles.page_layout}>
-      <Header back title="개인정보처리방침" />
-
       <section className={styles.policy_content}>
         <p>
           {`개인정보처리방침

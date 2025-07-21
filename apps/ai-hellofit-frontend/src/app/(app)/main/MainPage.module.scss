@@ -2,7 +2,5 @@
 @use "@/styles/variables" as *;
 
 .page_layout {
-  width: 100%;
-  height: 100vh;
-  @include flex-column;
+  @include page_layout;
 }

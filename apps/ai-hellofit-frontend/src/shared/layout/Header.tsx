@@ -9,12 +9,15 @@ type Props = {
   right?: ReactNode;
   className?: string;
   back?: boolean;
+  noHeader?: boolean;
 };
 
 /**
  *@description 페이지 헤더
  */
-function Header({ title, left, right, className, back }: Props) {
+function Header({ title, left, right, className, back, noHeader }: Props) {
+  if (noHeader) return <></>;
+
   return (
     <header className={clsx(styles.header, className)}>
       <div className={styles.left}>{back ? <BackButton /> : left}</div>

@@ -1,15 +1,14 @@
 @use "@/styles/variables" as *;
+@use "@/styles/mixin" as *;
 
 .page_layout {
-  padding-bottom: 40px;
+  @include page_layout;
 
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
 }
 
 .email_login_title {
+  width: 100%;
   padding-top: 20vh;
   padding-left: 26px;
   line-height: 48px;
