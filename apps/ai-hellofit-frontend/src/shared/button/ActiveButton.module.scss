@@ -13,7 +13,7 @@
 }
 
 // 개별 modifier 클래스는 별도 정의
-.button--positive {
+.button.button--positive {
   background-color: $color-positive-0;
   border: 3px solid $color-positive--20;
 
@@ -22,7 +22,7 @@
   }
 }
 
-.button--negative {
+.button.button--negative {
   background-color: $color-orange-10;
   border: 3px solid $color-yellow-30;
 
@@ -31,7 +31,7 @@
   }
 }
 
-.button--disabled {
+.button.button--disabled {
   border: 3px solid $color-grayscale-40;
   background-color: transparent;
 
@@ -40,7 +40,7 @@
   }
 }
 
-.button--skip {
+.button.button--skip {
   border: 3px solid $color-grayscale-70;
   background-color: transparent;
 
