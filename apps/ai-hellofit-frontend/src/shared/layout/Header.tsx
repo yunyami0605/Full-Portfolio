@@ -18,7 +18,7 @@ function Header({ title, left, right, className, back }: Props) {
   return (
     <header className={clsx(styles.header, className)}>
       <div className={styles.left}>{back ? <BackButton /> : left}</div>
-      <div className={styles.title}>{title}</div>
+      <div className={clsx(styles.title, styles.center)}>{title}</div>
       <div className={styles.right}>{right}</div>
     </header>
   );

@@ -29,7 +29,7 @@ export const LabeledInput = ({
   return (
     <div className={clsx(styles.input_wrapper, classNameWrapper)}>
       {label && (
-        <Label htmlFor={id} required={required}>
+        <Label htmlFor={id} required={required} className={styles.label}>
           {label}
         </Label>
       )}
