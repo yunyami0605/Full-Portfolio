@@ -1,0 +1,20 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.page_layout {
+  width: 100%;
+  height: 100vh;
+  @include flex-column;
+}
+
+.policy_content {
+  overflow-y: scroll;
+  padding: 40px 20px;
+
+  & > p {
+    font-size: 1.4rem;
+    line-height: 24px;
+    white-space: pre-line;
+    margin-bottom: 20px;
+  }
+}
