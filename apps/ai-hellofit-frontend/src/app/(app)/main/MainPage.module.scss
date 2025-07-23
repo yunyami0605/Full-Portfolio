@@ -2,5 +2,21 @@
 @use "@/styles/variables" as *;
 
 .page_layout {
-  @include page_layout;
+  @include page_layout_with_header;
+
+  .ads_wrapper {
+    margin: 20px 0;
+    width: 100%;
+    height: 80px;
+    border: 1px solid;
+    line-height: 80px;
+    text-align: center;
+  }
+
+  .inner_wrapper {
+    padding-top: 40px;
+    width: 100%;
+    padding-inline: 20px;
+    overflow: auto;
+  }
 }
