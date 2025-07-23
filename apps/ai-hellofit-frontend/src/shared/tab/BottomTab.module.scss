@@ -16,6 +16,7 @@
     @include flex-column;
     flex: 1;
     gap: 10px;
+    color: $color-grayscale-50;
   }
 
   .active {
