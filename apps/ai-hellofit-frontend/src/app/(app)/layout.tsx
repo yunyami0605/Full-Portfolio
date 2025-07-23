@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { BaseLayout } from "@my/ui";
 import Header from "@/shared/layout/Header";
+import BottomTab from "@/shared/tab/BottomTab";
 
 const headerMap = {
   "/signup": { title: "회원가입", back: true },
@@ -23,6 +24,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <BaseLayout>
       <Header {...headerProps} />
       {children}
+
+      <BottomTab />
     </BaseLayout>
   );
 }
