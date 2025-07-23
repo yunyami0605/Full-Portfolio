@@ -1,0 +1,34 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.card_wrapper {
+  width: 100%;
+  margin-bottom: 20px;
+
+  .card_date {
+    padding-left: 8px;
+    margin-bottom: 15px;
+
+    & > p {
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+  }
+}
+
+.data_wrapper {
+  gap: 14px;
+  padding: 20px 10px;
+}
+
+.data {
+  & > p {
+    font-size: 1.4rem;
+    color: $color-grayscale-80;
+    font-weight: bold;
+  }
+}
+
+.tabs_wrapper {
+  @include flex-row;
+}
