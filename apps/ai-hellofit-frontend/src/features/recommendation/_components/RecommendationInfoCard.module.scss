@@ -1,0 +1,29 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.data_wrapper {
+  gap: 14px;
+  padding: 20px 10px;
+}
+
+.data {
+  & > p {
+    font-size: 1.4rem;
+    color: $color-grayscale-80;
+    font-weight: bold;
+  }
+}
+.title_wrapper {
+  margin-bottom: 12px;
+
+  .title {
+    margin-right: 12px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: $color-grayscale-90;
+  }
+}
+
+.tabs_wrapper {
+  @include flex-row;
+}
