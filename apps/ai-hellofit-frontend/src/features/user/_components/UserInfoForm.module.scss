@@ -1,0 +1,45 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.page_layout {
+  @include flex-column;
+  min-height: calc(100vh - 134px);
+
+  justify-content: space-between;
+}
+
+.top_wrapper {
+  width: 100%;
+  height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .register_info {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 2rem;
+    color: $color-grayscale-90;
+    line-height: 40px;
+  }
+
+  .description {
+    font-size: 1.4rem;
+    color: $color-grayscale-80;
+    line-height: 32px;
+  }
+}
+
+.bottom_wrapper {
+  width: 100%;
+
+  @include flex-column;
+  gap: 20px;
+}
+
+.button_select_list {
+  @include flex-column;
+  gap: 12px;
+}
