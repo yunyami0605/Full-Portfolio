@@ -1,0 +1,45 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.wrapper {
+  width: 100%;
+
+  .label {
+    padding-left: 8px;
+    margin-bottom: 8px;
+  }
+
+  .toggle_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    .toggle_button {
+      width: 140px !important;
+      flex: 1;
+      height: 48px;
+      border-radius: 16px;
+
+      &_unchecked {
+        border: 3px solid $color-grayscale-40;
+
+        & p {
+          color: $color-grayscale-40;
+        }
+      }
+
+      &_checked {
+        border: 3px solid $color-positive--10;
+
+        & p {
+          color: $color-positive--10;
+        }
+      }
+
+      & p {
+        font-size: 1.8rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.tab {
+  flex: 1;
+  height: 32px;
+  border-bottom: 1px solid $color-grayscale-30;
+  color: $color-grayscale-80;
+  @include flex-center;
+}
+
+.isChecked {
+  border-bottom: 1px solid $color-grayscale-80;
+}
