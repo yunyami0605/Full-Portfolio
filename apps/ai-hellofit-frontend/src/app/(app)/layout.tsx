@@ -9,6 +9,7 @@ const headerMap = {
   "/privacy": { title: "개인정보처리방침", back: true },
   "/main": { title: "", back: false, noHeader: true },
   "/user/register": { title: "", back: false, noHeader: true },
+  "/recommendation": { title: "추천 식단", back: true },
 };
 
 /**
