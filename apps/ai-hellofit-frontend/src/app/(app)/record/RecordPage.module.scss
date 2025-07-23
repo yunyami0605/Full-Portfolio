@@ -1,0 +1,32 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+.page_layout {
+  @include page_layout_with_header;
+  padding: 40px 20px;
+
+  .top_wrapper {
+    width: 100%;
+    @include flex-row;
+    justify-content: space-between;
+
+    .top_wrapper_title {
+      font-weight: bold;
+      font-size: 1.8rem;
+    }
+
+    .calendar_go_button {
+      @include flex-row;
+      gap: 8px;
+      & > p {
+        font-size: 1.8rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .tab_list {
+    width: 100%;
+    gap: 12px;
+    margin: 30px 0 22px;
+  }
+}
