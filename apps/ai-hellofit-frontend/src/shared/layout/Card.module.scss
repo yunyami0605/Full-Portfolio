@@ -2,6 +2,7 @@
 @use "@/styles/variables" as *;
 
 .card {
+  width: 100%;
   background-color: #fff;
   border: 1px solid $color-grayscale-40;
   border-radius: 12px;
