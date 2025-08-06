@@ -1,0 +1,14 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.edit_button {
+  width: 90px;
+  height: 35px;
+  border-radius: 8px;
+  border: 1px solid $color-grayscale-80;
+
+  & > p {
+    font-size: 1.2rem;
+    color: $color-grayscale-60;
+  }
+}

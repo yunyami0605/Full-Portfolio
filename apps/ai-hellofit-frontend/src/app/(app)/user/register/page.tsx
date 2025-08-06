@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import styles from "./UserInfoRegister.module.scss";
-import Intro from "@/features/user/_components/Intro";
-import AgeForm from "@/features/user/_components/AgeForm";
-import GenderForm from "@/features/user/_components/GenderForm";
-import HeightForm from "@/features/user/_components/HeightForm";
-import WeightForm from "@/features/user/_components/WeightForm";
-import SleepTimeForm from "@/features/user/_components/SleepTimeForm";
-import EatingHabitForm from "@/features/user/_components/EatingHabitForm";
-import DontEatForm from "@/features/user/_components/DontEatForm";
-import ExerciseTimeForm from "@/features/user/_components/ExerciseTimeForm";
+import Intro from "@/features/user/_components/register/Intro";
+import AgeForm from "@/features/user/_components/register/AgeForm";
+import GenderForm from "@/features/user/_components/register/GenderForm";
+import HeightForm from "@/features/user/_components/register/HeightForm";
+import WeightForm from "@/features/user/_components/register/WeightForm";
+import SleepTimeForm from "@/features/user/_components/register/SleepTimeForm";
+import EatingHabitForm from "@/features/user/_components/register/EatingHabitForm";
+import DontEatForm from "@/features/user/_components/register/DontEatForm";
+import ExerciseTimeForm from "@/features/user/_components/register/ExerciseTimeForm";
 import Header from "@/shared/layout/Header";
 import { FaChevronLeft } from "react-icons/fa";
 import { Button } from "@my/ui";

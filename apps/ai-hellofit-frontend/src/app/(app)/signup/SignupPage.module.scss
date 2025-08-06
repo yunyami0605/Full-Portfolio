@@ -1,6 +1,2 @@
 @use "@/styles/mixin" as *;
 @use "@/styles/variables" as *;
-
-.page_layout {
-  @include page_layout_with_header;
-}

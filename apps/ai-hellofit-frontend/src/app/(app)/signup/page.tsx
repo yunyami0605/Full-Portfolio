@@ -1,14 +1,14 @@
 "use client";
 
-import styles from "./SignupPage.module.scss";
 import React from "react";
 import SignupForm from "@/features/auth/_components/form/SignupForm";
+import PageWrapper from "@/shared/layout/PageWrapper";
 
 function SignupPage() {
   return (
-    <section className={styles.page_layout}>
+    <PageWrapper>
       <SignupForm />
-    </section>
+    </PageWrapper>
   );
 }
 

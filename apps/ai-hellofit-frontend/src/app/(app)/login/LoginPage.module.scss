@@ -1,16 +1,12 @@
 @use "@/styles/variables" as *;
 
-.page_layout {
-  padding-bottom: 40px;
-
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.between {
   justify-content: space-between;
 }
 
 .email_login_title {
-  padding-top: 20vh;
+  width: 100%;
+  padding-top: 16vh;
   padding-left: 26px;
   line-height: 48px;
 

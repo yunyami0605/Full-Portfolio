@@ -1,3 +1,5 @@
+@use "@/styles/variables" as *;
+
 // 변수 정의
 $breakpoints: (
   sm: 640px,
@@ -69,7 +71,7 @@ $breakpoints: (
 
 @mixin page_layout_with_header {
   width: 100%;
-  min-height: calc(100vh - 54px);
+  min-height: calc(100vh - $header-height);
   @include flex-column;
 }
 

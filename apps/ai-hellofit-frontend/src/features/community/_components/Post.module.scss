@@ -1,0 +1,49 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.post_container_button {
+  width: 100%;
+  padding: 12px 0;
+
+  .post_wrapper {
+    width: 100%;
+
+    .post_inner_wrapper {
+      height: 80px;
+    }
+
+    .post_author_info_wrapper {
+      gap: 6px;
+
+      .post_author_info {
+        gap: 15px;
+
+        .dummy_profile_image {
+          width: 24px;
+          height: 24px;
+          border-radius: 24px;
+          background-color: $color-grayscale-50;
+        }
+
+        .author_name_txt {
+          font-size: 1rem;
+          color: $color-grayscale-90;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .subinfo_wrapper {
+    gap: 12px;
+
+    .count_wrapper {
+      gap: 6px;
+    }
+  }
+}
+.dummy_post_image {
+  width: 80px;
+  height: 80px;
+  background-color: $color-grayscale-60;
+}

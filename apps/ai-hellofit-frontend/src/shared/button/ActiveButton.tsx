@@ -13,6 +13,7 @@ type Props = {
   className?: string;
   classNameText?: string;
   activeType?: ActiveButtonType;
+  type: "button" | "submit";
 };
 
 /**

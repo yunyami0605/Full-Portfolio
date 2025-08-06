@@ -1,13 +1,9 @@
 @use "@/styles/mixin" as *;
 @use "@/styles/variables" as *;
 
-.page_layout {
-  @include page_layout_with_header;
-}
-
 .policy_content {
   overflow-y: scroll;
-  padding: 40px 20px;
+  padding: 0 20px;
 
   & > p {
     font-size: 1.4rem;
