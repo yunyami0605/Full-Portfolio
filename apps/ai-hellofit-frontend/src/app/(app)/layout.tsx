@@ -15,6 +15,8 @@ const headerMap = {
   "/user/register": { title: "", back: false, noHeader: true, tab: false },
   "/recommendation": { title: "추천 식단", back: true, tab: true },
   "/mypage": { title: "", noHeader: true, back: false, tab: true },
+  "/login": { title: "", noHeader: true, back: false, tab: false },
+  "/social": { title: "", noHeader: true, back: false, tab: false },
 };
 
 /**
