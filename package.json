@@ -24,6 +24,7 @@
   "packageManager": "yarn@4.9.2",
   "devDependencies": {
     "@my-config/eslint": "workspace:^",
+    "@types/lodash": "^4",
     "eslint": "^9.30.1",
     "eslint-config-next": "^15.3.5",
     "eslint-config-prettier": "^10.1.5",
@@ -32,6 +33,7 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "lodash": "^4.17.21",
     "zod": "^4.0.8"
   }
 }
