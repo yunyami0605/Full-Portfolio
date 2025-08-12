@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import styles from "./LoginForm.module.scss";
-import React from "react";
+import React, { useState } from "react";
 import { LabeledInput } from "@/shared/input/LabeledInput";
 import ActiveButton from "@/shared/button/ActiveButton";
 import KakaoRoundedButton from "../button/KakaoRoundedButton";
@@ -15,13 +15,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormValues, loginSchema } from "@/app/schemas/loginSchema";
 import { Column } from "@my/ui";
 import useLoginApi from "../../_hooks/useLoginAPi";
+import { authTokenACookies } from "@/libs/cookie";
 
 /**
  *@description 이메일 로그인 폼
  */
 function LoginForm() {
   const router = useRouter();
-  const { mutate: loginMutate } = useLoginApi();
+  const { mutateAsync: loginMutate, isPending } = useLoginApi();
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -32,16 +34,30 @@ function LoginForm() {
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log("로그인 정보:", data);
-    // 로그인 처리 로직 여기에 작성
+  // 로그인 이벤트
+  const onSubmit = async (data: LoginFormValues) => {
+    if (isPending) return;
+    setServerError(null);
 
-    loginMutate(data);
+    try {
+      const response = await loginMutate(data);
+      const { accessToken, refreshToken } = response;
+
+      authTokenACookies.setTokens(accessToken, refreshToken);
+
+      router.push("/main");
+    } catch (error: any) {
+      console.log(error);
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
+
+      setServerError(message);
+    }
   };
 
-  const onMoveSignupPagePage = () => router.push("signup");
-
-  console.log(handleSubmit);
+  const onMoveSignupPagePage = () => router.push("/signup");
 
   return (
     <section className={clsx(styles.wrapper)}>
@@ -51,7 +67,7 @@ function LoginForm() {
             id="email"
             placeholder="이메일"
             {...register("email")}
-            error={errors.email?.message}
+            error={serverError ?? errors.email?.message}
           />
 
           <LabeledInput
@@ -59,7 +75,7 @@ function LoginForm() {
             type="password"
             placeholder="비밀번호"
             {...register("password")}
-            error={errors.password?.message}
+            error={serverError ?? errors.password?.message}
           />
         </Column>
 
