@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 /**
  *@description modal on off state, toggle
  */
-function useModal() {
+export function useModal() {
   const [isOpen, setOpen] = useState(false);
 
   const open = useCallback(() => setOpen(true), []);
@@ -12,5 +12,3 @@ function useModal() {
 
   return { isOpen, open, close, toggle };
 }
-
-export default useModal;

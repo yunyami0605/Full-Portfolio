@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 /**
  *@description mobile 스크린인지 확인하는 훅
  */
-function useIsMobile(breakpoint = 768) {
+export function useIsMobile(breakpoint = 768) {
   const [isMobileSize, setMobileSize] = useState(false);
 
   useEffect(() => {
@@ -18,5 +18,3 @@ function useIsMobile(breakpoint = 768) {
 
   return isMobileSize;
 }
-
-export default useIsMobile;

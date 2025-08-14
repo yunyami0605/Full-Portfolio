@@ -3,7 +3,7 @@ import { useEffect } from "react";
 /**
  *@description modal 열릴때, 스크롤 방지
  */
-function useScrollLock(lock: boolean) {
+export function useScrollLock(lock: boolean) {
   //
   useEffect(() => {
     if (lock) {
@@ -17,5 +17,3 @@ function useScrollLock(lock: boolean) {
     };
   }, [lock]);
 }
-
-export default useScrollLock;
