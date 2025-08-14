@@ -6,6 +6,9 @@ import { LabeledInput } from "@/shared/input/LabeledInput";
 import { Button, Checkbox, Row, Text } from "@my/ui";
 import ActiveButton from "@/shared/button/ActiveButton";
 import { useRouter, useSearchParams } from "next/navigation";
+import useSignupApi from "../../_hooks/useSignupApi";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 /**
  *@description 회원가입 폼
@@ -14,10 +17,23 @@ function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const agree = searchParams.get("agreePrivacy") === "true";
+  const signupApi = useSignupApi();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(signupScheme),
+    mode: "onSubmit",
+  });
 
   const onMovePrivacyPage = useCallback(() => {
     router.push("privacy");
   }, []);
+
+  const onSignup = () => {
+    signupApi.mutateAsync({});
+  };
 
   return (
     <section className={styles.signup_wrapper}>
@@ -63,7 +79,7 @@ function SignupForm() {
         </Row>
       </section>
 
-      <ActiveButton name={"완료"} activeType="disabled" />
+      <ActiveButton name={"완료"} activeType="disabled" type={"button"} />
     </section>
   );
 }

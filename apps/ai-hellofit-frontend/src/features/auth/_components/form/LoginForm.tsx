@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormValues, loginSchema } from "@/app/schemas/loginSchema";
+import { LoginFormValues, loginSchema } from "@/features/auth/_schemas/loginSchema";
 import { Column } from "@my/ui";
 import useLoginApi from "../../_hooks/useLoginAPi";
 import { authTokenACookies } from "@/libs/cookie";
