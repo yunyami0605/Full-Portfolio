@@ -1,4 +1,4 @@
-import { loginSchema } from "@/features/auth/_schemas/loginSchema";
+import { loginSchema } from "@/features/auth";
 import { http, HttpResponse } from "msw";
 import { z } from "zod";
 

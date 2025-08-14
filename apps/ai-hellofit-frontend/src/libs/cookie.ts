@@ -2,7 +2,7 @@
  *@description 쿠키 관리 util 스크립트
  */
 
-import { globalConstants } from "@/shared/constants/globalConstant";
+import { authConstant } from "@/features/auth/_constants";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -42,20 +42,20 @@ function getCookie(name: string) {
 // 공개 API
 export const authTokenACookies = {
   setTokens(accessToken: string, refreshToken: string) {
-    setCookie(globalConstants.cookie.auth.accessToken, accessToken, 60 * 60); // 1h
-    setCookie(globalConstants.cookie.auth.refreshToken, refreshToken, 60 * 60 * 24 * 14); // 14d
+    setCookie(authConstant.cookie.accessToken, accessToken, 60 * 60); // 1h
+    setCookie(authConstant.cookie.refreshToken, refreshToken, 60 * 60 * 24 * 14); // 14d
   },
 
   clearTokens() {
-    deleteCookie(globalConstants.cookie.auth.accessToken);
-    deleteCookie(globalConstants.cookie.auth.refreshToken);
+    deleteCookie(authConstant.cookie.accessToken);
+    deleteCookie(authConstant.cookie.refreshToken);
   },
 
   getAccessToken() {
-    return getCookie(globalConstants.cookie.auth.accessToken);
+    return getCookie(authConstant.cookie.accessToken);
   },
 
   getRefreshToken() {
-    return getCookie(globalConstants.cookie.auth.refreshToken);
+    return getCookie(authConstant.cookie.refreshToken);
   },
 };

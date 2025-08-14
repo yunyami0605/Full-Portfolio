@@ -9,12 +9,11 @@ import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormValues, loginSchema } from "@/features/auth/_schemas/loginSchema";
 import { Column } from "@my/ui";
-import useLoginApi from "../../_hooks/useLoginAPi";
 import { authTokenACookies } from "@/libs/cookie";
 import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { ActiveButton, TextButton } from "@/shared/components";
+import { LoginFormSchema, loginSchema, useLoginApi } from "../..";
 
 /**
  *@description 이메일 로그인 폼
@@ -28,13 +27,13 @@ function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({
+  } = useForm<LoginFormSchema>({
     resolver: zodResolver(loginSchema),
     mode: "onSubmit",
   });
 
   // 로그인 이벤트
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (data: LoginFormSchema) => {
     if (isPending) return;
     setServerError(null);
 

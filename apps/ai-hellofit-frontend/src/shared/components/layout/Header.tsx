@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import styles from "./Header.module.scss";
 import React, { ReactNode } from "react";
-import BackButton from "../button/BackButton";
+import { PageBackButton } from "../button/BackButton";
 
 type Props = {
   title?: string;
@@ -20,7 +20,7 @@ export function Header({ title, left, right, className, back, noHeader }: Props)
 
   return (
     <header className={clsx(styles.header, className)}>
-      <div className={styles.left}>{back ? <BackButton /> : left}</div>
+      <div className={styles.left}>{back ? <PageBackButton /> : left}</div>
       <div className={clsx(styles.title, styles.center)}>{title}</div>
       <div className={styles.right}>{right}</div>
     </header>

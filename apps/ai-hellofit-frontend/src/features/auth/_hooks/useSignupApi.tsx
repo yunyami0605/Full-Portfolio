@@ -5,7 +5,7 @@ import { signupApi } from "../_apis/signupApi";
 /**
  *@description signup api hook
  */
-export default function useSignupApi() {
+export function useSignupApi() {
   return useMutation({
     mutationFn: (body: SignupApiBody) => signupApi(body),
   });
