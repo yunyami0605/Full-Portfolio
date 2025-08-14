@@ -10,7 +10,7 @@ type Props = {
 /**
  *@description 진행도 표시 컴포넌트
  */
-function ProgressIndicator({ current, total }: Props) {
+export function ProgressIndicator({ current, total }: Props) {
   const progress = (current / total) * 100;
 
   return (
@@ -21,5 +21,3 @@ function ProgressIndicator({ current, total }: Props) {
     </div>
   );
 }
-
-export default ProgressIndicator;

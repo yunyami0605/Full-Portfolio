@@ -2,9 +2,8 @@
 
 import styles from "./PrivacyPolicyPage.module.scss";
 import React from "react";
-import ActiveButton from "@/shared/button/ActiveButton";
 import { useRouter } from "next/navigation";
-import PageWrapper from "@/shared/layout/PageWrapper";
+import { ActiveButton, PageWrapper } from "@/shared/components";
 
 /**
  *@description 개인정보처리방침 확인 페이지
@@ -78,7 +77,7 @@ function PrivacyPolicyPage() {
 `}
         </p>
 
-        <ActiveButton name={"동의"} activeType="disabled" onClick={onAgree} />
+        <ActiveButton name={"동의"} activeType="disabled" onClick={onAgree} type={"button"} />
       </section>
     </PageWrapper>
   );

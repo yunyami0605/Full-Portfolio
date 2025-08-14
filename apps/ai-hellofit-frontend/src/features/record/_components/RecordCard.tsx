@@ -2,9 +2,8 @@
 
 import styles from "./RecordCard.module.scss";
 import React, { useState } from "react";
-import Card from "@/shared/layout/Card";
-import Tab from "@/shared/tab/Tab";
 import { Column, Row, Text } from "@my/ui";
+import { Card, Tab } from "@/shared/components";
 
 type Props = {};
 /**

@@ -3,8 +3,8 @@
 import styles from "./UserInfoForm.module.scss";
 import React from "react";
 import { Text } from "@my/ui";
-import ActiveButton from "@/shared/button/ActiveButton";
-import { LabeledInput } from "@/shared/input/LabeledInput";
+import { LabeledInput } from "@/shared/components/input/LabeledInput";
+import { ActiveButton } from "@/shared/components";
 
 interface Props {
   onMove: () => void;
@@ -27,9 +27,9 @@ function ExerciseTimeForm({ onMove }: Props) {
       </section>
 
       <section className={styles.bottom_wrapper}>
-        <ActiveButton name={"건너뛰기"} onClick={onMove} activeType="skip" />
+        <ActiveButton name={"건너뛰기"} onClick={onMove} activeType="skip" type={"button"} />
 
-        <ActiveButton name={"다음"} onClick={onMove} activeType="positive" />
+        <ActiveButton name={"다음"} onClick={onMove} activeType="positive" type={"button"} />
       </section>
     </section>
   );

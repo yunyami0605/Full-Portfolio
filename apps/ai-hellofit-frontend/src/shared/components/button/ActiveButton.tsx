@@ -21,7 +21,7 @@ type Props = {
  *@param {boolean} disabled - 버튼 활성화 여부
  *@param {ActiveButtonType} type - disabled | positive | negative 여부
  */
-function ActiveButton({
+export function ActiveButton({
   name,
   className,
   classNameText,
@@ -40,5 +40,3 @@ function ActiveButton({
     </Button>
   );
 }
-
-export default ActiveButton;

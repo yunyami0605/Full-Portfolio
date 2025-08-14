@@ -4,8 +4,8 @@ import styles from "./SocialLoginForm.module.scss";
 import React from "react";
 import KakaoRectButton from "../button/KakaoRectButton";
 import AppleRectButton from "../button/AppleRectButton";
-import TextButton from "@/shared/button/TextButton";
 import { useRouter } from "next/navigation";
+import { TextButton } from "@/shared/components";
 
 /**
  *@description 소셜 로그인 버튼들

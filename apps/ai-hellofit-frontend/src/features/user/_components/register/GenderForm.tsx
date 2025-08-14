@@ -3,8 +3,8 @@
 import styles from "./UserInfoForm.module.scss";
 import React from "react";
 import { Text } from "@my/ui";
-import ActiveButton from "@/shared/button/ActiveButton";
-import { ToggleSelector } from "@/shared/input/ToggleSelector";
+import { ToggleSelector } from "@/shared/components/input/ToggleSelector";
+import { ActiveButton } from "@/shared/components";
 
 interface Props {
   onMove: () => void;
@@ -31,7 +31,7 @@ function GenderForm({ onMove }: Props) {
         />
       </section>
 
-      <ActiveButton name={"다음"} onClick={onMove} activeType="positive" />
+      <ActiveButton name={"다음"} onClick={onMove} activeType="positive" type={"button"} />
     </section>
   );
 }

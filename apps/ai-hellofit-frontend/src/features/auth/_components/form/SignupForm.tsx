@@ -2,13 +2,13 @@
 
 import styles from "./SignupForm.module.scss";
 import React, { useCallback } from "react";
-import { LabeledInput } from "@/shared/input/LabeledInput";
 import { Button, Checkbox, Row, Text } from "@my/ui";
-import ActiveButton from "@/shared/button/ActiveButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import useSignupApi from "../../_hooks/useSignupApi";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LabeledInput } from "@/shared/components/input/LabeledInput";
+import { ActiveButton } from "@/shared/components";
 
 /**
  *@description 회원가입 폼

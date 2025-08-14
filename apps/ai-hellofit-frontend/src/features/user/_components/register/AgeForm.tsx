@@ -3,8 +3,8 @@
 import styles from "./UserInfoForm.module.scss";
 import React from "react";
 import { Text } from "@my/ui";
-import ActiveButton from "@/shared/button/ActiveButton";
-import { LabeledInput } from "@/shared/input/LabeledInput";
+import { LabeledInput } from "@/shared/components/input/LabeledInput";
+import { ActiveButton } from "@/shared/components";
 
 interface Props {
   onMove: () => void;
@@ -26,7 +26,7 @@ function AgeForm({ onMove }: Props) {
         <LabeledInput id={"age"} placeholder="연령대" label="연령대" />
       </section>
 
-      <ActiveButton name={"다음"} onClick={onMove} activeType="positive" />
+      <ActiveButton name={"다음"} onClick={onMove} activeType="positive" type={"button"} />
     </section>
   );
 }

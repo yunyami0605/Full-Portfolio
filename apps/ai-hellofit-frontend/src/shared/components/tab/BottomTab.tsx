@@ -13,7 +13,7 @@ import clsx from "clsx";
 /**
  *@description 하단 탭
  */
-function BottomTab() {
+export function BottomTab() {
   const pathname = usePathname();
 
   return (
@@ -47,5 +47,3 @@ function BottomTab() {
     </Row>
   );
 }
-
-export default BottomTab;

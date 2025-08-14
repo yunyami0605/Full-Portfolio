@@ -13,7 +13,7 @@ interface Props {
 /**
  *@description 페이지 뒤로가기 버튼
  */
-function PageBackButton({ onBack }: Props) {
+export function PageBackButton({ onBack }: Props) {
   const router = useRouter();
 
   const onGoback = useCallback(() => {
@@ -29,5 +29,3 @@ function PageBackButton({ onBack }: Props) {
     </Button>
   );
 }
-
-export default PageBackButton;

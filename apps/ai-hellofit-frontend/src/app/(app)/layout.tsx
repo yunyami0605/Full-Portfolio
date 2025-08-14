@@ -2,11 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import { BaseLayout } from "@my/ui";
-import Header from "@/shared/layout/Header";
-import BottomTab from "@/shared/tab/BottomTab";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { BottomTab, Header } from "@/shared/components";
 
 const headerMap = {
   "/signup": { title: "회원가입", back: true, tab: false },

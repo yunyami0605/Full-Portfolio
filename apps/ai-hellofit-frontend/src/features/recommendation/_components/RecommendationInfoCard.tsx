@@ -2,10 +2,9 @@
 
 import styles from "./RecommendationInfoCard.module.scss";
 import React, { useState } from "react";
-import Card from "@/shared/layout/Card";
 import { Column, Row, Text } from "@my/ui";
 import { FaAngleRight } from "react-icons/fa";
-import Tab from "@/shared/tab/Tab";
+import { Card, Tab } from "@/shared/components";
 
 type Props = { title: string };
 

@@ -15,7 +15,7 @@ type Props = {
 /**
  *@description 텍스트만 보여주는 버튼
  */
-function TextButton({ name, className, classNameText, ...props }: Props) {
+export function TextButton({ name, className, classNameText, ...props }: Props) {
   return (
     <Button {...props} className={clsx(styles["button"], className)}>
       <Center>
@@ -24,5 +24,3 @@ function TextButton({ name, className, classNameText, ...props }: Props) {
     </Button>
   );
 }
-
-export default TextButton;

@@ -3,8 +3,8 @@ import styles from "./RecordPage.module.scss";
 import React, { Fragment, useState } from "react";
 import { Button, Row, Text } from "@my/ui";
 import { FaAngleRight } from "react-icons/fa";
-import SmallRoundedButton from "@/shared/button/SmallRoundedButton";
 import RecordCard from "@/features/record/_components/RecordCard";
+import { SmallRoundedButton } from "@/shared/components";
 
 type Props = {};
 function RecordPage() {

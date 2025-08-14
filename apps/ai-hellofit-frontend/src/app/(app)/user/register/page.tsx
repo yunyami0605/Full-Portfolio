@@ -11,10 +11,10 @@ import SleepTimeForm from "@/features/user/_components/register/SleepTimeForm";
 import EatingHabitForm from "@/features/user/_components/register/EatingHabitForm";
 import DontEatForm from "@/features/user/_components/register/DontEatForm";
 import ExerciseTimeForm from "@/features/user/_components/register/ExerciseTimeForm";
-import Header from "@/shared/layout/Header";
 import { FaChevronLeft } from "react-icons/fa";
 import { Button } from "@my/ui";
 import { useRouter } from "next/navigation";
+import { Header } from "@/shared/components";
 
 const steps = [
   (onMove: () => void) => <Intro onMove={onMove} />,

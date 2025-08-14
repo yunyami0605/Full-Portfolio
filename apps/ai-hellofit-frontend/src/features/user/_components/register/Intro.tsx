@@ -3,7 +3,7 @@
 import styles from "./UserInfoForm.module.scss";
 import React from "react";
 import { Text } from "@my/ui";
-import ActiveButton from "@/shared/button/ActiveButton";
+import { ActiveButton } from "@/shared/components";
 
 interface Props {
   onMove: () => void;
@@ -27,7 +27,7 @@ function Intro({ onMove }: Props) {
         </section>
       </section>
 
-      <ActiveButton name={"시작"} onClick={onMove} activeType="positive" />
+      <ActiveButton name={"시작"} onClick={onMove} activeType="positive" type={"button"} />
     </section>
   );
 }

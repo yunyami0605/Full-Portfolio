@@ -7,7 +7,7 @@ type Props = {
   name: string;
   isClicked: boolean;
 };
-function SmallRoundedButton({ name, isClicked }: Props) {
+export function SmallRoundedButton({ name, isClicked }: Props) {
   return (
     <Button
       className={clsx(
@@ -19,5 +19,3 @@ function SmallRoundedButton({ name, isClicked }: Props) {
     </Button>
   );
 }
-
-export default SmallRoundedButton;

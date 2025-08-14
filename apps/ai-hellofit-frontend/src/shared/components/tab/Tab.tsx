@@ -12,12 +12,10 @@ type Props = {
 /**
  *@description tab 공통 컴포넌트
  */
-function Tab({ name, isChecked, onClick }: Props) {
+export function Tab({ name, isChecked, onClick }: Props) {
   return (
     <Button className={clsx(styles.tab, isChecked && styles.isChecked)} onClick={onClick}>
       <Text>{name}</Text>
     </Button>
   );
 }
-
-export default Tab;

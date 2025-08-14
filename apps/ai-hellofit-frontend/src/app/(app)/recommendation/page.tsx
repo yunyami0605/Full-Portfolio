@@ -1,10 +1,8 @@
 import styles from "./Recommendation.module.scss";
 import React from "react";
-import Card from "@/shared/layout/Card";
 import ChoiceRecommendationCardButton from "@/features/recommendation/_components/ChoiceRecommendationCardButton";
 import { Center, Text } from "@my/ui";
-import ActiveButton from "@/shared/button/ActiveButton";
-import PageWrapper from "@/shared/layout/PageWrapper";
+import { ActiveButton, Card, PageWrapper } from "@/shared/components";
 
 function RecommendationPage() {
   const arr = Array.from({ length: 4 }, (_, i) => ({
@@ -30,7 +28,7 @@ function RecommendationPage() {
             </React.Fragment>
           ))}
 
-          <ActiveButton name={"다음"} />
+          <ActiveButton name={"다음"} type={"button"} />
         </Card>
       </div>
     </PageWrapper>

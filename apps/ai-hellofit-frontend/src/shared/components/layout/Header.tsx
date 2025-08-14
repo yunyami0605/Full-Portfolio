@@ -15,7 +15,7 @@ type Props = {
 /**
  *@description 페이지 헤더
  */
-function Header({ title, left, right, className, back, noHeader }: Props) {
+export function Header({ title, left, right, className, back, noHeader }: Props) {
   if (noHeader) return <></>;
 
   return (
@@ -26,5 +26,3 @@ function Header({ title, left, right, className, back, noHeader }: Props) {
     </header>
   );
 }
-
-export default Header;

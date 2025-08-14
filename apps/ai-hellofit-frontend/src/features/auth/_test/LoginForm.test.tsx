@@ -1,7 +1,6 @@
 // LoginForm.test.tsx
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import LoginForm from "../form/LoginForm";
-import { authTokenACookies } from "@/libs/cookie";
+import LoginForm from "../_components/form/LoginForm";
 
 const { mutateAsyncMock, isPendingBox, setTokensMock, pushMock } = vi.hoisted(() => {
   return {

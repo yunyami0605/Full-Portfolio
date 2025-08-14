@@ -2,7 +2,7 @@ import { Column } from "@my/ui";
 import React from "react";
 import styles from "./SocialLoginPage.module.scss";
 import SocialLoginForm from "@/features/auth/_components/form/SocialLoginForm";
-import PageWrapper from "@/shared/layout/PageWrapper";
+import { PageWrapper } from "@/shared/components";
 
 /**
  *@description 소셜 login 페이지 (초기화면)

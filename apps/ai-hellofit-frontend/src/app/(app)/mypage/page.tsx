@@ -7,9 +7,8 @@ import ProfileImageRegisterButton from "@/features/user/_components/mypage/Profi
 import ProfileEditButton from "@/features/user/_components/mypage/ProfileEditButton";
 import { Column, Row } from "@my/ui";
 import UserInfo from "@/features/user/_components/mypage/UserInfo";
-import Tab from "@/shared/tab/Tab";
 import Post from "@/features/community/_components/Post";
-import PageWrapper from "@/shared/layout/PageWrapper";
+import { PageWrapper, Tab } from "@/shared/components";
 
 type Props = {};
 function Mypage() {

@@ -3,7 +3,7 @@ import React from "react";
 import clsx from "clsx";
 import styles from "./LoginPage.module.scss";
 import LoginForm from "@/features/auth/_components/form/LoginForm";
-import PageWrapper from "@/shared/layout/PageWrapper";
+import { PageWrapper } from "@/shared/components";
 
 /**
  *@description email login 페이지

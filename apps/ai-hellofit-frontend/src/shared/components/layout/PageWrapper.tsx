@@ -11,7 +11,7 @@ type Props = {
 /**
  *@description 기본 페이지 Wrapper
  */
-function PageWrapper({ children, className, withHeader = true }: Props) {
+export function PageWrapper({ children, className, withHeader = true }: Props) {
   return (
     <section
       className={clsx(styles.page_layout, withHeader && styles.page_layout_with_header, className)}
@@ -20,5 +20,3 @@ function PageWrapper({ children, className, withHeader = true }: Props) {
     </section>
   );
 }
-
-export default PageWrapper;

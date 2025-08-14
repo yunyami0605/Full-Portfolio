@@ -3,9 +3,8 @@
 import styles from "./MainPage.module.scss";
 import React from "react";
 import RecommendationInfoCard from "@/features/recommendation/_components/RecommendationInfoCard";
-import Header from "@/shared/layout/Header";
 import { FaRegBell } from "react-icons/fa";
-import IconButton from "@/shared/button/IconButton";
+import { Header, IconButton } from "@/shared/components";
 
 function MainPage() {
   return (

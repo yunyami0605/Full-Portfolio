@@ -3,11 +3,8 @@
 import clsx from "clsx";
 import styles from "./LoginForm.module.scss";
 import React, { useState } from "react";
-import { LabeledInput } from "@/shared/input/LabeledInput";
-import ActiveButton from "@/shared/button/ActiveButton";
 import KakaoRoundedButton from "../button/KakaoRoundedButton";
 import AppleRoundedButton from "../button/AppleRoundedButton";
-import TextButton from "@/shared/button/TextButton";
 import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
@@ -16,6 +13,8 @@ import { LoginFormValues, loginSchema } from "@/features/auth/_schemas/loginSche
 import { Column } from "@my/ui";
 import useLoginApi from "../../_hooks/useLoginAPi";
 import { authTokenACookies } from "@/libs/cookie";
+import { LabeledInput } from "@/shared/components/input/LabeledInput";
+import { ActiveButton, TextButton } from "@/shared/components";
 
 /**
  *@description 이메일 로그인 폼

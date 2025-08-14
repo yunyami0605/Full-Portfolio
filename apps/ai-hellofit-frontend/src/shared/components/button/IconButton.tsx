@@ -20,7 +20,7 @@ type Props = {
 /**
  *@description 아이콘 레이아웃 button 컴포넌트
  */
-function IconButton({
+export function IconButton({
   icon: Icon,
   onClick,
   size = 20,
@@ -40,5 +40,3 @@ function IconButton({
     </Button>
   );
 }
-
-export default IconButton;

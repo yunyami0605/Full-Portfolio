@@ -2,7 +2,7 @@
 
 import React from "react";
 import SignupForm from "@/features/auth/_components/form/SignupForm";
-import PageWrapper from "@/shared/layout/PageWrapper";
+import { PageWrapper } from "@/shared/components";
 
 function SignupPage() {
   return (
