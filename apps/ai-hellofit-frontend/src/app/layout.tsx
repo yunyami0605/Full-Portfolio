@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
 import { Metadata } from "next";
+import MswBoot from "@/mocks/MswBoot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,7 +22,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="antialiased bg-white text-black">{children}</body>
+      <body className="antialiased bg-white text-black">
+        <MswBoot />
+        {children}
+      </body>
     </html>
   );
 }
