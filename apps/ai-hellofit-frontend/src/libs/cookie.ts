@@ -2,7 +2,7 @@
  *@description 쿠키 관리 util 스크립트
  */
 
-import { globalConstants } from "@/shared/constants";
+import { globalConstants } from "@/shared/constants/globalConstant";
 
 const isProd = process.env.NODE_ENV === "production";
 
