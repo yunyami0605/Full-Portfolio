@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "format": "prettier --write .",
+    "feat:fit": "sh shell-script/create-feature.sh ai-hellofit-frontend",
     "test:fit": "yarn workspace ai-hellofit-frontend test",
     "dev:diary": "yarn workspace ai-diary dev",
     "dev:shop": "yarn workspace ai-img-shop dev",
