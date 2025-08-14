@@ -2,17 +2,21 @@
 
 import styles from "./PrivacyPolicyPage.module.scss";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ActiveButton, PageWrapper } from "@/shared/components";
+import { useAuthSignupStore } from "@/features/auth";
 
 /**
  *@description 개인정보처리방침 확인 페이지
  */
 function PrivacyPolicyPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { form, setForm } = useAuthSignupStore();
 
   const onAgree = () => {
-    router.push("/signup?agreePrivacy=true");
+    setForm({ isPrivacyAgree: true });
+    router.back();
   };
 
   return (
@@ -77,7 +81,12 @@ function PrivacyPolicyPage() {
 `}
         </p>
 
-        <ActiveButton name={"동의"} activeType="disabled" onClick={onAgree} type={"button"} />
+        <ActiveButton
+          name={"동의"}
+          activeType={form.isPrivacyAgree ? "positive" : "disabled"}
+          onClick={onAgree}
+          type={"button"}
+        />
       </section>
     </PageWrapper>
   );

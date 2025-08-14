@@ -18,6 +18,7 @@ export const authConstant = {
         min: "닉네임은 최소 2자 이상입니다.",
         max: "닉네임은 최대 12자 이상입니다.",
       },
+      notMatchPasswordConfirm: "비밀번호와 비밀번호 확인이 일치하지 않습니다.",
     },
     login: {
       // login error
