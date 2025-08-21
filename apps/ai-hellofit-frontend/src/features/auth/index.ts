@@ -18,7 +18,7 @@ export * from "./_components";
 export * from "./_hooks";
 
 // api
-export * from "./_apis";
+export * from "./_apis/authApi";
 
 // constant
 export * from "./_constants/auth.constant";

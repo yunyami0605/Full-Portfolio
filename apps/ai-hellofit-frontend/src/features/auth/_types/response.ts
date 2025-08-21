@@ -1,5 +1,5 @@
 export type AuthTokenResponse = {
-  accessToken: string;
+  access: string;
 };
 
 /**
@@ -11,3 +11,10 @@ export type LoginApiResponse = AuthTokenResponse;
  *@description signup api 응답
  */
 export type SignupApiResponse = AuthTokenResponse;
+
+/**
+ *@description nickname duplicate api 응답
+ */
+export type DuplicateNicknameApiResponse = {
+  isDuplicate: boolean;
+};

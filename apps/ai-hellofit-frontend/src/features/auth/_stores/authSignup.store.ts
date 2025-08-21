@@ -24,7 +24,10 @@ const initialState: { form: InitState } = {
   },
 };
 
-export const useAuthSignupStore = create<SignupFormState>((set, get) => ({
+/**
+ *@description 회원가입 폼 전역 state store
+ */
+export const useAuthSignupStore = create<SignupFormState>((set) => ({
   ...initialState,
 
   setForm: (payload) =>

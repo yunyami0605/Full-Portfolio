@@ -21,6 +21,7 @@ export const authConstant = {
     },
     signup: {
       // signup error
+      duplicateNickname: "중복된 닉네임입니다.",
     },
   },
 } as const;
