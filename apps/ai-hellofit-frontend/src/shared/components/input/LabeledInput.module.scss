@@ -3,6 +3,7 @@
 
 .input_wrapper {
   width: 100%;
+  margin-bottom: 6px;
 
   .label {
     padding-left: 8px;
@@ -40,8 +41,16 @@
   }
 }
 
-.error {
+.label {
   font-size: 1.2rem;
   color: $color-orange-10;
   padding-left: 14px;
+}
+
+.error {
+  color: $color-orange-10;
+}
+
+.success {
+  color: $color-positive--10;
 }

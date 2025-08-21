@@ -12,6 +12,7 @@ type LabeledInputProps = InputHTMLAttributes<HTMLInputElement> & {
   id: string;
   classNameWrapper?: string;
   className?: string;
+  success?: string;
 };
 
 /**
@@ -24,6 +25,7 @@ export const LabeledInput = ({
   label,
   classNameWrapper,
   className,
+  success,
   ...inputProps
 }: LabeledInputProps) => {
   return (
@@ -40,7 +42,8 @@ export const LabeledInput = ({
         className={clsx(styles.input, error && styles.error, className)}
       />
 
-      {error && <p className={clsx(styles.error)}>{error}</p>}
+      {error && <p className={clsx(styles.label, styles.error)}>{error}</p>}
+      {!error && success && <p className={clsx(styles.label, styles.success)}>{success}</p>}
     </div>
   );
 };
