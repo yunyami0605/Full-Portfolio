@@ -5,7 +5,7 @@ import { InputHTMLAttributes } from "react";
 import clsx from "clsx";
 import styles from "./LabeledInput.module.scss";
 
-type LabeledInputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type LabeledInputProps = InputHTMLAttributes<HTMLInputElement> & {
   required?: boolean;
   error?: string;
   label?: string;
@@ -39,7 +39,12 @@ export const LabeledInput = ({
       <Input
         {...inputProps}
         id={id}
-        className={clsx(styles.input, error && styles.error, className)}
+        className={clsx(
+          styles.input,
+          error && styles.error,
+          inputProps.readOnly && styles.read_only,
+          className,
+        )}
       />
 
       {error && <p className={clsx(styles.label, styles.error)}>{error}</p>}
