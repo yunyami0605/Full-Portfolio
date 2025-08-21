@@ -41,8 +41,8 @@ function LoginForm() {
 
     try {
       const response = await loginMutate(data);
-      const { accessToken } = response;
-      setToken(accessToken);
+      const { access } = response;
+      setToken(access);
 
       router.push("/main");
     } catch (error: any) {
