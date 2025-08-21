@@ -1,0 +1,46 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+/* 드롭다운 컨테이너 */
+.dropdown {
+  position: relative;
+}
+
+/* 드롭다운 내용 숨김 */
+.dropdown_content {
+  display: none;
+  position: absolute;
+
+  width: 100%;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  z-index: 1;
+}
+
+/* 드롭다운 안의 링크 스타일 */
+.dropdown_content li {
+  padding: 16px 22px;
+  text-decoration: none;
+  font-size: 1.2rem;
+
+  &.selected_item {
+    //
+    color: $color-positive--10;
+  }
+
+  &:hover {
+    font-weight: bold;
+  }
+
+  &:active {
+    background-color: $color-grayscale-20;
+  }
+}
+
+/* hover 시 dropdown 표시 */
+.dropdown_content_show {
+  display: block;
+}
