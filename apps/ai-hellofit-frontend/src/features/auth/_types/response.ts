@@ -1,15 +1,13 @@
+export type AuthTokenResponse = {
+  accessToken: string;
+};
+
 /**
  *@description login api 응답
  */
-export type LoginApiResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
+export type LoginApiResponse = AuthTokenResponse;
 
 /**
  *@description signup api 응답
  */
-export type SignupApiResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
+export type SignupApiResponse = AuthTokenResponse;

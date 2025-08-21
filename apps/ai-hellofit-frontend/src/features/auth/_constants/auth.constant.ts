@@ -2,10 +2,6 @@
  *@description auth constnat
  */
 export const authConstant = {
-  cookie: {
-    accessToken: "heat",
-    refreshToken: "hert",
-  },
   error: {
     validation: {
       // schema 검증 에러

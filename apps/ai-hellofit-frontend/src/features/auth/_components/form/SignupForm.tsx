@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { ActiveButton } from "@/shared/components";
 import { signupSchema, useAuthSignupStore, useSignupApi } from "../..";
-import { authTokenACookies } from "@/libs/cookie";
 import _ from "lodash";
 
 /**
@@ -26,7 +25,7 @@ function SignupForm() {
     register,
     trigger,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     watch,
   } = useForm({
     resolver: zodResolver(signupSchema),
@@ -46,18 +45,17 @@ function SignupForm() {
   }, []);
 
   const onSubmit = async () => {
+    console.log("go");
     if (signupApi.isPending) return;
     setServerError(null);
 
     try {
-      const { accessToken, refreshToken } = await signupApi.mutateAsync({
+      const { accessToken, id } = await signupApi.mutateAsync({
         email: "",
         password: "",
         nickname: "",
         isPrivacyAgree: false,
       });
-
-      authTokenACookies.setTokens(accessToken, refreshToken);
 
       onSignupSuccess();
     } catch (error: any) {
@@ -80,6 +78,7 @@ function SignupForm() {
     register("password"),
   ];
 
+  // 기본적으로 작성 완료 되었는지
   const submitButtonActive = Object.values(form).every((item) => {
     return item && item !== "";
   });

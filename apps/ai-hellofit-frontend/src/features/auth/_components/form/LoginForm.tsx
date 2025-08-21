@@ -10,10 +10,10 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Column } from "@my/ui";
-import { authTokenACookies } from "@/libs/cookie";
 import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { ActiveButton, TextButton } from "@/shared/components";
 import { LoginFormSchema, loginSchema, useLoginApi } from "../..";
+import { useAccessTokenStore } from "../../_stores/accessToken.store";
 
 /**
  *@description 이메일 로그인 폼
@@ -21,7 +21,9 @@ import { LoginFormSchema, loginSchema, useLoginApi } from "../..";
 function LoginForm() {
   const router = useRouter();
   const { mutateAsync: loginMutate, isPending } = useLoginApi();
-  const [serverError, setServerError] = useState<string | null>(null);
+
+  const [serverError, setServerError] = useState();
+  const { setToken } = useAccessTokenStore();
 
   const {
     register,
@@ -35,17 +37,15 @@ function LoginForm() {
   // 로그인 이벤트
   const onSubmit = async (data: LoginFormSchema) => {
     if (isPending) return;
-    setServerError(null);
+    setServerError(undefined);
 
     try {
       const response = await loginMutate(data);
-      const { accessToken, refreshToken } = response;
-
-      authTokenACookies.setTokens(accessToken, refreshToken);
+      const { accessToken } = response;
+      setToken(accessToken);
 
       router.push("/main");
     } catch (error: any) {
-      console.log(error);
       const message =
         error?.response?.data?.message ||
         error?.message ||
@@ -65,7 +65,7 @@ function LoginForm() {
             id="email"
             placeholder="이메일"
             {...register("email")}
-            error={serverError ?? errors.email?.message}
+            error={errors.email?.message}
           />
 
           <LabeledInput
