@@ -39,6 +39,13 @@
   &.error {
     border: 3px solid $color-orange-10;
   }
+
+  /* Chrome, Safari, Edge, Opera */
+  &[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 .label {
@@ -55,6 +62,6 @@
   color: $color-positive--10;
 }
 
-.read_only {
+.input_button {
   cursor: pointer;
 }

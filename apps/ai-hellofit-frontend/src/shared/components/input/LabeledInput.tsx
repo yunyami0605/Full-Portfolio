@@ -42,7 +42,7 @@ export const LabeledInput = ({
         className={clsx(
           styles.input,
           error && styles.error,
-          inputProps.readOnly && styles.read_only,
+          inputProps.type === "button" && styles.input_button,
           className,
         )}
       />
