@@ -45,7 +45,9 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "immer": "^10.1.1",
     "lodash": "^4.17.21",
+    "use-immer": "^0.11.0",
     "zod": "^4.0.8",
     "zustand": "^5.0.7"
   }
