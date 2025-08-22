@@ -16,7 +16,7 @@ const initialState = {
 /**
  *@description 유저 at 관리 전역 store`
  */
-export const useAccessTokenStore = create<AccessTokenState>((set, get) => ({
+export const useAccessTokenStore = create<AccessTokenState>((set) => ({
   ...initialState,
 
   setToken: (payload) =>
@@ -24,5 +24,5 @@ export const useAccessTokenStore = create<AccessTokenState>((set, get) => ({
       accessToken: payload,
     })),
 
-  reset: () => set({ ...initialState }),
+  reset: () => set((prev) => ({ ...prev, ...initialState })),
 }));
