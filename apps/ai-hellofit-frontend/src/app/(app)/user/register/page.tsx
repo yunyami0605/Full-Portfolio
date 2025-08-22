@@ -8,13 +8,14 @@ import GenderForm from "@/features/user/_components/register/GenderForm";
 import HeightForm from "@/features/user/_components/register/HeightForm";
 import WeightForm from "@/features/user/_components/register/WeightForm";
 import SleepTimeForm from "@/features/user/_components/register/SleepTimeForm";
-import EatingHabitForm from "@/features/user/_components/register/EatingHabitForm";
 import DontEatForm from "@/features/user/_components/register/DontEatForm";
 import ExerciseTimeForm from "@/features/user/_components/register/ExerciseTimeForm";
 import { FaChevronLeft } from "react-icons/fa";
 import { Button } from "@my/ui";
 import { useRouter } from "next/navigation";
 import { Header } from "@/shared/components";
+import { PostUserProfileBody, usePostUserProfileApi, useUserProfileStore } from "@/features/user";
+import { userProfileSchema } from "@/features/user/_schemas/userProfile.schema";
 
 const steps = [
   (onMove: () => void) => <Intro onMove={onMove} />,
@@ -23,7 +24,7 @@ const steps = [
   (onMove: () => void) => <HeightForm onMove={onMove} />,
   (onMove: () => void) => <WeightForm onMove={onMove} />,
   (onMove: () => void) => <SleepTimeForm onMove={onMove} />,
-  (onMove: () => void) => <EatingHabitForm onMove={onMove} />,
+  // (onMove: () => void) => <EatingHabitForm onMove={onMove} />, // TODO 추후 개편
   (onMove: () => void) => <DontEatForm onMove={onMove} />,
   (onMove: () => void) => <ExerciseTimeForm onMove={onMove} />,
 ];
@@ -33,11 +34,21 @@ const steps = [
  */
 function UserInfoRegister() {
   const router = useRouter();
+  const postUserProfileApi = usePostUserProfileApi();
+  const { form } = useUserProfileStore();
   const [step, setStep] = useState(0);
 
   const onMove = () => {
-    if (step === 8) {
-      router.push("main");
+    if (step === steps.length - 1) {
+      const checkForm = userProfileSchema.safeParse(form);
+
+      if (checkForm.success) {
+        postUserProfileApi.mutateAsync(form as PostUserProfileBody);
+        router.push("/main");
+      } else {
+        console.error(checkForm.error.format());
+      }
+
       return;
     }
     setStep((prev) => prev + 1);

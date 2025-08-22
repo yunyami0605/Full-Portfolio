@@ -5,12 +5,22 @@ import React from "react";
 import { Text } from "@my/ui";
 import { ToggleSelector } from "@/shared/components/input/ToggleSelector";
 import { ActiveButton } from "@/shared/components";
+import { GenderType, useUserProfileStore } from "../..";
 
 interface Props {
   onMove: () => void;
 }
 
 function GenderForm({ onMove }: Props) {
+  const {
+    setForm,
+    form: { gender },
+  } = useUserProfileStore();
+
+  const onSelect = (_gender: GenderType) => {
+    setForm({ gender: _gender });
+  };
+
   return (
     <section className={styles.page_layout}>
       <section className={styles.top_wrapper}>
@@ -20,18 +30,23 @@ function GenderForm({ onMove }: Props) {
           <Text className={styles.description}>{"추천 식단에 영향을 줄 수 있어요."}</Text>
         </section>
 
-        <ToggleSelector
+        <ToggleSelector<GenderType>
+          firstValue="MALE"
+          secondValue="FEMALE"
           firstButtonName="남"
           secondButtonName="여"
           label="성별"
-          isFirst={false}
-          setFirst={function (isFirst: boolean): void {
-            throw new Error("Function not implemented.");
-          }}
+          value={gender}
+          setValue={(value) => onSelect(value)}
         />
       </section>
 
-      <ActiveButton name={"다음"} onClick={onMove} activeType="positive" type={"button"} />
+      <ActiveButton
+        name={"다음"}
+        onClick={onMove}
+        activeType={gender ? "positive" : "disabled"}
+        type={"button"}
+      />
     </section>
   );
 }

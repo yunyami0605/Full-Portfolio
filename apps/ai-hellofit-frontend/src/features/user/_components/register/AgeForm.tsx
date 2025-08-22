@@ -1,10 +1,12 @@
 "use client";
 
 import styles from "./UserInfoForm.module.scss";
-import React from "react";
+import React, { useState } from "react";
 import { Text } from "@my/ui";
-import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { ActiveButton } from "@/shared/components";
+import { Dropdown, DropdownItem } from "@/shared/components/dropbox/Dropdown";
+import { useUserProfileStore } from "../..";
+import { AgeGroup, PostUserProfileBody } from "../../_types";
 
 interface Props {
   onMove: () => void;
@@ -14,6 +16,26 @@ interface Props {
  *@description 나이 폼
  */
 function AgeForm({ onMove }: Props) {
+  const [age, setAge] = useState<DropdownItem<AgeGroup>>();
+  const { setForm } = useUserProfileStore();
+
+  const list: { text: string; value: AgeGroup }[] = [
+    { text: "10대", value: "AGE_10S" },
+    { text: "20대", value: "AGE_20S" },
+    { text: "30대", value: "AGE_30S" },
+    { text: "40대", value: "AGE_40S" },
+    { text: "50대", value: "AGE_50S" },
+    { text: "60대", value: "AGE_60S" },
+    { text: "70대", value: "AGE_70S" },
+    { text: "80대", value: "AGE_80S" },
+    { text: "90대", value: "AGE_90S" },
+  ];
+
+  const onSelect = (item: DropdownItem<AgeGroup>) => {
+    setAge(item);
+    setForm({ ageGroup: item.value });
+  };
+
   return (
     <section className={styles.page_layout}>
       <section className={styles.top_wrapper}>
@@ -23,10 +45,21 @@ function AgeForm({ onMove }: Props) {
           <Text className={styles.description}>{"당신에게 꼭 맞는 루틴을 추천해드릴게요."}</Text>
         </section>
 
-        <LabeledInput id={"age"} placeholder="연령대" label="연령대" />
+        <Dropdown
+          id={"age"}
+          placeholder="연령대"
+          list={list}
+          onSelect={onSelect}
+          selectedItem={age}
+        />
       </section>
 
-      <ActiveButton name={"다음"} onClick={onMove} activeType="positive" type={"button"} />
+      <ActiveButton
+        name={"다음"}
+        onClick={onMove}
+        activeType={age ? "positive" : "disabled"}
+        type={"button"}
+      />
     </section>
   );
 }

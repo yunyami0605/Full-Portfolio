@@ -1,10 +1,11 @@
 "use client";
 
 import styles from "./UserInfoForm.module.scss";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Text } from "@my/ui";
 import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { ActiveButton } from "@/shared/components";
+import { useUserProfileStore } from "../..";
 
 interface Props {
   onMove: () => void;
@@ -12,8 +13,32 @@ interface Props {
 
 /**
  *@description 못드시는 음식
+ *TODO 공통 검색 입력 폼 추가 => UI 수정할 계획
  */
 function DontEatForm({ onMove }: Props) {
+  const { setForm } = useUserProfileStore();
+
+  const [dontEat, setDontEat] = useState<string>();
+  const onChangeDonEat = (value: string) => {
+    setDontEat(value);
+  };
+
+  const onSkip = () => {
+    setDontEat(undefined);
+    onMove();
+  };
+
+  const onClickNext = () => {
+    if (!dontEat) return;
+
+    // 일단 임시로 콤마로 구분자를 정하고 추후 공통 검색 입력 폼 추가시, 변경
+    const tmp = dontEat.split(",");
+
+    setForm({ forbiddenFoods: tmp.map((item) => item.trim()) });
+
+    onMove();
+  };
+
   return (
     <section className={styles.page_layout}>
       <section className={styles.top_wrapper}>
@@ -23,13 +48,24 @@ function DontEatForm({ onMove }: Props) {
           <Text className={styles.description}>{"예: 계란, 우유, 해산물 등"}</Text>
         </section>
 
-        <LabeledInput id={"eat"} placeholder="예: 계란, 우유, 해산물 등" label="음식" />
+        <LabeledInput
+          id={"eat"}
+          placeholder="예: 계란, 우유, 해산물 등"
+          label="음식"
+          value={dontEat ?? ""}
+          onChange={(e) => onChangeDonEat(e.target.value)}
+        />
       </section>
 
       <section className={styles.bottom_wrapper}>
-        <ActiveButton name={"건너뛰기"} onClick={onMove} activeType="skip" type={"button"} />
+        <ActiveButton name={"건너뛰기"} onClick={onSkip} activeType="skip" type={"button"} />
 
-        <ActiveButton name={"다음"} onClick={onMove} activeType="positive" type={"button"} />
+        <ActiveButton
+          name={"다음"}
+          onClick={onClickNext}
+          activeType={dontEat ? "positive" : "disabled"}
+          type={"button"}
+        />
       </section>
     </section>
   );

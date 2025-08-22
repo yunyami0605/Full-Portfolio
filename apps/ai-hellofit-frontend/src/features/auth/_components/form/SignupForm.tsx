@@ -81,7 +81,7 @@ function SignupForm() {
         ...form,
       });
 
-      if (signupApi.isSuccess) {
+      if (access) {
         setToken(access);
 
         router.push("/user/register");

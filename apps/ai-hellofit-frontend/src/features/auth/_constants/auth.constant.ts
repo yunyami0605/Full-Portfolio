@@ -1,5 +1,5 @@
 /**
- *@description auth constnat
+ *@description auth constant
  */
 export const authConstant = {
   error: {

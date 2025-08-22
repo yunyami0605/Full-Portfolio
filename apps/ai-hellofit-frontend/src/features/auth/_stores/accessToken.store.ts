@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 type InitState = {
   accessToken: string | null;
@@ -16,13 +17,15 @@ const initialState = {
 /**
  *@description 유저 at 관리 전역 store`
  */
-export const useAccessTokenStore = create<AccessTokenState>((set) => ({
-  ...initialState,
+export const useAccessTokenStore = create<AccessTokenState>()(
+  devtools((set) => ({
+    ...initialState,
 
-  setToken: (payload) =>
-    set(() => ({
-      accessToken: payload,
-    })),
+    setToken: (payload) =>
+      set(() => ({
+        accessToken: payload,
+      })),
 
-  reset: () => set((prev) => ({ ...prev, ...initialState })),
-}));
+    reset: () => set((prev) => ({ ...prev, ...initialState })),
+  })),
+);

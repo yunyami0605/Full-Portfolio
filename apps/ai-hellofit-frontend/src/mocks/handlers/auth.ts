@@ -10,7 +10,7 @@ const SignupBody = z.object({
   nickname: z.string().min(1),
 });
 
-const base = "http://localhost:8084/api";
+const base = "http://localhost:8085/api";
 
 export const authHandlers = [
   // 로그인 API

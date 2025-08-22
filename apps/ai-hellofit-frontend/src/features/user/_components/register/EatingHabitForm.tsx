@@ -11,6 +11,7 @@ interface Props {
 
 /**
  *@description 식습관 폼
+ *TODO 추가 입력사항 -> 기획 개편으로 추가할 예정
  */
 function EatingHabitForm({ onMove }: Props) {
   return (

@@ -29,6 +29,7 @@
     font-size: 1.4rem;
     color: $color-grayscale-80;
     line-height: 32px;
+    white-space: pre-line;
   }
 }
 
@@ -42,4 +43,9 @@
 .button_select_list {
   @include flex-column;
   gap: 12px;
+}
+
+.sleep_time_input_wrapper {
+  @include flex-row;
+  gap: 24px;
 }
