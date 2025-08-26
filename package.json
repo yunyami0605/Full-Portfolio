@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
     "use-immer": "^0.11.0",
