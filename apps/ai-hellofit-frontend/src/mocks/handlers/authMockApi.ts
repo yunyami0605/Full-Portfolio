@@ -10,7 +10,7 @@ const SignupBody = z.object({
   nickname: z.string().min(1),
 });
 
-const base = "http://localhost:8085/api";
+const base = "http://localhost:8084/api";
 
 export const authHandlers = [
   // 로그인 API
@@ -94,5 +94,18 @@ export const authHandlers = [
       },
       { status: 201 },
     );
+  }),
+
+  http.post(`${base}/auth/refresh`, async ({ request }) => {
+    const hasRefreshToken = true;
+
+    if (hasRefreshToken) {
+      return HttpResponse.json({ accessToken: "mock-new-at-789" }, { status: 200 });
+    } else {
+      return HttpResponse.json(
+        { code: "UNAUTHORIZED", message: "Refresh token invalid" },
+        { status: 401 },
+      );
+    }
   }),
 ];

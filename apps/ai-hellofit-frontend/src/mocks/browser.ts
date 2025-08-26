@@ -1,7 +1,8 @@
 import { setupWorker } from "msw/browser";
-import { authHandlers } from "./handlers/auth";
+import { authHandlers } from "./handlers/authMockApi";
+import { postHandlers } from "../features/post/_mocks/postMockApi";
 
-export const worker = setupWorker(...authHandlers);
+export const worker = setupWorker(...authHandlers, ...postHandlers);
 
 worker.events.on("response:mocked", async ({ request, response, requestId }) => {
   let body: unknown = null;
