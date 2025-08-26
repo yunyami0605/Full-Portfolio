@@ -2,10 +2,11 @@
 @use "@/styles/variables" as *;
 
 .page_layout {
+  @include flex-column;
+
   width: 100%;
   padding: 40px 0;
-  min-height: 100vh;
-  @include flex-column;
+  flex: 1;
 }
 
 .page_layout_with_header {

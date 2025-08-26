@@ -9,6 +9,7 @@ import { BsChatLeftHeartFill } from "react-icons/bs";
 import { IoPerson } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import Link from "next/link";
 
 /**
  *@description 하단 탭
@@ -19,30 +20,35 @@ export function BottomTab() {
   return (
     <Row className={styles.tab_wrapper}>
       <Button className={styles.tab_button}>
-        <MdHomeFilled size={16} className={clsx(pathname == "/main" && styles.active)} />
+        <Link href="/main">
+          <MdHomeFilled size={16} className={clsx(pathname == "/main" && styles.active)} />
 
-        <Text className={clsx(pathname == "/main" && styles.active)}>메인</Text>
+          <Text className={clsx(pathname == "/main" && styles.active)}>메인</Text>
+        </Link>
       </Button>
 
       <Button className={styles.tab_button}>
-        <FaCalendar size={16} className={clsx(pathname == "/record" && styles.active)} />
+        <Link href="/record">
+          <FaCalendar size={16} className={clsx(pathname == "/record" && styles.active)} />
 
-        <Text className={clsx(pathname == "/record" && styles.active)}>기록</Text>
+          <Text className={clsx(pathname == "/record" && styles.active)}>기록</Text>
+        </Link>
       </Button>
 
       <Button className={styles.tab_button}>
-        <BsChatLeftHeartFill
-          size={16}
-          className={clsx(pathname == "/community" && styles.active)}
-        />
+        <Link href="/post">
+          <BsChatLeftHeartFill size={16} className={clsx(pathname == "/post" && styles.active)} />
 
-        <Text className={clsx(pathname == "/community" && styles.active)}>커뮤니티</Text>
+          <Text className={clsx(pathname == "/post" && styles.active)}>커뮤니티</Text>
+        </Link>
       </Button>
 
       <Button className={styles.tab_button}>
-        <IoPerson size={16} className={clsx(pathname == "/mypage" && styles.active)} />
+        <Link href="/mypage">
+          <IoPerson size={16} className={clsx(pathname == "/mypage" && styles.active)} />
 
-        <Text className={clsx(pathname == "/mypage" && styles.active)}>계정</Text>
+          <Text className={clsx(pathname == "/mypage" && styles.active)}>계정</Text>
+        </Link>
       </Button>
     </Row>
   );

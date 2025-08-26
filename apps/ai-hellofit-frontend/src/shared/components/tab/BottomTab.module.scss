@@ -12,11 +12,20 @@
   height: 52px;
   padding: 32px 10px;
 
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+
   .tab_button {
     @include flex-column;
     flex: 1;
-    gap: 10px;
     color: $color-grayscale-50;
+
+    a {
+      @include flex-column;
+      flex: 1;
+      gap: 8px;
+    }
   }
 
   .active {
