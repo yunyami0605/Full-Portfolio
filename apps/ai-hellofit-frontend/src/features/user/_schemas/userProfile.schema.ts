@@ -17,10 +17,10 @@ const _baseSchema = z.object({
     "AGE_90S",
   ]),
   gender: z.enum(["MALE", "FEMALE"]),
-  height: z.number().min(1, "키는 1cm 이상이여야합니다.").max(300, "키는 300cm 이하 여야합니다."),
+  height: z.number().min(1, "키는 1cm 이상이여야합니다.").max(300, "키는 300cm 이하여야합니다."),
   weight: z
     .number()
-    .min(1, "몸무게는 1cm 이상이여합니다.")
+    .min(1, "몸무게는 1kg 이상이여합니다.")
     .max(1000, "몸무게는 1000kg 이하여야합니다."),
   sleepMinutes: z
     .number()
