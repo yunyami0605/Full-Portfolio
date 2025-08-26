@@ -2,13 +2,19 @@ import styles from "./Post.module.scss";
 import React from "react";
 import { Button, Column, Row, Text } from "@my/ui";
 import { FaRegHeart } from "react-icons/fa";
+import { IoChatbubbleOutline, IoBookOutline } from "react-icons/io5";
+import { PostItem } from "../_types/data";
+
+type Props = PostItem & {
+  onClick: (id: string) => void;
+};
 
 /**
  *@description 게시글
  */
-function Post() {
+function Post(props: Props) {
   return (
-    <Button className={styles.post_container_button}>
+    <Button className={styles.post_container_button} onClick={() => props.onClick(props.id)}>
       <Row justify="between" className={styles.post_wrapper}>
         <Column justify="between" className={styles.post_inner_wrapper}>
           <Column justify="between" className={styles.post_author_info_wrapper}>
@@ -17,7 +23,7 @@ function Post() {
               <Text className={styles.author_name_txt}>hit_tester</Text>
             </Row>
 
-            <Text className={styles.post_title}>멋있는 이야기 대한 내용</Text>
+            <Text className={styles.post_title}>{props.title}</Text>
           </Column>
 
           <Row className={styles.subinfo_wrapper}>
@@ -28,21 +34,19 @@ function Post() {
             </Row>
 
             <Row className={styles.count_wrapper}>
-              <FaRegHeart size={10} />
+              <IoChatbubbleOutline size={10} />
 
               <Text>120</Text>
             </Row>
 
             <Row className={styles.count_wrapper}>
-              <FaRegHeart size={10} />
+              <IoBookOutline size={10} />
 
               <Text>120</Text>
             </Row>
 
             <Row className={styles.count_wrapper}>
-              <FaRegHeart size={10} />
-
-              <Text>120</Text>
+              <Text>2시간 전</Text>
             </Row>
           </Row>
         </Column>
