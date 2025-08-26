@@ -6,7 +6,7 @@ type InitState = {
 };
 
 type AccessTokenState = {
-  setToken: (payload: string) => void;
+  setToken: (payload: string | null) => void;
   reset: () => void;
 } & InitState;
 

@@ -3,6 +3,7 @@ import {
   DuplicateNicknameApiResponse,
   LoginApiBody,
   LoginApiResponse,
+  PostRefresshTokenApiApiResponse,
   SignupApiBody,
   SignupApiResponse,
 } from "..";
@@ -47,3 +48,23 @@ export async function signupApi(body: SignupApiBody): Promise<SignupApiResponse>
     throw new Error(message);
   }
 }
+
+/**
+ *@description refresh token api (rt 토큰 재발급 요청 api)
+ */
+export const postRefreshTokenApi = () => {
+  return apiCall<PostRefresshTokenApiApiResponse>({
+    url: "/auth/refresh",
+    method: "POST",
+  });
+};
+
+/**
+ *@description xsrf token api (xsrf token 재발급 요청 api)
+ */
+export const postXsrfTokenApi = () => {
+  return apiCall<boolean>({
+    url: "/auth/xc",
+    method: "POST",
+  });
+};

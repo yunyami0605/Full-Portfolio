@@ -1,6 +1,8 @@
 // LoginForm.test.tsx
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import LoginForm from "../_components/form/LoginForm";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderWithQueryClient } from "@/shared/test/TestSetupWithQueryClient";
 
 const { mutateAsyncMock, isPendingBox, setTokensMock, pushMock } = vi.hoisted(() => {
   return {
@@ -11,9 +13,8 @@ const { mutateAsyncMock, isPendingBox, setTokensMock, pushMock } = vi.hoisted(()
   };
 });
 
-// 모듈 목킹들 (임포트 전에 평가됨)
-vi.mock("../../_hooks/useLoginAPi", () => ({
-  default: () => ({
+vi.mock("@/features/auth/_hooks/", () => ({
+  useLoginApi: () => ({
     mutateAsync: mutateAsyncMock,
     isPending: isPendingBox.value,
   }),
@@ -27,8 +28,10 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-vi.mock("@/libs/cookie", () => ({
-  authTokenACookies: { setTokens: setTokensMock },
+vi.mock("@/features/auth/_stores/accessToken.store", () => ({
+  useAccessTokenStore: () => ({
+    setToken: setTokensMock,
+  }),
 }));
 
 beforeEach(() => {
@@ -38,9 +41,9 @@ beforeEach(() => {
 
 describe("LoginForm", () => {
   it("성공: 토큰 저장 + /main 이동", async () => {
-    mutateAsyncMock.mockResolvedValue({ accessToken: "a", refreshToken: "r" });
+    mutateAsyncMock.mockResolvedValue({ access: "a" });
 
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
 
     fireEvent.change(screen.getByPlaceholderText("이메일"), { target: { value: "test@test.com" } });
     fireEvent.change(screen.getByPlaceholderText("비밀번호"), { target: { value: "passwd123" } });
@@ -51,13 +54,13 @@ describe("LoginForm", () => {
         email: "test@test.com",
         password: "passwd123",
       });
-      expect(setTokensMock).toHaveBeenCalledWith("a", "r");
+      expect(setTokensMock).toHaveBeenCalledWith("a");
       expect(pushMock).toHaveBeenCalledWith("/main");
     });
   });
 
   it("실패: 비밀번호 8자 미만시 에러 문구", async () => {
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
     fireEvent.change(screen.getByPlaceholderText("이메일"), { target: { value: "test@test.com" } });
     fireEvent.change(screen.getByPlaceholderText("비밀번호"), { target: { value: "wrong" } });
     fireEvent.click(screen.getByRole("button", { name: "로그인" }));
@@ -68,7 +71,8 @@ describe("LoginForm", () => {
   });
 
   it("실패: 이메일 유효한 형식 미충족 에러 문구", async () => {
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
+
     fireEvent.change(screen.getByPlaceholderText("이메일"), { target: { value: "test@" } });
     fireEvent.change(screen.getByPlaceholderText("비밀번호"), { target: { value: "wrong1234" } });
     fireEvent.click(screen.getByRole("button", { name: "로그인" }));
@@ -81,13 +85,14 @@ describe("LoginForm", () => {
   it("실패: 폼 서버 에러 문구", async () => {
     mutateAsyncMock.mockRejectedValue({ response: { data: { message: "로그인 실패" } } });
 
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
+
     fireEvent.change(screen.getByPlaceholderText("이메일"), { target: { value: "test@test.com" } });
     fireEvent.change(screen.getByPlaceholderText("비밀번호"), { target: { value: "test1234" } });
     fireEvent.click(screen.getByRole("button", { name: "로그인" }));
 
     const els = await screen.findAllByText("로그인 실패");
-    expect(els).toHaveLength(2);
+    expect(els).toHaveLength(1);
     expect(setTokensMock).not.toHaveBeenCalled();
     expect(pushMock).not.toHaveBeenCalled();
   });
@@ -95,7 +100,8 @@ describe("LoginForm", () => {
   it("로딩 중이면 제출 무시", async () => {
     isPendingBox.value = true;
 
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
+
     fireEvent.change(screen.getByPlaceholderText("이메일"), { target: { value: "test@test.com" } });
     fireEvent.change(screen.getByPlaceholderText("비밀번호"), { target: { value: "passwd123" } });
     fireEvent.click(screen.getByRole("button", { name: "로그인" }));
@@ -108,7 +114,8 @@ describe("LoginForm", () => {
   });
 
   it('보조 액션: "회원가입" 클릭 시 /signup 이동', () => {
-    render(<LoginForm />);
+    renderWithQueryClient(<LoginForm />);
+
     fireEvent.click(screen.getByText("회원가입"));
     expect(pushMock).toHaveBeenCalledWith("/signup");
   });
