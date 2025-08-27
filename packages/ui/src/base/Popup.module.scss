@@ -1,0 +1,74 @@
+@use "../variables" as *;
+@use "../mixin" as *;
+
+/* 백드롭 */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  @include flex-center;
+}
+
+/* 팝업 내용 */
+.popup {
+  width: 74vw;
+  background: $color-grayscale-0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.25s ease-out;
+
+  .title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .message {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+
+  /* 버튼 그룹 */
+  .button_group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    button {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .cancel {
+      background: $color-grayscale-10;
+
+      &:hover {
+        background: $color-grayscale-20;
+      }
+    }
+
+    .confirm {
+      background: $color-positive-0;
+      color: $color-grayscale-0;
+
+      &:hover {
+        background: $color-positive-10;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}

@@ -6,6 +6,8 @@ export * from "./base/Textarea";
 export * from "./base/Tag";
 export * from "./base/Select";
 export * from "./base/Checkbox";
+export * from "./base/ActionSheet";
+export * from "./base/Popup";
 
 // layout
 export * from "./base/layout/Box";
