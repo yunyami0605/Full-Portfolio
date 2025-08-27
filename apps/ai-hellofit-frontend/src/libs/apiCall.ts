@@ -1,8 +1,9 @@
 import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
+const isMockApi = true;
 export const apiCall = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // ex) https://api.example.com
+  baseURL: isMockApi ? "" : process.env.NEXT_PUBLIC_API_BASE_URL,
   withCredentials: true, // 쿠키를 쓰면 true
 });
 

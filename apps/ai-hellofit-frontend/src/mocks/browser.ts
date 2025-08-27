@@ -1,5 +1,5 @@
 import { setupWorker } from "msw/browser";
-import { authHandlers } from "./handlers/authMockApi";
+import { authHandlers } from "../features/auth/_mocks/authMockApi";
 import { postHandlers } from "../features/post/_mocks/postMockApi";
 
 export const worker = setupWorker(...authHandlers, ...postHandlers);

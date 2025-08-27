@@ -10,11 +10,9 @@ const SignupBody = z.object({
   nickname: z.string().min(1),
 });
 
-const base = "http://localhost:8084/api";
-
 export const authHandlers = [
   // 로그인 API
-  http.post(`${base}/auth/login`, async ({ request }) => {
+  http.post("/auth/login", async ({ request }) => {
     const body = await request.json();
 
     // body 유효성 검증
@@ -61,7 +59,7 @@ export const authHandlers = [
   }),
 
   // 회원가입
-  http.post(`${base}/auth/signup`, async ({ request }) => {
+  http.post("/auth/signup", async ({ request }) => {
     const body = await request.json().catch(() => ({}));
     const parse = SignupBody.safeParse(body);
     if (!parse.success) {
@@ -96,7 +94,7 @@ export const authHandlers = [
     );
   }),
 
-  http.post(`${base}/auth/refresh`, async ({ request }) => {
+  http.post("/auth/refresh", async ({ request }) => {
     const hasRefreshToken = true;
 
     if (hasRefreshToken) {
