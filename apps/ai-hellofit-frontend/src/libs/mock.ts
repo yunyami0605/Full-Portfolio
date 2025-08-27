@@ -36,7 +36,7 @@ export const validationErrorResponse = <T>(
         {
           code: "BAD_REQUEST",
           message: messageFunc(_key),
-          key: _key,
+          field: _key,
         },
         { status: 400 },
       );

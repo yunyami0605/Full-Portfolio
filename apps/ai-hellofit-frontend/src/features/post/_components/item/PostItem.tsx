@@ -1,56 +1,60 @@
-import styles from "./Post.module.scss";
+import styles from "./PostItem.module.scss";
 import React from "react";
 import { Button, Column, Row, Text } from "@my/ui";
-import { FaRegHeart } from "react-icons/fa";
-import { IoChatbubbleOutline, IoBookOutline } from "react-icons/io5";
-import { PostItem } from "../_types/data";
+import { PostItem } from "../../_types/data";
+import { getRelativeTime } from "@/libs/time";
+import { IconButton } from "@/shared/components";
 
 type Props = PostItem & {
   onClick: (id: string) => void;
 };
 
 /**
- *@description 게시글
+ *@description 게시글 항목 (목록)
  */
 function Post(props: Props) {
   return (
     <Button className={styles.post_container_button} onClick={() => props.onClick(props.id)}>
       <Row justify="between" className={styles.post_wrapper}>
         <Column justify="between" className={styles.post_inner_wrapper}>
+          {/* 작성자 정보 뷰 */}
           <Column justify="between" className={styles.post_author_info_wrapper}>
             <Row className={styles.post_author_info}>
               <div className={styles.dummy_profile_image}></div>
+
               <Text className={styles.author_name_txt}>hit_tester</Text>
             </Row>
 
             <Text className={styles.post_title}>{props.title}</Text>
           </Column>
 
+          {/* 게시글 좋아요, 댓글수, 조회수 정보 뷰 */}
           <Row className={styles.subinfo_wrapper}>
             <Row className={styles.count_wrapper}>
-              <FaRegHeart size={10} />
+              <IconButton disabled iconName={"Heart"} size={10} />
 
-              <Text>120</Text>
+              <Text>{props.likeCount}</Text>
             </Row>
 
             <Row className={styles.count_wrapper}>
-              <IoChatbubbleOutline size={10} />
+              <IconButton disabled iconName={"Comment"} size={10} />
 
-              <Text>120</Text>
+              <Text>{props.commentCount}</Text>
             </Row>
 
             <Row className={styles.count_wrapper}>
-              <IoBookOutline size={10} />
+              <IconButton disabled iconName={"Read"} size={10} />
 
-              <Text>120</Text>
+              <Text>{props.viewCount}</Text>
             </Row>
 
             <Row className={styles.count_wrapper}>
-              <Text>2시간 전</Text>
+              <Text>{getRelativeTime(props.createdAt)}</Text>
             </Row>
           </Row>
         </Column>
 
+        {/* 게시글 이미지 */}
         <div className={styles.dummy_post_image}></div>
       </Row>
     </Button>

@@ -1,0 +1,81 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.container {
+  margin-top: 20px;
+  width: 100%;
+  min-height: calc(100vh - 40px);
+  margin: 0 auto;
+  border: 1px solid $color-grayscale-20;
+  border-radius: 8px;
+  background: #fff;
+
+  /* 상단 프로필 영역 */
+  .top_helper_section {
+    padding: 0 10px;
+
+    .profile {
+      padding: 12px;
+      gap: 8px;
+
+      .profileImage {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      strong {
+        font-weight: 600;
+      }
+    }
+
+    .more_button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+    }
+  }
+
+  /* 게시글 이미지 */
+  .postImage {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+  /* 버튼 영역 */
+  .button_group {
+    justify-content: space-between;
+    padding: 12px;
+
+    .buttons_left {
+      gap: 20px;
+      font-size: 2.2rem;
+    }
+
+    .buttons_right {
+      font-size: 2.2rem;
+    }
+  }
+
+  /* 본문 영역 */
+  .content_wrapper {
+    padding: 0 12px 12px 12px;
+
+    .title {
+      font-size: 1.6rem;
+      margin-bottom: 14px;
+    }
+
+    .content {
+      font-size: 1.4rem;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+}

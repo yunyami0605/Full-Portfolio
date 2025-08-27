@@ -18,7 +18,7 @@ export const useGetPostsApi = () => {
  */
 export const useGetPostOneApi = (id: string) => {
   return useQuery({
-    queryKey: [serverStateConstants.post.getPostOne],
+    queryKey: [serverStateConstants.post.getPostOne, id],
     queryFn: () => getPostOneApi(id),
   });
 };

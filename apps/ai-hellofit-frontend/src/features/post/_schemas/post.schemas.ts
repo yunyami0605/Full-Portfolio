@@ -9,11 +9,11 @@ const _baseSchema = z.object({
   title: z
     .string()
     .min(2, postErrorMessage.error.validation.wrongTitle)
-    .max(2, postErrorMessage.error.validation.wrongTitle),
+    .max(80, postErrorMessage.error.validation.wrongTitle),
   content: z
     .string()
     .min(2, postErrorMessage.error.validation.wrongContent)
-    .max(2, postErrorMessage.error.validation.wrongContent),
+    .max(200, postErrorMessage.error.validation.wrongContent),
 });
 
 // 게시글 등록 스키마

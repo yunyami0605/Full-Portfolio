@@ -1,16 +1,13 @@
 "use client";
 
-import clsx from "clsx";
 import styles from "./Mypage.module.scss";
-import React, { useState } from "react";
+import React from "react";
 import ProfileImageRegisterButton from "@/features/user/_components/mypage/ProfileImageRegisterButton";
 import ProfileEditButton from "@/features/user/_components/mypage/ProfileEditButton";
 import { Column, Row } from "@my/ui";
 import UserInfo from "@/features/user/_components/mypage/UserInfo";
-import Post from "@/features/community/_components/Post";
 import { PageWrapper, Tab } from "@/shared/components";
 
-type Props = {};
 function Mypage() {
   return (
     <PageWrapper withHeader={false}>
@@ -30,11 +27,6 @@ function Mypage() {
           <Tab name={"팔로우"} isChecked={false} onClick={() => {}} />
           <Tab name={"팔로워"} isChecked={false} onClick={() => {}} />
         </Row>
-
-        <Post />
-        <Post />
-        <Post />
-        <Post />
       </Column>
     </PageWrapper>
   );

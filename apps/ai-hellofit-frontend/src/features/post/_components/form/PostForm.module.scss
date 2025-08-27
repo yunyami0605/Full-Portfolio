@@ -1,0 +1,17 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.form {
+  width: 100%;
+  @include page_layout_with_header;
+  padding: 0 20px;
+
+  .form_wrapper {
+    width: 100%;
+  }
+
+  .button_wrapper {
+    width: 100%;
+    gap: 12px;
+  }
+}

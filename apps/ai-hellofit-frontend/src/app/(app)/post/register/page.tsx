@@ -1,0 +1,63 @@
+"use client";
+
+import React, { useState } from "react";
+import { PageWrapper } from "@/shared/components";
+import { CreatePostBody } from "@/features/post/_types/body";
+import { useCreatePostApi } from "@/features/post/_hooks/query";
+import { useRouter } from "next/navigation";
+import { ErrorResponse } from "@/shared/types/api";
+import { isAxiosError } from "@/libs/typeGuard";
+import PostForm from "@/features/post/_components/form/PostForm";
+
+/**
+ *@description 게시글 등록 페이지
+ */
+function PostRegisterPage() {
+  const router = useRouter();
+  const initServerError = {
+    title: "",
+    content: "",
+    common: "",
+  };
+
+  const [serverError, setServerError] = useState(initServerError);
+
+  const createPostApi = useCreatePostApi();
+
+  // 게시글 폼 등록 이벤트 핸들러
+  const onSubmit = async (data: CreatePostBody | Partial<CreatePostBody>) => {
+    const _data = data as CreatePostBody;
+
+    try {
+      const res = await createPostApi.mutateAsync(_data);
+
+      if (res.status === 201) {
+        router.back();
+      }
+    } catch (error: unknown) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        const errData = error.response?.data;
+        console.log(errData);
+
+        const message = errData?.message ?? "";
+        const field = error?.response?.data.field;
+
+        if (field) {
+          setServerError({ ...initServerError, [field]: message });
+        } else {
+          setServerError({ ...initServerError, common: message });
+        }
+      } else {
+        setServerError({ ...initServerError, common: "잘못된 접근입니다." });
+      }
+    }
+  };
+
+  return (
+    <PageWrapper withHeader={false}>
+      <PostForm serverError={serverError} isPending={false} formType={"등록"} onSubmit={onSubmit} />
+    </PageWrapper>
+  );
+}
+
+export default PostRegisterPage;

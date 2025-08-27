@@ -1,5 +1,5 @@
 /**
- *@description 게시글 아이템
+ *@description 게시글 목록 항목
  */
 export type PostItem = {
   id: string;

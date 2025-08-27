@@ -70,8 +70,10 @@ export const postHandlers = [
   }),
 
   // 게시글 수정하기
-  http.put("/posts/:id", async ({ params, request }) => {
+  http.patch("/posts/:id", async ({ params, request }) => {
     const id = params.id;
+
+    console.log("here!!!");
 
     // 1. id 조회 없으면 not found
     const postIndex = postDatas.findIndex((item) => item.id === id);
