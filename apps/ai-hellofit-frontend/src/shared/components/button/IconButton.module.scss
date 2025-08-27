@@ -2,6 +2,12 @@
 @use "@/styles/variables" as *;
 
 .icon_button {
+  @include flex-center;
   width: 34px;
   height: 34px;
+  cursor: pointer;
+}
+
+.icon_button_disabled {
+  cursor: default;
 }

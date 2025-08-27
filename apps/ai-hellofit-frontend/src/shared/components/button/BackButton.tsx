@@ -2,9 +2,9 @@
 
 import styles from "./BackButton.module.scss";
 import React, { useCallback } from "react";
-import { FaChevronLeft } from "react-icons/fa";
 import { Button } from "@my/ui";
 import { useRouter } from "next/navigation";
+import { IconButton } from "./IconButton";
 
 interface Props {
   onBack?: () => void;
@@ -25,7 +25,7 @@ export function PageBackButton({ onBack }: Props) {
 
   return (
     <Button className={styles.button} onClick={onGoback}>
-      <FaChevronLeft />
+      <IconButton iconName="Back" />
     </Button>
   );
 }

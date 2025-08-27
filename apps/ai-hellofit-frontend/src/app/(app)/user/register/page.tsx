@@ -10,10 +10,9 @@ import WeightForm from "@/features/user/_components/register/WeightForm";
 import SleepTimeForm from "@/features/user/_components/register/SleepTimeForm";
 import DontEatForm from "@/features/user/_components/register/DontEatForm";
 import ExerciseTimeForm from "@/features/user/_components/register/ExerciseTimeForm";
-import { FaChevronLeft } from "react-icons/fa";
 import { Button } from "@my/ui";
 import { useRouter } from "next/navigation";
-import { Header } from "@/shared/components";
+import { Header, IconButton } from "@/shared/components";
 import { PostUserProfileBody, usePostUserProfileApi, useUserProfileStore } from "@/features/user";
 import { userProfileSchema } from "@/features/user/_schemas/userProfile.schema";
 
@@ -67,7 +66,7 @@ function UserInfoRegister() {
       <Header
         left={
           <Button onClick={onBack} className={styles.back_button}>
-            <FaChevronLeft />
+            <IconButton iconName="Back" />
           </Button>
         }
       />

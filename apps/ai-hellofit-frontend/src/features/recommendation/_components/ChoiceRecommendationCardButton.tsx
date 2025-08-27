@@ -3,7 +3,7 @@
 import styles from "./ChoiceRecommendationCardButton.module.scss";
 import React from "react";
 import { Button, Center, Column, Text } from "@my/ui";
-import { FaCheckCircle } from "react-icons/fa";
+import { IconButton } from "@/shared/components";
 
 type Props = {
   title: string;
@@ -18,7 +18,7 @@ function ChoiceRecommendationCardButton({ title, data, isChecked }: Props) {
     <section className={styles.card_inner_wrapper}>
       <Button className={styles.card_button} onClick={() => {}}>
         <Center className={styles.check_wrapper}>
-          <FaCheckCircle color={isChecked ? "#0094ff" : "#ccc"} size={16} />
+          <IconButton color={isChecked ? "#0094ff" : "#ccc"} size={16} iconName="CheckCircle" />
         </Center>
 
         <Column className={styles.data_wrapper}>

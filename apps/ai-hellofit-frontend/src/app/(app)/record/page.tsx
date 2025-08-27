@@ -2,9 +2,8 @@ import clsx from "clsx";
 import styles from "./RecordPage.module.scss";
 import React, { Fragment, useState } from "react";
 import { Button, Row, Text } from "@my/ui";
-import { FaAngleRight } from "react-icons/fa";
 import RecordCard from "@/features/record/_components/RecordCard";
-import { SmallRoundedButton } from "@/shared/components";
+import { IconButton, SmallRoundedButton } from "@/shared/components";
 
 type Props = {};
 function RecordPage() {
@@ -17,7 +16,7 @@ function RecordPage() {
         <Button className={styles.calendar_go_button}>
           <Text>캘린더 보기</Text>
 
-          <FaAngleRight fill={"#333"} size={18} />
+          <IconButton iconName="Next" fill={"#333"} size={18} />
         </Button>
       </section>
 

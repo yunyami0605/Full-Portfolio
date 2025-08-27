@@ -3,8 +3,7 @@
 import styles from "./RecommendationInfoCard.module.scss";
 import React, { useState } from "react";
 import { Column, Row, Text } from "@my/ui";
-import { FaAngleRight } from "react-icons/fa";
-import { Card, Tab } from "@/shared/components";
+import { Card, IconButton, Tab } from "@/shared/components";
 
 type Props = { title: string };
 
@@ -38,7 +37,7 @@ function RecommendationInfoCard({ title }: Props) {
       <Row className={styles.title_wrapper}>
         <Text className={styles.title}>{title}</Text>
 
-        <FaAngleRight fill={"#333"} size={18} />
+        <IconButton iconName="Next" fill={"#333"} size={18} />
       </Row>
 
       <section className={styles.tabs_wrapper}>
