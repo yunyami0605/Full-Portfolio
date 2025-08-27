@@ -1,0 +1,8 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+label.error_label {
+  color: $color-negative--10;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
