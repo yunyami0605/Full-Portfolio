@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { LabelHTMLAttributes } from "react";
 import styles from "./Label.module.scss";
 
-type LabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
+export type LabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
   required?: boolean;
   classNameRequired?: string;
 };
@@ -18,7 +18,7 @@ export const Label = ({
   ...props
 }: LabelProps) => {
   return (
-    <label {...props} className={clsx(styles.label, className)}>
+    <label className={clsx(styles.label, className)} {...props}>
       {children}
       {required && <span className={clsx(classNameRequired, styles.required)}>*</span>}
     </label>

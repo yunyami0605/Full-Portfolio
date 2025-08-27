@@ -3,7 +3,7 @@
 import { InputHTMLAttributes, forwardRef } from "react";
 import clsx from "clsx";
 import styles from "./Checkbox.module.scss";
-import { FaRegCheckCircle, FaRegCircle } from "react-icons/fa";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   error?: string;
