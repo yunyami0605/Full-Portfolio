@@ -8,14 +8,17 @@ import {
   notFoundErrorResponse,
   validationErrorResponse,
 } from "@/libs/mock";
+import { PostItem } from "../_types/data";
 
-// 게시글 더미 데이터
-let postDatas = [
-  { id: "1", title: "t_title1", content: "t_content1", createdAt: "2025-08-25" },
-  { id: "2", title: "t_title2", content: "t_content2", createdAt: "2025-08-25" },
-  { id: "3", title: "t_title3", content: "t_content3", createdAt: "2025-08-25" },
-  { id: "4", title: "t_title4", content: "t_content4", createdAt: "2025-08-25" },
-];
+let postDatas = Array.from({ length: 4 }, (_, i) => ({
+  id: String(i + 1),
+  title: `test_title${i + 1}`,
+  content: `test_content${i + 1}`,
+  createdAt: "2025-08-26",
+  likeCount: 12,
+  commentCount: 12,
+  viewCount: 12,
+})) as PostItem[];
 
 /**
  *@description 게시글 mock api
@@ -56,6 +59,9 @@ export const postHandlers = [
       title: body.title,
       content: body.content ?? "",
       createdAt: dayjs().toISOString(),
+      likeCount: 12,
+      commentCount: 12,
+      viewCount: 12,
     };
 
     postDatas.push(newPost);

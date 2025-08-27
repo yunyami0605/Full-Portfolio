@@ -6,4 +6,7 @@ export type PostItem = {
   title: string;
   content: string;
   createdAt: string;
+  likeCount: number;
+  commentCount: number;
+  viewCount: number;
 };
