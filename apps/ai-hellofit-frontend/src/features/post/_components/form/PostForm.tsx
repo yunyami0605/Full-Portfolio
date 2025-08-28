@@ -4,11 +4,12 @@ import { ActiveButton, LabeledInput } from "@/shared/components";
 import { Column } from "@my/ui";
 import { LabeledTextarea } from "@/shared/components/input/LabeledTextarea";
 import { ErrorLabel } from "@/shared/components/label/ErrorLabel";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePostBody, UpdatePostBody } from "../../_types/body";
 import { createPostSchema, updatePostSchema } from "../../_schemas/post.schemas";
 import { PostItem } from "../../_types/data";
+import { ImageUploadField } from "@/features/aws/_components/ImageUploadField";
 
 type Props = {
   onSubmit: SubmitHandler<CreatePostBody | UpdatePostBody>;
@@ -25,6 +26,7 @@ function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: P
   const initForm: CreatePostBody = {
     title: "",
     content: "",
+    images: [],
   };
 
   const {
@@ -32,6 +34,7 @@ function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: P
     register,
     reset,
     formState: { isValid },
+    control,
   } = useForm({
     resolver: zodResolver(formType === "수정" ? updatePostSchema : createPostSchema),
     mode: "onSubmit",
@@ -43,6 +46,7 @@ function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: P
       reset({
         title: defaultForm.title,
         content: defaultForm.content,
+        images: defaultForm.images,
       });
     }
   }, [defaultForm, reset]);
@@ -65,6 +69,14 @@ function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: P
           required
           error={serverError["content"]}
           {...register("content")}
+        />
+
+        <Controller
+          name="images"
+          control={control}
+          render={({ field }) => (
+            <ImageUploadField value={field.value ?? []} onChange={field.onChange} />
+          )}
         />
 
         <Column className={styles.button_wrapper} align="center">

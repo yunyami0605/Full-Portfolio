@@ -9,4 +9,5 @@ export type PostItem = {
   likeCount: number;
   commentCount: number;
   viewCount: number;
+  images: string[];
 };
