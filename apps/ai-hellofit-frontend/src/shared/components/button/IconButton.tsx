@@ -14,6 +14,7 @@ import {
   FaChevronLeft,
   FaAngleRight,
   FaCheckCircle,
+  FaTimes,
 } from "react-icons/fa";
 import { BsChatLeftHeartFill } from "react-icons/bs";
 import { IoPerson, IoChatbubbleOutline, IoBookOutline } from "react-icons/io5";
@@ -34,6 +35,7 @@ const Icon = {
   Next: FaAngleRight,
   CheckCircle: FaCheckCircle,
   Read: IoBookOutline,
+  Close: FaTimes,
 } as const;
 
 type IconKey = keyof typeof Icon;
