@@ -7,7 +7,7 @@ import { PostAWsS3PresignedBody } from "../_types/body";
  */
 export const postAwsS3PresignedApi = (file: PostAWsS3PresignedBody) => {
   return apiCall<PostAWsS3PresignedResponse>({
-    url: "/aws/s3/presigned",
+    url: "/aws/presigned",
     method: "POST",
     data: file,
   });

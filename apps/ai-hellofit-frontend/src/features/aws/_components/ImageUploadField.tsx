@@ -2,11 +2,10 @@ import React from "react";
 import styles from "./ImageUploadField.module.scss";
 import { IconButton } from "@/shared/components";
 import { usePostAwsS3PresignedApi } from "@/features/aws/_hooks/mutation";
-import { apiCall } from "@/libs/apiCall";
-
+import axios from "axios";
 type Props = {
-  value: string[];
-  onChange: (urls: string[]) => void;
+  value: { url: string; presignedGetUrl: string }[];
+  onChange: (urls: {}[]) => void;
 };
 
 /**
@@ -16,8 +15,7 @@ export function ImageUploadField({ value = [], onChange }: Props) {
   const postAwsS3Presigned = usePostAwsS3PresignedApi();
 
   const onImageUpload = async (files: FileList) => {
-    const uploadApi = Array.from(files).map(async (file) => {
-      console.log(file);
+    const fileUrl = Array.from(files).map(async (file) => {
       // 1. 서버에 presigned url 요청
       const presignedResponse = await postAwsS3Presigned.mutateAsync({
         fileName: file.name,
@@ -25,17 +23,18 @@ export function ImageUploadField({ value = [], onChange }: Props) {
       });
 
       // 2. 응답받은 presigned url로 s3에 업로드 요청
-      await apiCall<any>({
-        url: presignedResponse.data.presignedUrl,
-        method: "PUT",
-        data: file,
+      await axios.put(presignedResponse.data.presignedPatchUrl, file, {
         headers: { "Content-Type": file.type },
+        withCredentials: false,
       });
 
-      return presignedResponse.data.presignedUrl.replace("upload", "files");
+      return {
+        url: presignedResponse.data.savedFileUrl,
+        presignedGetUrl: presignedResponse.data.presignedGetUrl,
+      };
     });
 
-    const uploadedUrls = await Promise.all(uploadApi);
+    const uploadedUrls = await Promise.all(fileUrl);
     onChange([...value, ...uploadedUrls]);
   };
 
@@ -59,7 +58,7 @@ export function ImageUploadField({ value = [], onChange }: Props) {
       <div className={styles.preview_images_wrapper}>
         {value.map((url, idx) => (
           <div key={idx} className={styles.preview_item}>
-            <img src={url} alt={`preview-${idx}`} />
+            <img src={url.presignedGetUrl} alt={`preview-${idx}`} />
             <button type="button" className={styles.remove_btn} onClick={() => onRemove(idx)}>
               <IconButton iconName="Close" fill="#fff" disabled size={12} />
             </button>
