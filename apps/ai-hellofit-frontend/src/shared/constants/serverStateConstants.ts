@@ -5,5 +5,6 @@ export const serverStateConstants = {
   post: {
     getPosts: "get-posts",
     getPostOne: "get-post-one",
+    getPostFormData: "get-post-form-data",
   },
 } as const;

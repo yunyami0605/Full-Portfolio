@@ -2,12 +2,16 @@
 
 import React, { useState } from "react";
 import { PageWrapper } from "@/shared/components";
-import { CreatePostBody, UpdatePostBody } from "@/features/post/_types/body";
-import { useGetPostOneApi, usePatchPostApi } from "@/features/post/_hooks/query";
+import {
+  useGetPostFormDataApi,
+  useGetPostOneApi,
+  usePatchPostApi,
+} from "@/features/post/_hooks/query";
 import { useParams, useRouter } from "next/navigation";
 import { ErrorResponse } from "@/shared/types/api";
 import { isAxiosError } from "@/libs/typeGuard";
 import PostForm from "@/features/post/_components/form/PostForm";
+import { CreatePostForm, UpdatePostForm } from "@/features/post/_types/data";
 
 /**
  *@description 게시글 수정 페이지
@@ -23,16 +27,21 @@ function UpdateRegisterPage() {
 
   const [serverError, setServerError] = useState(initServerError);
 
-  const getPostOneApi = useGetPostOneApi(params.id);
+  const getPostFormDataApi = useGetPostFormDataApi(params.id);
 
   const patchPostApi = usePatchPostApi(params.id);
 
   // 게시글 폼 수정 이벤트 핸들러
-  const onSubmit = async (data: CreatePostBody | UpdatePostBody) => {
-    const _data = data as UpdatePostBody;
+  const onSubmit = async (data: CreatePostForm | UpdatePostForm) => {
+    const _data = data as UpdatePostForm;
 
     try {
-      const res = await patchPostApi.mutateAsync(_data);
+      const formData = {
+        ..._data,
+        images: (_data.images ?? []).map((item) => item.url),
+      };
+
+      const res = await patchPostApi.mutateAsync(formData);
 
       if (res.status === 200) {
         router.back();
@@ -59,7 +68,7 @@ function UpdateRegisterPage() {
   return (
     <PageWrapper withHeader={false}>
       <PostForm
-        defaultForm={getPostOneApi.data?.data}
+        defaultForm={getPostFormDataApi.data?.data}
         serverError={serverError}
         isPending={false}
         formType={"수정"}

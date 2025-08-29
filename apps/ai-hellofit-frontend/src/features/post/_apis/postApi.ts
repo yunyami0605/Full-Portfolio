@@ -1,5 +1,5 @@
 import { apiCall } from "@/libs/apiCall";
-import { PostResponse, PostsResponse } from "../_types/response";
+import { GetPostFormDataResponse, GetPostResponse, GetPostsResponse } from "../_types/response";
 import { CreatePostBody } from "../_types/body";
 import { MutationResponse } from "@/shared/types/api";
 
@@ -7,7 +7,7 @@ import { MutationResponse } from "@/shared/types/api";
  *@description posts api (게시글 목록 조회)
  */
 export const getPostsApi = () => {
-  return apiCall<PostsResponse>({
+  return apiCall<GetPostsResponse>({
     url: "/posts",
     method: "GET",
   });
@@ -17,7 +17,7 @@ export const getPostsApi = () => {
  *@description post api (게시글 조회)
  */
 export const getPostOneApi = (id: string) => {
-  return apiCall<PostResponse>({
+  return apiCall<GetPostResponse>({
     url: `/posts/${id}`,
     method: "GET",
   });
@@ -52,5 +52,15 @@ export const deletePostApi = (id: string) => {
   return apiCall<MutationResponse>({
     url: `/posts/${id}`,
     method: "DELETE",
+  });
+};
+
+/**
+ *@description 게시글 수정시, 폼데이터 조회 api
+ */
+export const getPostFormDataApi = (id: string) => {
+  return apiCall<GetPostFormDataResponse>({
+    url: `/posts/patch/${id}`,
+    method: "GET",
   });
 };

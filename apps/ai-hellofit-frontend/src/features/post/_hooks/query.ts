@@ -1,5 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createPostApi, deletePostApi, getPostOneApi, getPostsApi, patchPostApi } from "..";
+import {
+  createPostApi,
+  deletePostApi,
+  getPostFormDataApi,
+  getPostOneApi,
+  getPostsApi,
+  patchPostApi,
+} from "..";
 import { serverStateConstants } from "@/shared/constants/serverStateConstants";
 import { CreatePostBody } from "../_types/body";
 
@@ -47,5 +54,15 @@ export const usePatchPostApi = (id: string) => {
 export const useDeletePostApi = (id: string) => {
   return useMutation({
     mutationFn: () => deletePostApi(id),
+  });
+};
+
+/**
+ *@description 게시글 수정에 필요한 폼데이터 훅
+ */
+export const useGetPostFormDataApi = (id: string) => {
+  return useQuery({
+    queryKey: [serverStateConstants.post.getPostFormData, id],
+    queryFn: () => getPostFormDataApi(id),
   });
 };

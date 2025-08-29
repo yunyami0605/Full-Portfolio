@@ -6,24 +6,23 @@ import { LabeledTextarea } from "@/shared/components/input/LabeledTextarea";
 import { ErrorLabel } from "@/shared/components/label/ErrorLabel";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreatePostBody, UpdatePostBody } from "../../_types/body";
 import { createPostSchema, updatePostSchema } from "../../_schemas/post.schemas";
-import { PostItem } from "../../_types/data";
+import { CreatePostForm, PostItemWhenUpdate, UpdatePostForm } from "../../_types/data";
 import { ImageUploadField } from "@/features/aws/_components/ImageUploadField";
 
 type Props = {
-  onSubmit: SubmitHandler<CreatePostBody | UpdatePostBody>;
+  onSubmit: SubmitHandler<CreatePostForm | UpdatePostForm>;
   serverError: { title: string; content: string; common: string };
   isPending: boolean;
   formType: "등록" | "수정";
-  defaultForm?: PostItem;
+  defaultForm?: PostItemWhenUpdate;
 };
 
 /**
  *@description 게시글 폼
  */
 function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: Props) {
-  const initForm: CreatePostBody = {
+  const initForm: CreatePostForm = {
     title: "",
     content: "",
     images: [],

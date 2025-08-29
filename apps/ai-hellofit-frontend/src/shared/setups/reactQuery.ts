@@ -11,9 +11,6 @@ import axios from "axios";
  */
 function handleAuthError(error: Error) {
   if (axios.isAxiosError(error) && error.response?.status === 401) {
-    console.log(1);
-    console.log(error?.response);
-
     useAccessTokenStore.getState().reset();
     if (typeof window !== "undefined") {
       window.location.href = "/login";

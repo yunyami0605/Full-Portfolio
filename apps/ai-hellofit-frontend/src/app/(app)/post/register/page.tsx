@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import { PageWrapper } from "@/shared/components";
-import { CreatePostBody } from "@/features/post/_types/body";
 import { useCreatePostApi } from "@/features/post/_hooks/query";
 import { useRouter } from "next/navigation";
 import { ErrorResponse } from "@/shared/types/api";
 import { isAxiosError } from "@/libs/typeGuard";
 import PostForm from "@/features/post/_components/form/PostForm";
+import { CreatePostForm, UpdatePostForm } from "@/features/post/_types/data";
 
 /**
  *@description 게시글 등록 페이지
@@ -25,11 +25,15 @@ function PostRegisterPage() {
   const createPostApi = useCreatePostApi();
 
   // 게시글 폼 등록 이벤트 핸들러
-  const onSubmit = async (data: CreatePostBody | Partial<CreatePostBody>) => {
-    const _data = data as CreatePostBody;
+  const onSubmit = async (data: CreatePostForm | UpdatePostForm) => {
+    const _data = data as CreatePostForm;
 
     try {
-      const res = await createPostApi.mutateAsync(_data);
+      const formData = {
+        ..._data,
+        images: _data.images.map((item) => item.url),
+      };
+      const res = await createPostApi.mutateAsync(formData);
 
       if (res.status === 201) {
         router.back();
