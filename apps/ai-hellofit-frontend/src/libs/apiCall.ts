@@ -1,10 +1,11 @@
 import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import { getCookie } from "./cookie";
 
-const isMockApi = true;
+const isMockApi = false;
 export const apiCall = axios.create({
   baseURL: isMockApi ? "" : process.env.NEXT_PUBLIC_API_BASE_URL,
-  withCredentials: true, // 쿠키를 쓰면 true
+  withCredentials: true,
 });
 
 apiCall.interceptors.request.use(
@@ -13,6 +14,7 @@ apiCall.interceptors.request.use(
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      config.headers["X-XSRF-TOKEN"] = getCookie("xsrftk");
     }
     return config;
   },
