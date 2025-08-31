@@ -1,0 +1,9 @@
+{
+  "builds": [
+    {
+      "src": "apps/ai-hellofit-frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [{ "src": "/(.*)", "dest": "apps/ai-hellofit-frontend/$1" }]
+}
