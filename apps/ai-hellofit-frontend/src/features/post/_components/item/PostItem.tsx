@@ -2,9 +2,8 @@ import styles from "./PostItem.module.scss";
 import React from "react";
 import { Button, Column, Row, Text } from "@my/ui";
 import { PostItem } from "../../_types/data";
-import { getRelativeTime } from "@/libs/time";
-import { IconButton } from "@/shared/components";
 import Image from "next/image";
+import PostInfo from "../info/PostInfo";
 
 type Props = PostItem & {
   onClick: (id: string) => void;
@@ -30,29 +29,7 @@ function Post(props: Props) {
           </Column>
 
           {/* 게시글 좋아요, 댓글수, 조회수 정보 뷰 */}
-          <Row className={styles.subinfo_wrapper}>
-            <Row className={styles.count_wrapper}>
-              <IconButton disabled iconName={"Heart"} size={10} />
-
-              <Text>{props.likeCount}</Text>
-            </Row>
-
-            <Row className={styles.count_wrapper}>
-              <IconButton disabled iconName={"Comment"} size={10} />
-
-              <Text>{props.commentCount}</Text>
-            </Row>
-
-            <Row className={styles.count_wrapper}>
-              <IconButton disabled iconName={"Read"} size={10} />
-
-              <Text>{props.viewCount}</Text>
-            </Row>
-
-            <Row className={styles.count_wrapper}>
-              <Text>{getRelativeTime(props.updatedAt)}</Text>
-            </Row>
-          </Row>
+          <PostInfo {...props} />
         </Column>
 
         {/* 게시글 이미지 */}

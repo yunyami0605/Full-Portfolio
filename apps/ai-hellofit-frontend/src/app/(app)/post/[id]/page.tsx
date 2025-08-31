@@ -9,6 +9,7 @@ import { ActionSheet, Popup, Row, Text } from "@my/ui";
 import { useRouter } from "next/navigation";
 import { getRelativeTime } from "@/libs/time";
 import Image from "next/image";
+import PostInfo from "@/features/post/_components/info/PostInfo";
 /**
  *@description 게시글 컨텐츠 페이지
  */
@@ -28,11 +29,20 @@ function PostContentPage() {
   const { data } = useGetPostOneApi(id);
   const deletePostApi = useDeletePostApi(id);
 
-  const { title, content, updatedAt, images, author } = data?.data ?? {
+  const {
+    title,
+    content,
+    updatedAt,
+    images,
+    author,
+    id: postId,
+    ...subInfo
+  } = data?.data ?? {
     title: "",
     content: "",
     updatedAt: "",
     images: [],
+    id: "",
   };
 
   // 업데이트 페이지 이동
@@ -67,6 +77,8 @@ function PostContentPage() {
   const onComment = () => {
     // 댓글 페이지로 이동
   };
+
+  console.log(updatedAt);
 
   return (
     <PageWrapper withHeader={false} className={styles.container}>
@@ -129,12 +141,7 @@ function PostContentPage() {
         {/* 버튼 영역 */}
         <Row className={styles.button_group}>
           <Row className={styles.buttons_left}>
-            <IconButton iconName="Heart" onClick={() => {}} />
-
-            <IconButton iconName="Comment" onClick={() => {}} />
-            <Row className={styles.count_wrapper}>
-              <Text className={styles.time_text}>{getRelativeTime(updatedAt)}</Text>
-            </Row>
+            <PostInfo {...subInfo} size="normal" onLike={() => {}} onComment={() => {}} />
           </Row>
 
           <div className={styles.buttons_right}>
@@ -144,6 +151,8 @@ function PostContentPage() {
 
         {/* 본문 영역 */}
         <div className={styles.content_wrapper}>
+          <p className={styles.date}>{getRelativeTime(updatedAt ?? "")}</p>
+
           <p className={styles.title}>{title ?? ""}</p>
 
           <p className={styles.content}>{content ?? ""}</p>

@@ -53,8 +53,7 @@
     padding: 12px;
 
     .buttons_left {
-      gap: 20px;
-      font-size: 2.2rem;
+      //
     }
 
     .buttons_right {
@@ -65,6 +64,12 @@
   /* 본문 영역 */
   .content_wrapper {
     padding: 0 12px 12px 12px;
+
+    .date {
+      font-size: 1.4rem;
+      margin-bottom: 14px;
+      color: $color-grayscale-60;
+    }
 
     .title {
       font-size: 1.6rem;

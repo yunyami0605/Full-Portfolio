@@ -1,0 +1,26 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+// 게시글 좋아요, 댓글수, 북마크 정보
+.subinfo_wrapper {
+  gap: 12px;
+
+  .info_wrapper {
+    @include flex-row;
+
+    div[role="button"] {
+      width: 22px;
+      height: 22px;
+    }
+
+    p {
+      &.small {
+        font-size: 1rem;
+      }
+
+      &.normal {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}

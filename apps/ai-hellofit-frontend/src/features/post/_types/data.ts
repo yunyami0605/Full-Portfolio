@@ -8,7 +8,8 @@ export type PostItem = {
   id: string;
   title: string;
   content: string;
-  updatedAt: string;
+  createdAt: string;
+  updatedAt: string | null;
   likeCount: number;
   commentCount: number;
   viewCount: number;
