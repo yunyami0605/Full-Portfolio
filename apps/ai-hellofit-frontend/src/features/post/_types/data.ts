@@ -18,15 +18,18 @@ export type PostItem = {
 /**
  *@description 게시글 수정 시 조회 데이터
  */
-export type PostItemWhenUpdate = Omit<PostItem, "images"> & {
+export type PostItemWhenUpdate = Omit<
+  PostItem,
+  "images" | "likeCount" | "commentCount" | "viewCount"
+> & {
   images: AwsS3UploadFieldData[];
 };
 
 /**
  *@description 등록 게시글 폼 타입
  */
-export type CreatePostForm = Omit<CreatePostBody, "images"> & {
-  images: AwsS3UploadFieldData[];
+export type CreatePostForm = Omit<CreatePostBody, "imageKeys"> & {
+  imageKeys: AwsS3UploadFieldData[];
 };
 
 /**

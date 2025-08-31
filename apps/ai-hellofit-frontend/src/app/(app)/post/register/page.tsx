@@ -31,7 +31,7 @@ function PostRegisterPage() {
     try {
       const formData = {
         ..._data,
-        images: _data.images.map((item) => item.url),
+        imageKeys: _data.imageKeys.map((item) => item.objectKey),
       };
       const res = await createPostApi.mutateAsync(formData);
 

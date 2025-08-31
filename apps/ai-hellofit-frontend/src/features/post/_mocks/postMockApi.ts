@@ -9,7 +9,7 @@ import {
   validationErrorResponse,
 } from "@/libs/mock";
 import { PostItem } from "../_types/data";
-import { PostResponse } from "../_types/response";
+import { GetPostResponse } from "../_types/response";
 
 let postDatas = Array.from({ length: 4 }, (_, i) => ({
   id: String(i + 1),
@@ -56,7 +56,7 @@ export const postHandlers = [
       );
     }
 
-    const newPost: PostResponse = {
+    const newPost: GetPostResponse = {
       id: (postDatas.length + 1).toString(),
       title: body.title,
       content: body.content ?? "",
@@ -64,7 +64,7 @@ export const postHandlers = [
       likeCount: 12,
       commentCount: 12,
       viewCount: 12,
-      images: body.images,
+      images: body.imageKeys,
     };
 
     postDatas.push(newPost);

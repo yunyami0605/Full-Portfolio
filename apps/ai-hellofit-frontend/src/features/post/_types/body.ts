@@ -2,7 +2,7 @@
 export type CreatePostBody = {
   title: string;
   content: string;
-  images: string[];
+  imageKeys: string[];
 };
 
 // 게시글 수정 바디

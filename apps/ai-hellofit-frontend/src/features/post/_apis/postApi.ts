@@ -35,12 +35,12 @@ export const createPostApi = (data: CreatePostBody) => {
 };
 
 /**
- *@description 게시글 부분 수정 api
+ *@description 게시글 전체 수정 api
  */
 export const patchPostApi = (id: string, data: Partial<CreatePostBody>) => {
   return apiCall<MutationResponse>({
     url: `/posts/${id}`,
-    method: "PATCH",
+    method: "PUT",
     data,
   });
 };

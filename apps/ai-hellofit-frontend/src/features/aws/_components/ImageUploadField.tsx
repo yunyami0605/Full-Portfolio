@@ -4,7 +4,7 @@ import { IconButton } from "@/shared/components";
 import { usePostAwsS3PresignedApi } from "@/features/aws/_hooks/mutation";
 import axios from "axios";
 type Props = {
-  value: { url: string; presignedGetUrl: string }[];
+  value: { objectKey: string; presignedUrl: string }[];
   onChange: (urls: {}[]) => void;
 };
 
@@ -29,8 +29,8 @@ export function ImageUploadField({ value = [], onChange }: Props) {
       });
 
       return {
-        url: presignedResponse.data.savedFileUrl,
-        presignedGetUrl: presignedResponse.data.presignedGetUrl,
+        objectKey: presignedResponse.data.savedFileUrl,
+        presignedUrl: presignedResponse.data.presignedGetUrl,
       };
     });
 
@@ -58,7 +58,7 @@ export function ImageUploadField({ value = [], onChange }: Props) {
       <div className={styles.preview_images_wrapper}>
         {value.map((url, idx) => (
           <div key={idx} className={styles.preview_item}>
-            <img src={url.presignedGetUrl} alt={`preview-${idx}`} />
+            <img src={url.presignedUrl} alt={`preview-${idx}`} />
             <button type="button" className={styles.remove_btn} onClick={() => onRemove(idx)}>
               <IconButton iconName="Close" fill="#fff" disabled size={12} />
             </button>

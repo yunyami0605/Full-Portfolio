@@ -25,7 +25,7 @@ function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: P
   const initForm: CreatePostForm = {
     title: "",
     content: "",
-    images: [],
+    imageKeys: [],
   };
 
   const {
@@ -45,7 +45,7 @@ function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: P
       reset({
         title: defaultForm.title,
         content: defaultForm.content,
-        images: defaultForm.images,
+        imageKeys: defaultForm.images,
       });
     }
   }, [defaultForm, reset]);
@@ -71,7 +71,7 @@ function PostForm({ onSubmit, serverError, isPending, formType, defaultForm }: P
         />
 
         <Controller
-          name="images"
+          name="imageKeys"
           control={control}
           render={({ field }) => (
             <ImageUploadField value={field.value ?? []} onChange={field.onChange} />
