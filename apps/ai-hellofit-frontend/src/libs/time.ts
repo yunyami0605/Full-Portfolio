@@ -15,7 +15,7 @@ dayjs.locale("ko");
  * @param date ISO 문자열, Date 객체, 또는 dayjs가 파싱 가능한 값
  * @returns string (예: "30초 전", "10분 전", "2시간 전", "3일 전")
  */
-export const getRelativeTime = (date: string | Date) => {
+export const getRelativeTime = (date?: string | Date) => {
   const now = dayjs();
   const target = dayjs(date);
 
@@ -26,7 +26,7 @@ export const getRelativeTime = (date: string | Date) => {
   const diffInSeconds = now.diff(target, "second");
 
   if (diffInSeconds < 60) {
-    return `${diffInSeconds}초 전`;
+    return `방금 전`;
   }
 
   const diffInMinutes = Math.floor(diffInSeconds / 60);
