@@ -3,6 +3,7 @@ import React from "react";
 import { Row, Text } from "@my/ui";
 import { IconButton } from "@/shared/components";
 import { getRelativeTime } from "@/libs/time";
+import clsx from "clsx";
 
 type Props = {
   likeCount?: number;
@@ -30,25 +31,25 @@ function PostInfo({
 
   return (
     <Row className={styles.subinfo_wrapper}>
-      <Row className={styles.info_wrapper}>
+      <Row className={clsx(styles.info_wrapper, styles[size])}>
         <IconButton disabled={!onLike} onClick={onLike} iconName={"Heart"} size={iconSize} />
 
         <Text className={styles[size]}>{likeCount ?? 0}</Text>
       </Row>
 
-      <Row className={styles.info_wrapper}>
+      <Row className={clsx(styles.info_wrapper, styles[size])}>
         <IconButton disabled={!onComment} iconName={"Comment"} size={iconSize} />
 
         <Text className={styles[size]}>{commentCount ?? 0}</Text>
       </Row>
 
-      <Row className={styles.info_wrapper}>
+      <Row className={clsx(styles.info_wrapper, styles[size])}>
         <IconButton disabled iconName={"Read"} size={iconSize} />
 
         <Text className={styles[size]}>{viewCount ?? 0}</Text>
       </Row>
 
-      <Row className={styles.info_wrapper}>
+      <Row className={clsx(styles.info_wrapper, styles[size])}>
         <Text className={styles[size]}>{getRelativeTime(createdAt)}</Text>
       </Row>
     </Row>

@@ -13,6 +13,14 @@
       height: 22px;
     }
 
+    &.small {
+      gap: 4px;
+    }
+
+    &.normal {
+      gap: 10px;
+    }
+
     p {
       &.small {
         font-size: 1rem;
