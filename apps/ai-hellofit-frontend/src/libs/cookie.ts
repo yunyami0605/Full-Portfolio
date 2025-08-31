@@ -11,7 +11,7 @@ export function setCookie(name: string, value: string, maxAgeSec: number) {
   // 서버 사이드 랜더링 타입에러 체크
   if (typeof document === "undefined") return;
 
-  const attrs = [`path=/`, `max-age=${maxAgeSec}`, `samesite=lax`, isProd ? `secure` : ``].filter(
+  const attrs = ["path=/", `max-age=${maxAgeSec}`, "samesite=lax", isProd ? "secure" : ""].filter(
     (item) => item.length > 0,
   );
 

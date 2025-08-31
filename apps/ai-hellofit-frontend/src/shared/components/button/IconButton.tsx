@@ -3,7 +3,6 @@
 import clsx from "clsx";
 import styles from "./IconButton.module.scss";
 import React from "react";
-import { Button } from "@my/ui";
 import { IoMdMore } from "react-icons/io";
 import {
   FaRegBookmark,

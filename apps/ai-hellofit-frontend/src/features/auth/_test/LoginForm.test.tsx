@@ -1,7 +1,6 @@
 // LoginForm.test.tsx
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
 import LoginForm from "../_components/form/LoginForm";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderWithQueryClient } from "@/shared/test/TestSetupWithQueryClient";
 
 const { mutateAsyncMock, isPendingBox, setTokensMock, pushMock } = vi.hoisted(() => {
@@ -113,7 +112,7 @@ describe("LoginForm", () => {
     });
   });
 
-  it('보조 액션: "회원가입" 클릭 시 /signup 이동', () => {
+  it("보조 액션: [회원가입] 클릭 시 /signup 이동", () => {
     renderWithQueryClient(<LoginForm />);
 
     fireEvent.click(screen.getByText("회원가입"));

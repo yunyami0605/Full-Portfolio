@@ -25,7 +25,7 @@ module.exports = {
   ],
   plugins: ["react", "@typescript-eslint", "react-hooks"],
   rules: {
-    camelcase: ["error", { properties: "always" }],
+    camelcase: ["error", { properties: "always", ignoreGlobals: true }],
     "react/jsx-pascal-case": "error",
     semi: ["error", "always"],
     quotes: ["error", "double"],

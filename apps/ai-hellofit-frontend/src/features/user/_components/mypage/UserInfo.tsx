@@ -1,9 +1,7 @@
-import clsx from "clsx";
 import styles from "./UserInfo.module.scss";
-import React, { useState } from "react";
+import React from "react";
 import { Column, Row, Text } from "@my/ui";
 
-type Props = {};
 function UserInfo() {
   return (
     <section className={styles.user_info_container}>

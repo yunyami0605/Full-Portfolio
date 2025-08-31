@@ -2,7 +2,7 @@
 
 import styles from "./PrivacyPolicyPage.module.scss";
 import React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ActiveButton, PageWrapper } from "@/shared/components";
 import { useAuthSignupStore } from "@/features/auth";
 
@@ -11,7 +11,6 @@ import { useAuthSignupStore } from "@/features/auth";
  */
 function PrivacyPolicyPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { form, setForm } = useAuthSignupStore();
 
   const onAgree = () => {

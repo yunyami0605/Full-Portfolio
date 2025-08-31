@@ -21,7 +21,7 @@ export function PageBackButton({ onBack }: Props) {
       onBack();
     }
     router.back();
-  }, []);
+  }, [onBack, router]);
 
   return (
     <Button className={styles.button} onClick={onGoback}>

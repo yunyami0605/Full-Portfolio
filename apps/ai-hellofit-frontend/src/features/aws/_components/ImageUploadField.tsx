@@ -3,9 +3,10 @@ import styles from "./ImageUploadField.module.scss";
 import { IconButton } from "@/shared/components";
 import { usePostAwsS3PresignedApi } from "@/features/aws/_hooks/mutation";
 import axios from "axios";
+import { AwsS3UploadFieldData } from "../_types/data";
 type Props = {
   value: { objectKey: string; presignedUrl: string }[];
-  onChange: (urls: {}[]) => void;
+  onChange: (urls: AwsS3UploadFieldData[]) => void;
 };
 
 /**

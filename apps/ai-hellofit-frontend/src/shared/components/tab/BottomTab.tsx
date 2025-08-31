@@ -2,7 +2,7 @@
 
 import styles from "./BottomTab.module.scss";
 import React from "react";
-import { Button, Row, Text } from "@my/ui";
+import { Row, Text } from "@my/ui";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import Link from "next/link";

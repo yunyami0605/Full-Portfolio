@@ -29,29 +29,16 @@ function PostContentPage() {
   const { data } = useGetPostOneApi(id);
   const deletePostApi = useDeletePostApi(id);
 
-  const {
-    title,
-    content,
-    updatedAt,
-    images,
-    author,
-    id: postId,
-    ...subInfo
-  } = data?.data ?? {
+  const { title, content, updatedAt, images, ...subInfo } = data?.data ?? {
     title: "",
     content: "",
     updatedAt: "",
     images: [],
-    id: "",
   };
 
   // 업데이트 페이지 이동
   const onMoveUpdateContent = () => {
     router.push(`/post/update/${id}`);
-  };
-
-  const onReportContent = () => {
-    // TODO 신고 로직 추가
   };
 
   // 게시글 삭제
@@ -63,7 +50,7 @@ function PostContentPage() {
         // 삭제 완료
         router.back();
       }
-    } catch (error) {
+    } catch {
       window.alert("잘못된 접근입니다.");
     }
   };
@@ -72,11 +59,10 @@ function PostContentPage() {
     // TODO 차단 로직 추가
   };
 
-  const onLike = () => {};
-  const onBookmark = () => {};
-  const onComment = () => {
-    // 댓글 페이지로 이동
-  };
+  // const onLike = () => {};
+  // const onComment = () => {
+  //   // 댓글 페이지로 이동
+  // };
 
   console.log(updatedAt);
 
@@ -143,10 +129,6 @@ function PostContentPage() {
           <Row className={styles.buttons_left}>
             <PostInfo {...subInfo} size="normal" onLike={() => {}} onComment={() => {}} />
           </Row>
-
-          <div className={styles.buttons_right}>
-            <IconButton iconName="Bookmark" onClick={() => {}} />
-          </div>
         </Row>
 
         {/* 본문 영역 */}

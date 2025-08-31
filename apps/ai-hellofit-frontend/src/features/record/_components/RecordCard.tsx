@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { Column, Row, Text } from "@my/ui";
 import { Card, Tab } from "@/shared/components";
 
-type Props = {};
 /**
  *@description @TODO 기획 바뀌면 RecommendationInfoCard 와 합치기
  */

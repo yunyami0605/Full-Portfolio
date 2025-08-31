@@ -9,6 +9,8 @@ worker.events.on("response:mocked", async ({ request, response, requestId }) => 
   let body: unknown = null;
   try {
     body = await response.clone().json();
-  } catch {}
+  } catch (err) {
+    console.warn("[MSW][mocked] Failed to parse JSON body:", err);
+  }
   console.log("[MSW][mocked]", requestId, response.status, request.url, body);
 });

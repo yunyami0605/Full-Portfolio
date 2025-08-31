@@ -2,11 +2,7 @@
 
 import React, { useState } from "react";
 import { PageWrapper } from "@/shared/components";
-import {
-  useGetPostFormDataApi,
-  useGetPostOneApi,
-  usePatchPostApi,
-} from "@/features/post/_hooks/query";
+import { useGetPostFormDataApi, usePatchPostApi } from "@/features/post/_hooks/query";
 import { useParams, useRouter } from "next/navigation";
 import { ErrorResponse } from "@/shared/types/api";
 import { isAxiosError } from "@/libs/typeGuard";

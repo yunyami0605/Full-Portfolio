@@ -1,13 +1,12 @@
-import clsx from "clsx";
 import styles from "./RecordPage.module.scss";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { Button, Row, Text } from "@my/ui";
 import RecordCard from "@/features/record/_components/RecordCard";
 import { IconButton, SmallRoundedButton } from "@/shared/components";
 
-type Props = {};
 function RecordPage() {
   const tmp = Array.from({ length: 4 });
+
   return (
     <section className={styles.page_layout}>
       <section className={styles.top_wrapper}>

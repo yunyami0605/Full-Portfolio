@@ -64,7 +64,7 @@ export const Dropdown = <T,>({
         placeholder={placeholder}
         onClick={() => setOpen(true)}
         defaultValue={selectedItem?.text ?? placeholder}
-        style={!!selectedItem?.text ? {} : { color: "#c6c8cd", borderColor: "#c6c8cd" }}
+        style={selectedItem?.text ? {} : { color: "#c6c8cd", borderColor: "#c6c8cd" }}
       />
 
       <ul className={clsx(styles.dropdown_content, isOpen && styles.dropdown_content_show)}>

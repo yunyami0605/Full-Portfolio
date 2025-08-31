@@ -26,7 +26,7 @@ export const getRelativeTime = (date?: string | Date) => {
   const diffInSeconds = now.diff(target, "second");
 
   if (diffInSeconds < 60) {
-    return `방금 전`;
+    return "방금 전";
   }
 
   const diffInMinutes = Math.floor(diffInSeconds / 60);

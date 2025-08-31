@@ -15,8 +15,10 @@ import {
   useCheckNicknameDuplicateApi,
   useSignupApi,
 } from "../..";
-import _, { debounce } from "lodash";
+import { debounce } from "lodash";
 import { useAccessTokenStore } from "../../_stores/accessToken.store";
+import { isAxiosError } from "@/libs/typeGuard";
+import { ErrorResponse } from "@/shared/types/api";
 
 /**
  *@description 회원가입 폼
@@ -66,10 +68,13 @@ function SignupForm() {
   ];
 
   // 개인 정보 처리 방침 페이지 이동
-  const onMovePrivacyPage = useCallback((e?: React.MouseEvent<HTMLButtonElement>) => {
-    e?.preventDefault();
-    router.push("privacy");
-  }, []);
+  const onMovePrivacyPage = useCallback(
+    (e?: React.MouseEvent<HTMLButtonElement>) => {
+      e?.preventDefault();
+      router.push("privacy");
+    },
+    [router],
+  );
 
   // 회원가입 이벤트
   const onSubmit = async () => {
@@ -77,33 +82,35 @@ function SignupForm() {
     setServerError(initServerError);
 
     try {
-      const { access } = await signupApi.mutateAsync({
+      const response = await signupApi.mutateAsync({
         ...form,
       });
 
-      if (access) {
-        setToken(access);
+      if (response.status === 201) {
+        setToken(response.data.access);
 
         router.push("/user/register");
       }
-    } catch (error: any) {
-      const message =
-        error?.response?.data?.message ||
-        error?.message ||
-        "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.";
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        const message =
+          error?.response?.data?.message ||
+          error?.message ||
+          "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.";
 
-      switch (message) {
-        case "이미 가입된 이메일입니다.":
-          setServerError((prev) => ({ ...prev, email: message }));
-          break;
+        switch (message) {
+          case "이미 가입된 이메일입니다.":
+            setServerError((prev) => ({ ...prev, email: message }));
+            break;
 
-        case "이미 사용중인 닉네임입니다.":
-          setServerError((prev) => ({ ...prev, nickname: message }));
-          break;
+          case "이미 사용중인 닉네임입니다.":
+            setServerError((prev) => ({ ...prev, nickname: message }));
+            break;
 
-        default:
-          setServerError((prev) => ({ ...prev, common: "잘못된 접근입니다." }));
-          break;
+          default:
+            setServerError((prev) => ({ ...prev, common: "잘못된 접근입니다." }));
+            break;
+        }
       }
     }
   };
@@ -127,11 +134,11 @@ function SignupForm() {
             // 중복이 아닐 경우
             setServerError((prev) => ({ ...prev, nickname: null }));
           }
-        } catch (error) {
+        } catch {
           setServerError((prev) => ({ ...prev, common: null }));
         }
       }, 500),
-    [checkNicknameDuplicateApi.refetch],
+    [checkNicknameDuplicateApi],
   );
 
   // 기본적으로 작성 완료 되었는지

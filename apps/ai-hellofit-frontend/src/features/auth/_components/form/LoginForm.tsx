@@ -14,6 +14,8 @@ import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { ActiveButton, TextButton } from "@/shared/components";
 import { LoginFormSchema, loginSchema, useLoginApi } from "../..";
 import { useAccessTokenStore } from "../../_stores/accessToken.store";
+import { isAxiosError } from "@/libs/typeGuard";
+import { ErrorResponse } from "@/shared/types/api";
 
 /**
  *@description 이메일 로그인 폼
@@ -22,7 +24,7 @@ function LoginForm() {
   const router = useRouter();
   const { mutateAsync: loginMutate, isPending } = useLoginApi();
 
-  const [serverError, setServerError] = useState();
+  const [serverError, setServerError] = useState<string>();
   const { setToken } = useAccessTokenStore();
 
   const {
@@ -41,17 +43,19 @@ function LoginForm() {
 
     try {
       const response = await loginMutate(data);
-      const { access } = response;
+      const { access } = response.data;
       setToken(access);
 
       router.push("/main");
-    } catch (error: any) {
-      const message =
-        error?.response?.data?.message ||
-        error?.message ||
-        "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        const message =
+          error?.response?.data?.message ||
+          error?.message ||
+          "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
 
-      setServerError(message);
+        setServerError(message);
+      }
     }
   };
 

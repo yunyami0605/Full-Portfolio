@@ -6,7 +6,7 @@ import { Text } from "@my/ui";
 import { ActiveButton } from "@/shared/components";
 import { Dropdown, DropdownItem } from "@/shared/components/dropbox/Dropdown";
 import { useUserProfileStore } from "../..";
-import { AgeGroup, PostUserProfileBody } from "../../_types";
+import { AgeGroup } from "../../_types";
 
 interface Props {
   onMove: () => void;

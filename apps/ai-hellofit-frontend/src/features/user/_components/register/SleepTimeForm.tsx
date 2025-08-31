@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./UserInfoForm.module.scss";
-import React, { useState } from "react";
+import React from "react";
 import { Text } from "@my/ui";
 import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { ActiveButton } from "@/shared/components";

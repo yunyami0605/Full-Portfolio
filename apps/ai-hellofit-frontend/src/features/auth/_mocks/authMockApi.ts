@@ -94,7 +94,7 @@ export const authHandlers = [
     );
   }),
 
-  http.post("/auth/refresh", async ({ request }) => {
+  http.post("/auth/refresh", async () => {
     const hasRefreshToken = true;
 
     if (hasRefreshToken) {

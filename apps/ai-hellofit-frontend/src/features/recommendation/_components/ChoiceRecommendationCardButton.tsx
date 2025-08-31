@@ -7,7 +7,7 @@ import { IconButton } from "@/shared/components";
 
 type Props = {
   title: string;
-  data: any[];
+  data: number[];
   isChecked: boolean;
 };
 /**
