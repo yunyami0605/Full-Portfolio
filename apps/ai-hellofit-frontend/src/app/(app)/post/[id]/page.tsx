@@ -8,7 +8,7 @@ import { IconButton, PageWrapper } from "@/shared/components";
 import { ActionSheet, Popup, Row, Text } from "@my/ui";
 import { useRouter } from "next/navigation";
 import { getRelativeTime } from "@/libs/time";
-
+import Image from "next/image";
 /**
  *@description 게시글 컨텐츠 페이지
  */
@@ -24,13 +24,15 @@ function PostContentPage() {
   const [isWarningPopupOpen, setWarningPopupOpen] = useState(false);
   const isAuthor = true;
 
+  // 게시글 데이터 요청
   const { data } = useGetPostOneApi(id);
   const deletePostApi = useDeletePostApi(id);
 
-  const { title, content, createdAt } = data?.data ?? {
+  const { title, content, updatedAt, images, author } = data?.data ?? {
     title: "",
     content: "",
-    createdAt: "",
+    updatedAt: "",
+    images: [],
   };
 
   // 업데이트 페이지 이동
@@ -111,7 +113,17 @@ function PostContentPage() {
 
         {/* 게시글 이미지 */}
         <div>
-          <img src="/images/image_tmp.jpg" alt="post" className={styles.postImage} />
+          {images[0] ? (
+            <Image
+              className={styles.post_image}
+              src={images[0] ?? ""}
+              alt="게시글 이미지"
+              width={360}
+              height={360}
+            />
+          ) : (
+            <div className={styles.dummy_post_image}></div>
+          )}
         </div>
 
         {/* 버튼 영역 */}
@@ -121,7 +133,7 @@ function PostContentPage() {
 
             <IconButton iconName="Comment" onClick={() => {}} />
             <Row className={styles.count_wrapper}>
-              <Text className={styles.time_text}>{getRelativeTime(createdAt)}</Text>
+              <Text className={styles.time_text}>{getRelativeTime(updatedAt)}</Text>
             </Row>
           </Row>
 

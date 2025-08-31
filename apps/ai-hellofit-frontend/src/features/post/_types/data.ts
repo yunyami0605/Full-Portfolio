@@ -8,11 +8,15 @@ export type PostItem = {
   id: string;
   title: string;
   content: string;
-  createdAt: string;
+  updatedAt: string;
   likeCount: number;
   commentCount: number;
   viewCount: number;
   images: string[];
+  author?: {
+    id: string;
+    nickname: string;
+  };
 };
 
 /**

@@ -4,6 +4,7 @@ import { Button, Column, Row, Text } from "@my/ui";
 import { PostItem } from "../../_types/data";
 import { getRelativeTime } from "@/libs/time";
 import { IconButton } from "@/shared/components";
+import Image from "next/image";
 
 type Props = PostItem & {
   onClick: (id: string) => void;
@@ -49,13 +50,23 @@ function Post(props: Props) {
             </Row>
 
             <Row className={styles.count_wrapper}>
-              <Text>{getRelativeTime(props.createdAt)}</Text>
+              <Text>{getRelativeTime(props.updatedAt)}</Text>
             </Row>
           </Row>
         </Column>
 
         {/* 게시글 이미지 */}
-        <div className={styles.dummy_post_image}></div>
+        {props.images[0] ? (
+          <Image
+            className={styles.dummy_post_image}
+            src={props.images[0] ?? ""}
+            alt="게시글 이미지"
+            width={80}
+            height={80}
+          />
+        ) : (
+          <div className={styles.dummy_post_image}></div>
+        )}
       </Row>
     </Button>
   );
