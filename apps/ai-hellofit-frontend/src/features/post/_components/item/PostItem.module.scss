@@ -14,32 +14,40 @@
     }
 
     // 작성자 정보
-    .post_author_info_wrapper {
-      gap: 6px;
+    .post_author_info {
+      gap: 15px;
 
-      .post_author_info {
-        gap: 15px;
-
-        .dummy_profile_image {
-          width: 24px;
-          height: 24px;
-          border-radius: 24px;
-          background-color: $color-grayscale-50;
-        }
-
-        .author_name_txt {
-          font-size: 1rem;
-          color: $color-grayscale-90;
-          font-weight: bold;
-        }
+      .dummy_profile_image {
+        width: 24px;
+        height: 24px;
+        border-radius: 24px;
+        background-color: $color-grayscale-50;
       }
+
+      .author_name_txt {
+        font-size: 1rem;
+        color: $color-grayscale-90;
+        font-weight: bold;
+      }
+
+      .date_txt {
+        font-size: 1rem;
+        color: $color-grayscale-90;
+        font-weight: bold;
+      }
+    }
+
+    .image_wrapper {
+      width: 100%;
+      @include flex-center;
     }
   }
 }
 
 // 게시글 이미지
 .dummy_post_image {
-  width: 80px;
-  height: 80px;
+  width: 468px;
+  height: 575px;
   background-color: $color-grayscale-60;
+  object-fit: cover;
 }

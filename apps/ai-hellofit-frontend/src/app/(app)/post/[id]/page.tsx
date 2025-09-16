@@ -64,8 +64,6 @@ function PostContentPage() {
   //   // 댓글 페이지로 이동
   // };
 
-  console.log(updatedAt);
-
   return (
     <PageWrapper withHeader={false} className={styles.container}>
       {/* 게시글 삭제/차단 팝업 */}

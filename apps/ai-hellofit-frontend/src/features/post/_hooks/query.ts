@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import {
   createPostApi,
   deletePostApi,
@@ -9,14 +9,33 @@ import {
 } from "..";
 import { serverStateConstants } from "@/shared/constants/serverStateConstants";
 import { CreatePostBody } from "../_types/body";
+import { Cursor } from "@/shared/types/api";
+import { GetPostsResponse } from "../_types/response";
 
 /**
  *@description posts api hoook (게시글 목록 조회 훅)
  */
-export const useGetPostsApi = () => {
-  return useQuery({
-    queryKey: [serverStateConstants.post.getPosts],
-    queryFn: () => getPostsApi(),
+export const useGetPostsApi = (size: number) => {
+  return useInfiniteQuery<
+    Cursor<GetPostsResponse>,
+    Error,
+    InfiniteData<Cursor<GetPostsResponse>>,
+    [string, number],
+    { cursorId: string | null; size: number }
+  >({
+    queryKey: [serverStateConstants.post.getPosts, size],
+    queryFn: ({ pageParam }) => getPostsApi(pageParam),
+
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor
+        ? {
+            cursorId: lastPage.nextCursor,
+            size,
+          }
+        : null;
+    },
+
+    initialPageParam: { cursorId: null, size },
   });
 };
 

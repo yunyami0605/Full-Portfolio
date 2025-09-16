@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./Post.module.scss";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { PageWrapper } from "@/shared/components";
 import { Column } from "@my/ui";
 import PostItem from "@/features/post/_components/item/PostItem";
@@ -14,7 +14,30 @@ import RegisterButton from "@/features/post/_components/buttons/RegisterButton";
  */
 function PostsPage() {
   const router = useRouter();
-  const { data } = useGetPostsApi();
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPostsApi(10);
+
+  useEffect(() => {
+    if (!loaderRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 }, // 100% 보일 때 실행
+    );
+
+    observer.observe(loaderRef.current);
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const posts = data?.pages.flatMap((page) => page.items) ?? [];
 
   const onMoveContent = (id: string) => {
     router.push(`/post/${id}`);
@@ -23,11 +46,13 @@ function PostsPage() {
   return (
     <PageWrapper withHeader={false}>
       <Column className={styles.posts_container}>
-        {data?.data.map((item) => (
+        {posts.map((item) => (
           <React.Fragment key={item.id}>
             <PostItem onClick={(id: string) => onMoveContent(id)} {...item} />
           </React.Fragment>
         ))}
+
+        <div ref={loaderRef} style={{ height: 20 }} />
       </Column>
 
       <RegisterButton />

@@ -1,16 +1,19 @@
 import { apiCall } from "@/libs/apiCall";
 import { GetPostFormDataResponse, GetPostResponse, GetPostsResponse } from "../_types/response";
 import { CreatePostBody } from "../_types/body";
-import { MutationResponse } from "@/shared/types/api";
+import { Cursor, MutationResponse } from "@/shared/types/api";
 
 /**
  *@description posts api (게시글 목록 조회)
  */
-export const getPostsApi = () => {
-  return apiCall<GetPostsResponse>({
+export const getPostsApi = async (params: { cursorId: string | null; size: number }) => {
+  const res = await apiCall<Cursor<GetPostsResponse>>({
     url: "/posts",
     method: "GET",
+    params,
   });
+
+  return res.data;
 };
 
 /**
