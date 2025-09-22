@@ -3,7 +3,7 @@ import React from "react";
 import { Button, Column, Row, Text } from "@my/ui";
 import { PostItem } from "../../_types/data";
 import Image from "next/image";
-import PostInfo from "../info/PostInfo";
+import ActionView from "../info/ActionView";
 import { getRelativeTime } from "@/libs/time";
 
 type Props = PostItem & {
@@ -46,7 +46,7 @@ function Post(props: Props) {
         </div>
 
         {/* 게시글 좋아요, 댓글수, 조회수 정보 뷰 */}
-        <PostInfo {...props} />
+        <ActionView {...props} />
 
         <Text className={styles.post_title}>{props.title}</Text>
       </Column>

@@ -1,4 +1,4 @@
-import styles from "./PostInfo.module.scss";
+import styles from "./ActionView.module.scss";
 import React from "react";
 import { Row, Text } from "@my/ui";
 import { IconButton } from "@/shared/components";
@@ -18,7 +18,7 @@ type Props = {
 /**
  *@description 게시글 정보 컴포넌트 (좋아요, 댓글, 뷰, 상대적인 시간, 수정전 텍스트)
  */
-function PostInfo({
+function ActionView({
   likeCount,
   commentCount,
   viewCount,
@@ -56,4 +56,4 @@ function PostInfo({
   );
 }
 
-export default PostInfo;
+export default ActionView;

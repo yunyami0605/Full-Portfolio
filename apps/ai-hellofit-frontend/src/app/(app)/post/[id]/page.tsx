@@ -9,7 +9,7 @@ import { ActionSheet, Popup, Row, Text } from "@my/ui";
 import { useRouter } from "next/navigation";
 import { getRelativeTime } from "@/libs/time";
 import Image from "next/image";
-import PostInfo from "@/features/post/_components/info/PostInfo";
+import ActionView from "@/features/post/_components/info/ActionView";
 /**
  *@description 게시글 컨텐츠 페이지
  */
@@ -125,7 +125,7 @@ function PostContentPage() {
         {/* 버튼 영역 */}
         <Row className={styles.button_group}>
           <Row className={styles.buttons_left}>
-            <PostInfo {...subInfo} size="normal" onLike={() => {}} onComment={() => {}} />
+            <ActionView {...subInfo} size="normal" onLike={() => {}} onComment={() => {}} />
           </Row>
         </Row>
 
