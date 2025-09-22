@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "hellofit-bucket.s3.ap-northeast-2.amazonaws.com",
       },
+
+      {
+        protocol: "https",
+        hostname: "hellofit-bucket-test.s3.ap-northeast-2.amazonaws.com",
+      },
     ],
   },
 };
