@@ -7,6 +7,8 @@ import { useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BottomTab, Header } from "@/shared/components";
 import { queryClient } from "@/shared/setups/reactQuery";
+import { Loading } from "@/shared/components/loading/Loading";
+import { useUiStore } from "@/shared/stores/ui.store";
 
 type HeaderMapValue = { title: string; noHeader?: boolean; back: boolean; tab: boolean };
 
@@ -33,6 +35,7 @@ const headerMap = {
  */
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { loading } = useUiStore();
 
   // 기본값
   let headerProps: HeaderMapValue = { title: "", noHeader: false, back: true, tab: false };
@@ -55,7 +58,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {headerProps.tab && <BottomTab />}
       </BaseLayout>
 
-      <ReactQueryDevtools initialIsOpen={false} />
+      {loading && <Loading />}
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

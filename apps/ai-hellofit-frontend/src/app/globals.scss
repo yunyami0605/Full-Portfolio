@@ -79,3 +79,17 @@ button,
 input {
   color: $color-grayscale-80;
 }
+
+a,
+p,
+span,
+div,
+li,
+button,
+input {
+  font-size: 1.4rem;
+
+  @include media(sm) {
+    font-size: 1.6rem;
+  }
+}
