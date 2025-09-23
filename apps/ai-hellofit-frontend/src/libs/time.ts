@@ -40,5 +40,9 @@ export const getRelativeTime = (date?: string | Date) => {
   }
 
   const diffInDays = Math.floor(diffInHours / 24);
-  return `${diffInDays}일 전`;
+  if (diffInDays < 7) {
+    return `${diffInDays}일 전`;
+  }
+
+  return target.format("YYYY.MM.DD");
 };
