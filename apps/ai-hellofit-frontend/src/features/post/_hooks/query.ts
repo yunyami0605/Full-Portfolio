@@ -9,7 +9,7 @@ import {
 } from "..";
 import { serverStateConstants } from "@/shared/constants/serverStateConstants";
 import { CreatePostBody } from "../_types/body";
-import { Cursor } from "@/shared/types/api";
+import { Cursor, CursorQuery } from "@/shared/types/api";
 import { GetPostsResponse } from "../_types/response";
 
 /**
@@ -21,7 +21,7 @@ export const useGetPostsApi = (size: number) => {
     Error,
     InfiniteData<Cursor<GetPostsResponse>>,
     [string, number],
-    { cursorId: string | null; size: number }
+    CursorQuery
   >({
     queryKey: [serverStateConstants.post.getPosts, size],
     queryFn: ({ pageParam }) => getPostsApi(pageParam),

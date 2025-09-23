@@ -1,0 +1,16 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.image_wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/2;
+
+  @include media(sm) {
+    height: 480px;
+  }
+
+  & image {
+    object-fit: cover;
+  }
+}

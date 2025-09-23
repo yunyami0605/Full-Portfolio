@@ -47,9 +47,13 @@ function PostsPage() {
     <PageWrapper withHeader={false}>
       <Column className={styles.posts_container}>
         {posts.map((item) => (
-          <React.Fragment key={item.id}>
-            <PostItem onClick={(id: string) => onMoveContent(id)} {...item} />
-          </React.Fragment>
+          <PostItem
+            key={item.id}
+            onClick={(id: string) => {
+              onMoveContent(id);
+            }}
+            {...item}
+          />
         ))}
 
         <div ref={loaderRef} style={{ height: 20 }} />

@@ -1,5 +1,7 @@
 import { AwsS3UploadFieldData } from "@/features/aws/_types/data";
 import { CreatePostBody } from "./body";
+import { ImageUrl } from "@/shared/types/base";
+import { AuthorProfile } from "@/features/user/_types/base";
 
 /**
  *@description 게시글 목록 항목
@@ -14,10 +16,7 @@ export type PostItem = {
   commentCount: number;
   viewCount: number;
   images: string[];
-  author?: {
-    id: string;
-    nickname: string;
-  };
+  author?: AuthorProfile;
 };
 
 /**

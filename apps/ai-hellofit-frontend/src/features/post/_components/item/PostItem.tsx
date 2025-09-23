@@ -1,57 +1,79 @@
 import styles from "./PostItem.module.scss";
-import React from "react";
-import { Button, Column, Row, Text } from "@my/ui";
-import { PostItem } from "../../_types/data";
-import Image from "next/image";
+import React, { useState } from "react";
+import { Button, Center, Column, Row, Text } from "@my/ui";
+import { PostItem as PostItemType } from "../../_types/data";
 import ActionView from "../info/ActionView";
-import { getRelativeTime } from "@/libs/time";
+import { AuthorInfoView } from "@/shared/components/views/AuthorInfoView";
+import PostImage from "../image/PostImage";
+import clsx from "clsx";
 
-type Props = PostItem & {
-  onClick: (id: string) => void;
+type Props = PostItemType & {
+  onClick?: (id: string) => void;
+  isExpand?: boolean;
+  onMoreOpen?: () => void;
 };
 
 /**
  *@description 게시글 항목 (목록)
  */
-function Post(props: Props) {
+function PostItem(props: Props) {
+  const [expand, setExpand] = useState(props.isExpand);
+
+  const onExpand = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    e?.stopPropagation();
+    setExpand((prev) => !prev);
+  };
+
   return (
-    <Button className={styles.post_container_button} onClick={() => props.onClick(props.id)}>
+    <Column className={styles.post_container}>
       <Column className={styles.post_wrapper}>
-        <Column justify="between" className={styles.post_inner_wrapper}>
-          {/* 작성자 정보 뷰 */}
-          <Row className={styles.post_author_info}>
-            <div className={styles.dummy_profile_image}></div>
+        {/* 작성자 정보 뷰 */}
+        <Row className={styles.post_author_info_view}>
+          <AuthorInfoView
+            authorImage={props.author?.imageUrl}
+            authorName={props.author?.nickname ?? ""}
+            date={props.createdAt}
+            onMoreClick={props.onMoreOpen}
+          />
+        </Row>
 
-            <Text className={styles.author_name_txt}>hit_tester</Text>
+        <div
+          role={"button"}
+          className={clsx(
+            styles.post_move_action_view,
+            props.onClick && styles.content_move_button,
+          )}
+          onClick={() => {
+            if (props.onClick) {
+              props.onClick(props.id);
+            }
+          }}
+        >
+          <Center className={styles.image_view}>
+            {/* 게시글 이미지 */}
+            <PostImage imageUrl={props.images[0]} alt={props.title} />
+          </Center>
 
-            <Text className={styles.date_txt}>{getRelativeTime(props.createdAt)}</Text>
+          {/* 게시글 좋아요, 댓글수, 조회수 정보 뷰 */}
+          <Row className={styles.action_view_wrapper}>
+            <ActionView {...props} />
           </Row>
 
-          {/* helper 버튼 */}
-        </Column>
+          <Text className={styles.post_title}>{props.title}</Text>
 
-        <div className={styles.image_wrapper}>
-          {/* 게시글 이미지 */}
-          {props.images[0] ? (
-            <Image
-              className={styles.dummy_post_image}
-              src={props.images[0] ?? ""}
-              alt="게시글 이미지"
-              width={80}
-              height={80}
-            />
-          ) : (
-            <div className={styles.dummy_post_image}></div>
-          )}
+          <Text className={clsx(styles.post_content, expand && styles.expanded)}>
+            {props.content}
+          </Text>
         </div>
 
-        {/* 게시글 좋아요, 댓글수, 조회수 정보 뷰 */}
-        <ActionView {...props} />
-
-        <Text className={styles.post_title}>{props.title}</Text>
+        {!expand && (
+          <Button onClick={(e) => onExpand(e)} className={styles.more_button}>
+            더보기
+          </Button>
+        )}
       </Column>
-    </Button>
+    </Column>
   );
 }
 
-export default Post;
+export default PostItem;

@@ -1,12 +1,12 @@
 import { apiCall } from "@/libs/apiCall";
 import { GetPostFormDataResponse, GetPostResponse, GetPostsResponse } from "../_types/response";
 import { CreatePostBody } from "../_types/body";
-import { Cursor, MutationResponse } from "@/shared/types/api";
+import { Cursor, CursorQuery, MutationResponse } from "@/shared/types/api";
 
 /**
  *@description posts api (게시글 목록 조회)
  */
-export const getPostsApi = async (params: { cursorId: string | null; size: number }) => {
+export const getPostsApi = async (params: CursorQuery) => {
   const res = await apiCall<Cursor<GetPostsResponse>>({
     url: "/posts",
     method: "GET",
@@ -38,12 +38,12 @@ export const createPostApi = (data: CreatePostBody) => {
 };
 
 /**
- *@description 게시글 전체 수정 api
+ *@description 게시글 수정 api
  */
 export const patchPostApi = (id: string, data: Partial<CreatePostBody>) => {
   return apiCall<MutationResponse>({
     url: `/posts/${id}`,
-    method: "PUT",
+    method: "PATCH",
     data,
   });
 };

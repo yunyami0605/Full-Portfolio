@@ -4,12 +4,11 @@ import styles from "./PostContentPage.module.scss";
 import React, { useState } from "react";
 import { useDeletePostApi, useGetPostOneApi } from "@/features/post/_hooks/query";
 import { useParams } from "next/navigation";
-import { IconButton, PageWrapper } from "@/shared/components";
-import { ActionSheet, Popup, Row, Text } from "@my/ui";
+import { PageWrapper } from "@/shared/components";
+import { ActionSheet, Column, Popup, Row, Text } from "@my/ui";
 import { useRouter } from "next/navigation";
-import { getRelativeTime } from "@/libs/time";
-import Image from "next/image";
-import ActionView from "@/features/post/_components/info/ActionView";
+import PostItem from "@/features/post/_components/item/PostItem";
+import CommentsView from "@/features/comment/_components/view/CommentsView";
 /**
  *@description 게시글 컨텐츠 페이지
  */
@@ -26,15 +25,17 @@ function PostContentPage() {
   const isAuthor = true;
 
   // 게시글 데이터 요청
-  const { data } = useGetPostOneApi(id);
-  const deletePostApi = useDeletePostApi(id);
+  const { data: postsData } = useGetPostOneApi(id);
 
-  const { title, content, updatedAt, images, ...subInfo } = data?.data ?? {
+  const { title, content, updatedAt, images, ...subInfo } = postsData?.data ?? {
     title: "",
     content: "",
     updatedAt: "",
     images: [],
   };
+
+  // 게시글 삭제
+  const deletePostApi = useDeletePostApi(id);
 
   // 업데이트 페이지 이동
   const onMoveUpdateContent = () => {
@@ -55,17 +56,16 @@ function PostContentPage() {
     }
   };
 
+  const onMoreOpen = () => {
+    setMoreActionSheetOpen(true);
+  };
+
   const onBlockUser = () => {
     // TODO 차단 로직 추가
   };
 
-  // const onLike = () => {};
-  // const onComment = () => {
-  //   // 댓글 페이지로 이동
-  // };
-
   return (
-    <PageWrapper withHeader={false} className={styles.container}>
+    <PageWrapper withHeader={false} topPadding={false} className={styles.container}>
       {/* 게시글 삭제/차단 팝업 */}
       <Popup
         isOpen={isWarningPopupOpen}
@@ -90,54 +90,15 @@ function PostContentPage() {
         onClose={() => setMoreActionSheetOpen(false)}
       />
 
-      <section className={styles.container}>
-        {/* 상단 프로필 영역 */}
-        <Row className={styles.top_helper_section} justify="between">
-          <Row className={styles.profile}>
-            <img src="/images/image_tmp.jpg" alt="profile" className={styles.profileImage} />
+      <Column as="section" className={styles.container}>
+        {/* 게시글 상세 내용 뷰 */}
+        <Column as="section" className={styles.post_wrapper}>
+          {postsData?.data && <PostItem {...postsData?.data} isExpand onMoreOpen={onMoreOpen} />}
+        </Column>
 
-            <Text>ldh_sky</Text>
-          </Row>
-
-          <IconButton
-            iconName="More"
-            onClick={() => setMoreActionSheetOpen(true)}
-            size={34}
-            className={styles.more_button}
-          />
-        </Row>
-
-        {/* 게시글 이미지 */}
-        <div>
-          {images[0] ? (
-            <Image
-              className={styles.post_image}
-              src={images[0] ?? ""}
-              alt="게시글 이미지"
-              width={360}
-              height={360}
-            />
-          ) : (
-            <div className={styles.dummy_post_image}></div>
-          )}
-        </div>
-
-        {/* 버튼 영역 */}
-        <Row className={styles.button_group}>
-          <Row className={styles.buttons_left}>
-            <ActionView {...subInfo} size="normal" onLike={() => {}} onComment={() => {}} />
-          </Row>
-        </Row>
-
-        {/* 본문 영역 */}
-        <div className={styles.content_wrapper}>
-          <p className={styles.date}>{getRelativeTime(updatedAt ?? "")}</p>
-
-          <p className={styles.title}>{title ?? ""}</p>
-
-          <p className={styles.content}>{content ?? ""}</p>
-        </div>
-      </section>
+        {/* 댓글 목록 뷰 */}
+        <CommentsView />
+      </Column>
     </PageWrapper>
   );
 }
