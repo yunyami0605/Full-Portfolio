@@ -7,4 +7,8 @@ export const serverStateConstants = {
     getPostOne: "get-post-one",
     getPostFormData: "get-post-form-data",
   },
+  comment: {
+    getComments: "get-comments",
+    getRecomments: "get-recomments",
+  },
 } as const;

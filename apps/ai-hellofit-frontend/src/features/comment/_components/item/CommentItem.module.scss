@@ -1,0 +1,88 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+/* 댓글 전체 컨테이너 */
+.comment_container {
+  padding: 1rem 0 2rem;
+  width: 100%;
+}
+
+.parent_comment_container {
+  border-bottom: 1px solid $color-grayscale-20;
+}
+
+// 부모 댓글
+.comment_wrapper {
+  gap: 1.4rem;
+}
+
+// 답글 목록 래퍼
+.recomments_wrapper {
+  padding-left: 2rem;
+}
+
+.body {
+  @include flex-column;
+  align-items: flex-start;
+  flex: 1;
+  gap: 0.8em;
+}
+
+.text {
+  min-height: 30px;
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+  text-align: start;
+
+  @include media(sm) {
+    font-size: 1.6rem;
+  }
+}
+
+// 답글 대상
+.target {
+  color: $color-positive-10;
+  margin-right: 0.6rem;
+}
+
+/* 액션 버튼 묶음 뷰 */
+.actions_view {
+  display: flex;
+  gap: 1.6rem;
+  font-size: 1.4rem;
+  color: $color-grayscale-70;
+
+  @include media(sm) {
+    font-size: 1.6rem;
+  }
+}
+
+/* 액션 버튼 (답글달기, 삭제) */
+.action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1rem 0;
+  color: $color-grayscale-70;
+
+  @include hover {
+    color: $color-grayscale-90;
+  }
+}
+
+// 답글 더보기 버튼
+.more_button {
+  @include flex-row;
+  gap: 1.2rem;
+
+  & div {
+    width: 18px;
+    height: 1px;
+    background-color: $color-grayscale-50;
+  }
+
+  & p {
+    font-size: 1.4rem;
+    color: $color-grayscale-60;
+  }
+}
