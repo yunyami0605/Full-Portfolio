@@ -21,7 +21,13 @@ export type Cursor<T> = {
   nextCursor: string;
 };
 
-type InfiniteData<T> = {
-  pages: T[];
-  pageParams: any[];
+export type CursorQuery = { cursorId: string | null; size: number };
+
+/**
+ *@description 생성, 업데이트, 삭제 날짜 공통 타입
+ */
+export type TimeField = {
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
 };
