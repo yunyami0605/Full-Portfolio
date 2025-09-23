@@ -7,7 +7,6 @@ import { IoMdMore } from "react-icons/io";
 import {
   FaRegBookmark,
   FaRegEdit,
-  FaRegHeart,
   FaRegBell,
   FaCalendar,
   FaChevronLeft,
@@ -16,12 +15,12 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { BsChatLeftHeartFill } from "react-icons/bs";
-import { IoPerson, IoChatbubbleOutline, IoBookOutline } from "react-icons/io5";
+import { IoPerson, IoChatbubbleOutline, IoBookOutline, IoHeartOutline } from "react-icons/io5";
 import { MdHomeFilled } from "react-icons/md";
 
 const Icon = {
   More: IoMdMore,
-  Heart: FaRegHeart,
+  HeartOutline: IoHeartOutline,
   Comment: IoChatbubbleOutline,
   Bookmark: FaRegBookmark,
   Edit: FaRegEdit,
@@ -33,7 +32,7 @@ const Icon = {
   Back: FaChevronLeft,
   Next: FaAngleRight,
   CheckCircle: FaCheckCircle,
-  Read: IoBookOutline,
+  BookOutline: IoBookOutline,
   Close: FaTimes,
 } as const;
 

@@ -20,11 +20,11 @@ export function BottomTab() {
         <Link href="/main">
           <IconButton
             size={16}
-            className={clsx(pathname == "/main" && styles.active)}
+            className={clsx(styles.default, pathname == "/main" && styles.active)}
             iconName={"Home"}
           />
 
-          <Text className={clsx(pathname == "/main" && styles.active)}>메인</Text>
+          <Text className={clsx(styles.default, pathname == "/main" && styles.active)}>메인</Text>
         </Link>
       </div>
 
@@ -32,11 +32,11 @@ export function BottomTab() {
         <Link href="/record">
           <IconButton
             size={16}
-            className={clsx(pathname == "/record" && styles.active)}
+            className={clsx(styles.default, pathname == "/record" && styles.active)}
             iconName={"Calendar"}
           />
 
-          <Text className={clsx(pathname == "/record" && styles.active)}>기록</Text>
+          <Text className={clsx(styles.default, pathname == "/record" && styles.active)}>기록</Text>
         </Link>
       </div>
 
@@ -44,11 +44,13 @@ export function BottomTab() {
         <Link href="/post">
           <IconButton
             size={16}
-            className={clsx(pathname == "/post" && styles.active)}
+            className={clsx(styles.default, pathname == "/post" && styles.active)}
             iconName={"Community"}
           />
 
-          <Text className={clsx(pathname == "/post" && styles.active)}>커뮤니티</Text>
+          <Text className={clsx(styles.default, pathname == "/post" && styles.active)}>
+            커뮤니티
+          </Text>
         </Link>
       </div>
 
@@ -56,11 +58,11 @@ export function BottomTab() {
         <Link href="/mypage">
           <IconButton
             size={16}
-            className={clsx(pathname == "/mypage" && styles.active)}
+            className={clsx(styles.default, pathname == "/mypage" && styles.active)}
             iconName={"Person"}
           />
 
-          <Text className={clsx(pathname == "/mypage" && styles.active)}>계정</Text>
+          <Text className={clsx(styles.default, pathname == "/mypage" && styles.active)}>계정</Text>
         </Link>
       </div>
     </Row>

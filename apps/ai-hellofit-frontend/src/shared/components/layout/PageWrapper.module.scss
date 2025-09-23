@@ -3,13 +3,16 @@
 
 .page_layout {
   @include flex-column;
+  padding: 0;
 
   width: 100%;
-  padding: 40px 0;
   flex: 1;
 }
 
+.top_padding {
+  padding: 40px 0;
+}
+
 .page_layout_with_header {
-  //
   min-height: calc(100vh - $header-height);
 }

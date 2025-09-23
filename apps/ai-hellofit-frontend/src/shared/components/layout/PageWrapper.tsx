@@ -6,15 +6,21 @@ type Props = {
   children: ReactNode;
   withHeader?: boolean;
   className?: string;
+  topPadding?: boolean;
 };
 
 /**
  *@description 기본 페이지 Wrapper
  */
-export function PageWrapper({ children, className, withHeader = true }: Props) {
+export function PageWrapper({ children, className, withHeader = true, topPadding = true }: Props) {
   return (
     <section
-      className={clsx(styles.page_layout, withHeader && styles.page_layout_with_header, className)}
+      className={clsx(
+        styles.page_layout,
+        withHeader && styles.page_layout_with_header,
+        topPadding && styles.top_padding,
+        className,
+      )}
     >
       {children}
     </section>

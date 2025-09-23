@@ -1,0 +1,43 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.author_info_view {
+  width: 100%;
+
+  & > .more_button {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+// 작성자 정보
+.author_info_view_wrapper {
+  gap: 15px;
+  height: 44px;
+
+  .author_image_wrapper {
+    width: 32px;
+    height: 32px;
+    position: relative;
+
+    .author_image {
+      border-radius: 100%;
+      background-color: $color-grayscale-50;
+      border: 1px solid $color-grayscale-20;
+    }
+  }
+
+  // 작성 날짜 or 상대적인 작성 시간
+  .date {
+    font-size: 1.2rem;
+  }
+
+  .fallback_image {
+    border: 1px solid $color-grayscale-20;
+    background-color: $color-grayscale-10;
+    border-radius: 100%;
+
+    width: 32px;
+    height: 32px;
+  }
+}
