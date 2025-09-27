@@ -1,0 +1,13 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.title_wrapper {
+  margin-bottom: 12px;
+
+  .title {
+    margin-right: 12px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: $color-grayscale-90;
+  }
+}

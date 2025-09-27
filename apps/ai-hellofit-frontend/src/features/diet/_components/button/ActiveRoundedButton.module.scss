@@ -1,0 +1,21 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.rounded_button {
+  padding: 11.5px 19px;
+  border-radius: 2.4rem;
+  font-weight: bold;
+  font-size: 1.4rem;
+
+  &.active {
+    background-color: $color-grayscale-80;
+    border: 1px solid $color-grayscale-70;
+    color: $color-grayscale-0;
+  }
+
+  &.disabled {
+    background-color: $color-grayscale-0;
+    border: 1px solid $color-grayscale-40;
+    color: $color-grayscale-80;
+  }
+}

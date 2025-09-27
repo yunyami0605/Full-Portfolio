@@ -1,0 +1,45 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.data_wrapper {
+  gap: 14px;
+  padding: 20px 10px;
+}
+
+.data {
+  width: 100%;
+  .data_left_view {
+    gap: 0.4rem;
+  }
+
+  .nutrition_wrapper {
+    gap: 1rem;
+
+    & > p {
+      text-align: start;
+      min-width: 42px;
+      font-size: 1.4rem;
+      color: $color-grayscale-80;
+
+      .nutrition_name {
+        margin-right: 0.6rem;
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+    }
+  }
+}
+.title_wrapper {
+  margin-bottom: 12px;
+
+  .title {
+    margin-right: 12px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: $color-grayscale-90;
+  }
+}
+
+.tabs_wrapper {
+  @include flex-row;
+}
