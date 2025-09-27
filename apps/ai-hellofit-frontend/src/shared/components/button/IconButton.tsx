@@ -15,7 +15,14 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { BsChatLeftHeartFill } from "react-icons/bs";
-import { IoPerson, IoChatbubbleOutline, IoBookOutline, IoHeartOutline } from "react-icons/io5";
+import {
+  IoPerson,
+  IoChatbubbleOutline,
+  IoBookOutline,
+  IoHeartOutline,
+  IoChevronForwardOutline,
+  IoChevronBackOutline,
+} from "react-icons/io5";
 import { MdHomeFilled } from "react-icons/md";
 
 const Icon = {
@@ -30,7 +37,8 @@ const Icon = {
   Person: IoPerson,
   Home: MdHomeFilled,
   Back: FaChevronLeft,
-  Next: FaAngleRight,
+  Left: IoChevronBackOutline,
+  Right: IoChevronForwardOutline,
   CheckCircle: FaCheckCircle,
   BookOutline: IoBookOutline,
   Close: FaTimes,
