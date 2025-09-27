@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import styles from "./KakaoRoundedButton.module.scss";
 import React from "react";
-import { Button } from "@my/ui";
+import { Button, Center } from "@my/ui";
 import Image from "next/image";
 
 type Props = {
@@ -15,13 +15,15 @@ type Props = {
  */
 function KakaoRoundedButton({ onClick, className }: Props) {
   return (
-    <Button className={clsx(styles.button, className)} onClick={onClick}>
-      <Image
-        src="/images/ImageKakaoButton.png"
-        alt={"카카오 소셜 로그인 버튼"}
-        width={42}
-        height={36}
-      />
+    <Button className={className} onClick={onClick}>
+      <Center className={styles.social_button}>
+        <Image
+          src="/images/ImageKakaoButton.png"
+          alt={"카카오 소셜 로그인 버튼"}
+          width={42}
+          height={36}
+        />
+      </Center>
     </Button>
   );
 }

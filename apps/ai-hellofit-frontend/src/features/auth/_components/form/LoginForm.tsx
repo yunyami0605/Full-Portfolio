@@ -34,6 +34,10 @@ function LoginForm() {
   } = useForm<LoginFormSchema>({
     resolver: zodResolver(loginSchema),
     mode: "onSubmit",
+    defaultValues: {
+      email: "test4@test.com",
+      password: "test1234",
+    },
   });
 
   // 로그인 이벤트
@@ -102,8 +106,8 @@ function LoginForm() {
 
       <div className={styles.helper_button_wrapper}>
         <TextButton name="회원가입" onClick={onMoveSignupPagePage} />
-        <TextButton name="이메일 찾기" />
-        <TextButton name="비밀번호 찾기" />
+        {/* <TextButton name="이메일 찾기" /> */}
+        {/* <TextButton name="비밀번호 찾기" /> */}
       </div>
     </section>
   );
