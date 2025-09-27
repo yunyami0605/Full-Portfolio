@@ -28,7 +28,7 @@ export function BottomTab() {
         </Link>
       </div>
 
-      <div className={styles.tab_button}>
+      {/* <div className={styles.tab_button}>
         <Link href="/record">
           <IconButton
             size={16}
@@ -38,7 +38,7 @@ export function BottomTab() {
 
           <Text className={clsx(styles.default, pathname == "/record" && styles.active)}>기록</Text>
         </Link>
-      </div>
+      </div> */}
 
       <div className={styles.tab_button}>
         <Link href="/post">

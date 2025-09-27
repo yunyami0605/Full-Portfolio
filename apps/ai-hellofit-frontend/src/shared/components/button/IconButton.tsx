@@ -10,9 +10,7 @@ import {
   FaRegBell,
   FaCalendar,
   FaChevronLeft,
-  FaAngleRight,
   FaCheckCircle,
-  FaTimes,
 } from "react-icons/fa";
 import { BsChatLeftHeartFill } from "react-icons/bs";
 import {
@@ -22,8 +20,11 @@ import {
   IoHeartOutline,
   IoChevronForwardOutline,
   IoChevronBackOutline,
+  IoSearchOutline,
+  IoAddOutline,
 } from "react-icons/io5";
 import { MdHomeFilled } from "react-icons/md";
+import { IoIosClose } from "react-icons/io";
 
 const Icon = {
   More: IoMdMore,
@@ -41,7 +42,9 @@ const Icon = {
   Right: IoChevronForwardOutline,
   CheckCircle: FaCheckCircle,
   BookOutline: IoBookOutline,
-  Close: FaTimes,
+  Close: IoIosClose,
+  SearchOutline: IoSearchOutline,
+  AddOutline: IoAddOutline,
 } as const;
 
 type IconKey = keyof typeof Icon;
