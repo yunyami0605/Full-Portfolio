@@ -11,4 +11,12 @@ export const serverStateConstants = {
     getComments: "get-comments",
     getRecomments: "get-recomments",
   },
+  diet: {
+    recommendations: {
+      getDietsRecommendations: "get-diets-recommendations",
+    },
+    logs: {
+      getDietsLogs: "get-diets-logs",
+    },
+  },
 } as const;
