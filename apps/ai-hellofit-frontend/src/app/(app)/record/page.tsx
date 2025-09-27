@@ -1,7 +1,7 @@
 import styles from "./RecordPage.module.scss";
 import React, { Fragment } from "react";
 import { Button, Row, Text } from "@my/ui";
-import RecordCard from "@/features/record/_components/RecordCard";
+import RecordCard from "@/features/diet/_components/main/view/RecordCard";
 import { IconButton, SmallRoundedButton } from "@/shared/components";
 
 function RecordPage() {
@@ -15,7 +15,7 @@ function RecordPage() {
         <Button className={styles.calendar_go_button}>
           <Text>캘린더 보기</Text>
 
-          <IconButton iconName="Next" fill={"#333"} size={18} />
+          <IconButton iconName="Right" fill={"#333"} size={18} />
         </Button>
       </section>
 
@@ -25,7 +25,7 @@ function RecordPage() {
       </Row>
 
       {tmp.map((item, i) => (
-        <Fragment key={i}>{<RecordCard />}</Fragment>
+        <Fragment key={i}>{<RecordCard title={""} />}</Fragment>
       ))}
     </section>
   );

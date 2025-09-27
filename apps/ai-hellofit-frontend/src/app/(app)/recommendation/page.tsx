@@ -1,6 +1,6 @@
 import styles from "./Recommendation.module.scss";
 import React from "react";
-import ChoiceRecommendationCardButton from "@/features/recommendation/_components/ChoiceRecommendationCardButton";
+import ChoiceRecommendationCardButton from "@/features/diet/_components/ChoiceRecommendationCardButton";
 import { Center, Text } from "@my/ui";
 import { ActiveButton, Card, PageWrapper } from "@/shared/components";
 

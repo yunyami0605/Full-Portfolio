@@ -4,6 +4,8 @@
 .page_layout {
   @include page_layout_with_header;
 
+  background-color: $color-grayscale-10;
+
   .ads_wrapper {
     margin: 20px 0;
     width: 100%;
@@ -14,9 +16,9 @@
   }
 
   .inner_wrapper {
-    padding-top: 40px;
     width: 100%;
     padding-inline: 20px;
     overflow: auto;
+    gap: 40px;
   }
 }

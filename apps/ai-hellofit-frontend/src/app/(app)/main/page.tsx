@@ -1,22 +1,34 @@
 "use client";
 
 import styles from "./MainPage.module.scss";
-import React from "react";
-import RecommendationInfoCard from "@/features/recommendation/_components/RecommendationInfoCard";
+import React, { useState } from "react";
+import RecommendationInfoCard from "@/features/diet/_components/RecommendationInfoCard";
 import { Header, IconButton } from "@/shared/components";
+import MainTopView from "@/features/diet/_components/main/view/MainTopView";
+import Recently7DietView from "@/features/diet/_components/main/view/Recently7DietView";
+import { Column } from "@my/ui";
+import WeeklyCalendar from "@/features/diet/_components/main/calendar/WeeklyCalendar";
+import dayjs from "dayjs";
+import LogRecommendationCard from "@/features/diet/_components/main/view/LogRecommendationCard";
 
 function MainPage() {
+  const [selectedDate, setSelectedDate] = useState(dayjs().format("YYYY-MM-DD"));
+
   return (
     <section className={styles.page_layout}>
       <Header left={"헬로핏"} right={<IconButton iconName="Alarm" />} />
 
-      <section className={styles.inner_wrapper}>
-        <RecommendationInfoCard title="오늘의 추천 식단 변경하기" />
+      <MainTopView />
 
-        <div className={styles.ads_wrapper}>광고</div>
+      <Column as="section" className={styles.inner_wrapper}>
+        <WeeklyCalendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
-        <RecommendationInfoCard title="오늘의 추천 운동 변경하기" />
-      </section>
+        <LogRecommendationCard title="오늘 기록한 식단" date={selectedDate} />
+
+        <RecommendationInfoCard title="오늘 추천 식단" date={selectedDate} />
+
+        <Recently7DietView title="최근 일주일 동안 식단" />
+      </Column>
     </section>
   );
 }

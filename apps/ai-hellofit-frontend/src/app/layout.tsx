@@ -4,6 +4,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
 import { Metadata } from "next";
 import MswBoot from "@/mocks/MswBoot";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+
+dayjs.locale("ko");
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
