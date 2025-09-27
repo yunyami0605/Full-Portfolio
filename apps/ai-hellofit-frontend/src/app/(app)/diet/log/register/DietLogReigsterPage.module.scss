@@ -1,0 +1,155 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.page_inner_wrapper {
+  width: 100%;
+}
+
+// 검색 뷰
+.search_top_view {
+  width: 100%;
+  padding: 0 2rem;
+  height: 80px;
+
+  .search_wrapper {
+    width: 100%;
+    padding: 0.4rem 1.6rem;
+
+    border: 1px solid $color-grayscale-40;
+    border-radius: 1.6rem;
+
+    .search {
+      border: none;
+      flex: 1;
+      height: 36px;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    &:focus-within {
+      border-color: $color-positive-10;
+      box-shadow: 0 0 0 2px rgba(0, 148, 255, 0.3);
+    }
+  }
+}
+
+// 검색 음식 목록
+.foods_list {
+  width: 100%;
+  height: calc(100vh - 320px);
+  gap: 1.4rem;
+  padding: 1.4rem 1.2rem 4rem;
+  overflow-y: scroll;
+}
+
+// 검색된 음식 항목
+.food_item {
+  width: 100%;
+  padding: 2rem 1rem;
+  border-bottom: 1px solid $color-grayscale-30;
+
+  .food_item_wrapper {
+    width: 100%;
+  }
+}
+
+.add_button_wrapper {
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  background-color: $color-positive--10 !important;
+
+  svg {
+    stroke: $color-grayscale-0;
+    fill: $color-grayscale-0;
+  }
+}
+
+// 음식 정보
+.food_info_wrapper {
+  gap: 2rem;
+
+  // 검색 순서
+  .index {
+    font-weight: bold;
+  }
+
+  .food_data {
+    gap: 1rem;
+
+    .food_name {
+      font-size: 1.6rem;
+    }
+
+    // 음식 정보
+    .infos {
+      gap: 1.2rem;
+
+      p {
+        font-size: 1.4rem;
+        color: $color-grayscale-60;
+      }
+
+      // 영양성부
+      .nutrition_wrapper {
+        gap: 1rem;
+
+        .nutrition_name {
+          margin-right: 0.4rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+// 하단 액션 버튼 및 선택된 음식들
+.bottom_action_sheet {
+  border: 1px solid $color-grayscale-40;
+  width: 100%;
+  padding: 3rem 1.6rem 2rem;
+  position: sticky;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  min-height: 148px;
+  bottom: 0;
+  z-index: 10;
+  background-color: $color-grayscale-0;
+  gap: 1.8rem;
+}
+
+.selected_foods_wrapper {
+  gap: 1.2rem;
+}
+
+.selected_food {
+  @include flex-row;
+  padding: 0.2rem 1rem;
+  background-color: $color-grayscale-40;
+  border-radius: 24px;
+  gap: 0.4rem;
+
+  p {
+    padding-left: 0.8rem;
+    color: $color-grayscale-10;
+  }
+
+  svg {
+    fill: $color-grayscale-10;
+    stroke: $color-grayscale-10;
+  }
+}
+
+.bottom_view {
+  width: 100%;
+
+  .ok_button {
+    width: 100%;
+    border-radius: 24px;
+    height: 34px;
+    color: $color-grayscale-0;
+    background-color: $color-positive--10;
+  }
+}

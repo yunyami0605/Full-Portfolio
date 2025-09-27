@@ -16,7 +16,10 @@ function MainPage() {
 
   return (
     <section className={styles.page_layout}>
-      <Header left={"헬로핏"} right={<IconButton iconName="Alarm" />} />
+      <Header
+        left={"헬로핏"}
+        // right={<IconButton iconName="Alarm" />}
+      />
 
       <MainTopView />
 
@@ -27,7 +30,7 @@ function MainPage() {
 
         <RecommendationInfoCard title="오늘 추천 식단" date={selectedDate} />
 
-        <Recently7DietView title="최근 일주일 동안 식단" />
+        {/* <Recently7DietView title="최근 일주일 동안 식단" /> */}
       </Column>
     </section>
   );
