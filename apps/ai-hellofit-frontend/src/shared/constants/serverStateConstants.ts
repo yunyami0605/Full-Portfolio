@@ -19,4 +19,8 @@ export const serverStateConstants = {
       getDietsLogs: "get-diets-logs",
     },
   },
+
+  foods: {
+    getFoodsSearch: "get-foods-search",
+  },
 } as const;

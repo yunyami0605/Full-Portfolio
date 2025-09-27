@@ -6,6 +6,7 @@ import { Column, Row, Text } from "@my/ui";
 import { Card, IconButton, Tab } from "@/shared/components";
 import { useGetDietsRecommendationsApi } from "../_hooks/query";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 type Props = { title: string; date: string };
 
@@ -13,40 +14,35 @@ type Props = { title: string; date: string };
  *@description 추천 정보 카드
  */
 function RecommendationInfoCard({ title, date }: Props) {
+  const router = useRouter();
+
   const [tab, setTab] = useState(0); // 0: 아침, 1: 점심, 2 : 저녁
-  const { data: recommendationDatas, refetch } = useGetDietsRecommendationsApi({
+
+  // 식단 추천 목록 조회 호출
+  const { data: recommendationDatas } = useGetDietsRecommendationsApi({
     date: null,
   });
 
+  // 날짜, 시간대 필터한 데이터
   const filteredData = (recommendationDatas?.data ?? []).filter(
     (item) => item.recommendedDate === dayjs(date).format("YYYY-MM-DD"),
   )[tab];
 
-  const list = [
-    {
-      id: 1,
-      food: "계란",
-      count: 2,
-    },
-
-    {
-      id: 2,
-      food: "사과",
-      count: 3,
-    },
-
-    {
-      id: 3,
-      food: "배추",
-      count: 1,
-    },
-  ];
+  // 추천 식단 페이지 이동
+  const onMoveDietRecommendationPage = () => {
+    router.push("/diet/recommendation");
+  };
   return (
     <Card className={styles.card_custom}>
       <Row className={styles.title_wrapper}>
         <Text className={styles.title}>{title}</Text>
 
-        <IconButton iconName="Right" fill={"#333"} size={18} />
+        <IconButton
+          iconName="Right"
+          fill={"#333"}
+          size={18}
+          onClick={onMoveDietRecommendationPage}
+        />
       </Row>
 
       <section className={styles.tabs_wrapper}>
