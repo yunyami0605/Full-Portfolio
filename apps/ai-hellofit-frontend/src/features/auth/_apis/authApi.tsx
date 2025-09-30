@@ -7,6 +7,7 @@ import {
   SignupApiBody,
   SignupApiResponse,
 } from "..";
+import { SocialLoginQuery } from "../_types/query";
 
 /**
  *@description nickname 중복체크
@@ -58,5 +59,16 @@ export const postXsrfTokenApi = () => {
   return apiCall<boolean>({
     url: "/auth/xc",
     method: "POST",
+  });
+};
+
+/**
+ *@description 소셜 로그인
+ */
+export const postSocialLogin = (query: SocialLoginQuery) => {
+  return apiCall<undefined>({
+    url: "/auth/login/social",
+    method: "POST",
+    params: query,
   });
 };

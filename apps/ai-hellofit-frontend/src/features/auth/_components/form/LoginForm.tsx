@@ -17,6 +17,11 @@ import { useAccessTokenStore } from "../../_stores/accessToken.store";
 import { isAxiosError } from "@/libs/typeGuard";
 import { ErrorResponse } from "@/shared/types/api";
 
+const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_KEY!;
+const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
+
+const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
 /**
  *@description 이메일 로그인 폼
  */
@@ -65,6 +70,10 @@ function LoginForm() {
 
   const onMoveSignupPagePage = () => router.push("/signup");
 
+  const onKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   return (
     <section className={clsx(styles.wrapper)}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form_wrapper}>
@@ -89,11 +98,7 @@ function LoginForm() {
       </form>
 
       <div className={styles.social_button_wrapper}>
-        <KakaoRoundedButton
-          onClick={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
+        <KakaoRoundedButton onClick={onKakaoLogin} />
 
         <div className={styles.divider}></div>
 
