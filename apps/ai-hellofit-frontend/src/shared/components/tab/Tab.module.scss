@@ -5,10 +5,17 @@
   flex: 1;
   height: 32px;
   border-bottom: 1px solid $color-grayscale-30;
-  color: $color-grayscale-80;
   @include flex-center;
+
+  & > p {
+    color: $color-grayscale-50;
+  }
 }
 
 .isChecked {
   border-bottom: 1px solid $color-grayscale-80;
+
+  & > p {
+    color: $color-grayscale-80;
+  }
 }
