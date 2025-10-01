@@ -1,5 +1,5 @@
 import styles from "./CommentsView.module.scss";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Column } from "@my/ui";
 import { CommentItem } from "../item/CommentItem";
 import { SelectedCommentItemType, useGetCommentsApi } from "../..";
@@ -12,10 +12,12 @@ import { useParams } from "next/navigation";
 function CommentsView() {
   const params = useParams<{ id: string }>();
   const { id: postId } = params;
+  const commentsLoaderRef = useRef<HTMLDivElement | null>(null);
 
   //  댓글 목록 데이터 요청
-  const { data: commentsData } = useGetCommentsApi(postId, 10, !!postId);
+  const { data: commentsData, ...commentsApiState } = useGetCommentsApi(postId, 10, !!postId);
 
+  // 댓글 목록
   const commentsList = commentsData?.pages.flatMap((page) => page.data.items);
 
   const [commentInput, setCommentInput] = useState("");
@@ -32,6 +34,33 @@ function CommentsView() {
     setSelectedCommentItem(undefined);
   };
 
+  useEffect(() => {
+    if (!commentsLoaderRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          commentsApiState.hasNextPage &&
+          !commentsApiState.isFetchingNextPage
+        ) {
+          commentsApiState.fetchNextPage();
+        }
+      },
+      { threshold: 1 },
+    );
+
+    observer.observe(commentsLoaderRef.current);
+
+    return () => {
+      if (commentsLoaderRef.current) observer.unobserve(commentsLoaderRef.current);
+    };
+  }, [
+    commentsApiState.fetchNextPage,
+    commentsApiState.hasNextPage,
+    commentsApiState.isFetchingNextPage,
+  ]);
+
   return (
     <Column as="section" className={styles.comments_view}>
       {(commentsList ?? []).map((item) => (
@@ -43,6 +72,8 @@ function CommentsView() {
           />
         </Column>
       ))}
+
+      <div ref={commentsLoaderRef} style={{ height: 20 }} />
 
       <CommentInput
         onInitSelectedComment={onInitSelectedComment}

@@ -1,6 +1,7 @@
 import { apiCall } from "@/libs/apiCall";
 import {
   DuplicateNicknameApiResponse,
+  GetAuthInfoResponse,
   LoginApiBody,
   LoginApiResponse,
   PostRefresshTokenApiApiResponse,
@@ -10,7 +11,7 @@ import {
 import { SocialLoginQuery } from "../_types/query";
 
 /**
- *@description nickname 중복체크
+ *@description [API] nickname 중복체크
  */
 export const checkNicknameDuplicateApi = (nickname: string) => {
   return apiCall<DuplicateNicknameApiResponse>({
@@ -21,7 +22,7 @@ export const checkNicknameDuplicateApi = (nickname: string) => {
 };
 
 /**
- *@description login api
+ *@description [API] 이메일 로그인
  */
 export const loginApi = (body: LoginApiBody) => {
   return apiCall<LoginApiResponse>({
@@ -32,7 +33,7 @@ export const loginApi = (body: LoginApiBody) => {
 };
 
 /**
- *@description signup api
+ *@description [API] 회원가입
  */
 export const signupApi = (body: SignupApiBody) => {
   return apiCall<SignupApiResponse>({
@@ -43,7 +44,7 @@ export const signupApi = (body: SignupApiBody) => {
 };
 
 /**
- *@description refresh token api (rt 토큰 재발급 요청 api)
+ *@description [API] 토큰 재발급 by rt
  */
 export const postRefreshTokenApi = () => {
   return apiCall<PostRefresshTokenApiApiResponse>({
@@ -53,7 +54,7 @@ export const postRefreshTokenApi = () => {
 };
 
 /**
- *@description xsrf token api (xsrf token 재발급 요청 api)
+ *@description [API] xsrf token (xsrf token 재발급 요청 api)
  */
 export const postXsrfTokenApi = () => {
   return apiCall<boolean>({
@@ -63,12 +64,21 @@ export const postXsrfTokenApi = () => {
 };
 
 /**
- *@description 소셜 로그인
+ *@description [API] 소셜 로그인
  */
 export const postSocialLogin = (query: SocialLoginQuery) => {
-  return apiCall<undefined>({
+  return apiCall<LoginApiResponse>({
     url: "/auth/login/social",
     method: "POST",
     params: query,
+  });
+};
+
+/**
+ *@description [API] 자기 정보 조회
+ */
+export const getAuthInfo = () => {
+  return apiCall<GetAuthInfoResponse>({
+    url: "/auth/info/me",
   });
 };

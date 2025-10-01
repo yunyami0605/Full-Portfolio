@@ -23,3 +23,14 @@ export type PostRefresshTokenApiApiResponse = AuthTokenResponse;
 export type DuplicateNicknameApiResponse = {
   isDuplicate: boolean;
 };
+
+/**
+ *@description 자기 정보 조회 api 응답
+ */
+export type GetAuthInfoResponse = {
+  id: string;
+  nickname: string;
+  email: string;
+  postCount: number;
+  commentCount: number;
+};

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { LoginApiBody } from "../_types/body";
-import { loginApi } from "../_apis/authApi";
+import { loginApi } from "../_apis/auth.api";
 
 /**
  *@description login api hook

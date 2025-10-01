@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { postSocialLogin } from "../_apis/authApi";
+import { postSocialLogin } from "../_apis/auth.api";
 import { SocialLoginQuery } from "../_types/query";
 
 /**

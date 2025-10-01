@@ -67,3 +67,16 @@ export const getPostFormDataApi = (id: string) => {
     method: "GET",
   });
 };
+
+/**
+ *@description [API] 내 게시글 목록 조회
+ */
+export const getPostsMeApi = async (params: CursorQuery) => {
+  const res = await apiCall<Cursor<GetPostsResponse>>({
+    url: "/posts/me",
+    method: "GET",
+    params,
+  });
+
+  return res.data;
+};

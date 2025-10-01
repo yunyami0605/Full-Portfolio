@@ -19,6 +19,7 @@ type Props = {
   isRecomment?: boolean;
   onSelectComment: (selectedComment: SelectedCommentItemType) => void;
   onChange: (value: string) => void;
+  isActionsViewShow?: boolean;
 };
 
 /**
@@ -26,7 +27,13 @@ type Props = {
  *@param onReply 응답 이벤트
  *@param onDelete 삭제 이벤트
  */
-export function CommentItem({ data, isRecomment, onSelectComment, onChange }: Props) {
+export function CommentItem({
+  data,
+  isRecomment,
+  onSelectComment,
+  onChange,
+  isActionsViewShow = true,
+}: Props) {
   const userId = useUserId();
 
   // 삭제 / 댓글 목록조회 / 답글 목록 조회 훅
@@ -122,23 +129,25 @@ export function CommentItem({ data, isRecomment, onSelectComment, onChange }: Pr
             {data?.content ?? ""}
           </p>
 
-          <div className={styles.actions_view}>
-            <button className={styles.action} onClick={onReply}>
-              답글달기
-            </button>
-
-            {userId === data?.author.id && (
-              <button className={styles.action} onClick={onEdit}>
-                수정
+          {isActionsViewShow && (
+            <div className={styles.actions_view}>
+              <button className={styles.action} onClick={onReply}>
+                답글달기
               </button>
-            )}
 
-            {userId === data.author.id && (
-              <button className={styles.action} onClick={onDelete}>
-                삭제
-              </button>
-            )}
-          </div>
+              {userId === data?.author.id && (
+                <button className={styles.action} onClick={onEdit}>
+                  수정
+                </button>
+              )}
+
+              {userId === data.author.id && (
+                <button className={styles.action} onClick={onDelete}>
+                  삭제
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </Column>
 

@@ -6,10 +6,11 @@ import {
   GetRecommentsResponse,
 } from "../_types";
 import { serverStateConstants } from "@/shared/constants/serverStateConstants";
-import { getCommentsApi, getRecommentsApi } from "../_apis/comment.api";
+import { getCommentsApi, getCommentsMeApi, getRecommentsApi } from "../_apis/comment.api";
 import { AxiosResponse } from "axios";
+import { CursorQuery } from "@/shared/types/api";
 /**
- *@description commment 목록 조회 api hook
+ *@description [HOOK] commment 목록 조회
  */
 export const useGetCommentsApi = (postId: string, size: number, enabled?: boolean) => {
   return useInfiniteQuery<
@@ -38,7 +39,7 @@ export const useGetCommentsApi = (postId: string, size: number, enabled?: boolea
 };
 
 /**
- *@description 답글 목록 조회 api hook
+ *@description [HOOK] 답글 목록 조회
  */
 export const useGetRecommentsApi = (commentId: string, size: number, enabled: boolean) => {
   return useInfiniteQuery<
@@ -62,6 +63,34 @@ export const useGetRecommentsApi = (commentId: string, size: number, enabled: bo
     },
 
     initialPageParam: { cursorId: null, size, commentId },
+    enabled,
+  });
+};
+
+/**
+ *@description [HOOK] 내 댓글 목록 조회
+ */
+export const useGetCommentsMeApi = (size: number, enabled?: boolean) => {
+  return useInfiniteQuery<
+    AxiosResponse<GetCommentsResponse>,
+    Error,
+    InfiniteData<AxiosResponse<GetCommentsResponse>>,
+    [string, number],
+    CursorQuery
+  >({
+    queryKey: [serverStateConstants.comment.getComments, size],
+    queryFn: ({ pageParam }) => getCommentsMeApi(pageParam),
+
+    getNextPageParam: (lastPage) => {
+      return lastPage.data.nextCursor
+        ? {
+            cursorId: lastPage.data.nextCursor,
+            size,
+          }
+        : null;
+    },
+
+    initialPageParam: { cursorId: null, size },
     enabled,
   });
 };

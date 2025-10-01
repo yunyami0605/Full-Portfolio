@@ -5,6 +5,7 @@ import {
   getPostFormDataApi,
   getPostOneApi,
   getPostsApi,
+  getPostsMeApi,
   patchPostApi,
 } from "..";
 import { serverStateConstants } from "@/shared/constants/serverStateConstants";
@@ -83,5 +84,29 @@ export const useGetPostFormDataApi = (id: string) => {
   return useQuery({
     queryKey: [serverStateConstants.post.getPostFormData, id],
     queryFn: () => getPostFormDataApi(id),
+  });
+};
+
+export const useGetPostsMeApi = (size: number) => {
+  return useInfiniteQuery<
+    Cursor<GetPostsResponse>,
+    Error,
+    InfiniteData<Cursor<GetPostsResponse>>,
+    [string, number],
+    CursorQuery
+  >({
+    queryKey: [serverStateConstants.post.getPostsMe, size],
+    queryFn: ({ pageParam }) => getPostsMeApi(pageParam),
+
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor
+        ? {
+            cursorId: lastPage.nextCursor,
+            size,
+          }
+        : null;
+    },
+
+    initialPageParam: { cursorId: null, size },
   });
 };

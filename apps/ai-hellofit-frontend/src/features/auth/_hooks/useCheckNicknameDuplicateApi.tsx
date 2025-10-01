@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { checkNicknameDuplicateApi } from "../_apis/authApi";
+import { checkNicknameDuplicateApi } from "../_apis/auth.api";
 import { serverStateConstants } from "@/shared/constants/serverStateConstants";
 
 /**

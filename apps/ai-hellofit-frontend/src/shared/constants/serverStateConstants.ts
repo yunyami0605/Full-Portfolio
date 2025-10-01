@@ -1,15 +1,18 @@
 export const serverStateConstants = {
   auth: {
     checkNickname: "auth-check-nickname",
+    getInfo: "get-auth-info",
   },
   post: {
     getPosts: "get-posts",
     getPostOne: "get-post-one",
     getPostFormData: "get-post-form-data",
+    getPostsMe: "get-posts-me",
   },
   comment: {
     getComments: "get-comments",
     getRecomments: "get-recomments",
+    getCommentsMe: "get-comments-me",
   },
   diet: {
     recommendations: {

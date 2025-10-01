@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { postRefreshTokenApi, postXsrfTokenApi } from "../_apis/authApi";
+import { postRefreshTokenApi, postXsrfTokenApi } from "../_apis/auth.api";
 
 /**
  *@description post refresh token hook
