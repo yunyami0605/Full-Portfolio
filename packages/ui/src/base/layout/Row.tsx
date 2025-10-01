@@ -1,4 +1,4 @@
-import { ReactNode, CSSProperties, JSX } from "react";
+import { ReactNode, CSSProperties, JSX, AriaRole } from "react";
 import clsx from "clsx";
 import styles from "./Row.module.scss";
 
@@ -12,6 +12,8 @@ type RowProps = {
   className?: string;
   style?: CSSProperties;
   as?: keyof JSX.IntrinsicElements;
+  role?: AriaRole;
+  onClick?: () => void;
 };
 
 /**
@@ -24,11 +26,15 @@ export function Row({
   className,
   style,
   as = "div",
+  role,
+  onClick,
 }: RowProps) {
   const Component = as;
 
   return (
     <Component
+      onClick={onClick}
+      role={role}
       className={clsx(
         styles.row,
         styles[`align-${align}`],
