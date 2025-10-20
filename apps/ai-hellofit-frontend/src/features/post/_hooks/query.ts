@@ -16,7 +16,7 @@ import { GetPostsResponse } from "../_types/response";
 /**
  *@description posts api hoook (게시글 목록 조회 훅)
  */
-export const useGetPostsApi = (size: number) => {
+export const useGetPostsApi = (size: number, initialData?: Cursor<GetPostsResponse>) => {
   return useInfiniteQuery<
     Cursor<GetPostsResponse>,
     Error,
@@ -37,6 +37,14 @@ export const useGetPostsApi = (size: number) => {
     },
 
     initialPageParam: { cursorId: null, size },
+
+    // 초기 ssr data
+    initialData: initialData
+      ? {
+          pageParams: [{ cursorId: null, size }],
+          pages: [initialData],
+        }
+      : undefined,
   });
 };
 
