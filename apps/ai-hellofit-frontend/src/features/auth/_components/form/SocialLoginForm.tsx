@@ -3,7 +3,6 @@
 import styles from "./SocialLoginForm.module.scss";
 import React from "react";
 import KakaoRectButton from "../button/KakaoRectButton";
-import AppleRectButton from "../button/AppleRectButton";
 import { useRouter } from "next/navigation";
 import { TextButton } from "@/shared/components";
 
@@ -17,13 +16,6 @@ function SocialLoginForm() {
     <section className={styles.wrapper}>
       <KakaoRectButton
         className={styles.kakao}
-        onClick={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-
-      <AppleRectButton
-        className={styles.apple}
         onClick={function (): void {
           throw new Error("Function not implemented.");
         }}
