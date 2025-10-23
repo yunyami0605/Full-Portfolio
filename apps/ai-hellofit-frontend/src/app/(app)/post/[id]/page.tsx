@@ -9,6 +9,7 @@ import { ActionSheet, Column, Popup, Row, Text } from "@my/ui";
 import { useRouter } from "next/navigation";
 import PostItem from "@/features/post/_components/item/PostItem";
 import CommentsView from "@/features/comment/_components/view/CommentsView";
+import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
 /**
  *@description 게시글 컨텐츠 페이지
  */
@@ -17,15 +18,21 @@ function PostContentPage() {
   const { id } = params;
   const router = useRouter();
 
+  const { userId } = useAccessTokenStore();
+
   // 삭제/수정 액션시트 on/off
   const [isMoreActionSheetOpen, setMoreActionSheetOpen] = useState(false);
 
   // 삭제, 차단 팝업 on/off state
   const [isWarningPopupOpen, setWarningPopupOpen] = useState(false);
-  const isAuthor = true;
 
   // 게시글 데이터 요청
   const { data: postsData } = useGetPostOneApi(id);
+
+  const isAuthor = React.useMemo(() => {
+    if (!postsData?.data?.author?.id || !userId) return false;
+    return userId === postsData.data.author.id;
+  }, [postsData, userId]);
 
   const { title, content, updatedAt, images, ...subInfo } = postsData?.data ?? {
     title: "",
