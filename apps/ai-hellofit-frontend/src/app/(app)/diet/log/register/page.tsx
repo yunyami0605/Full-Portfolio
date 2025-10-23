@@ -6,6 +6,12 @@ import { PageWrapper } from "@/shared/components/layout/PageWrapper";
 import { Button, Center, Column, Input, Row, Text } from "@my/ui";
 import { IconButton } from "@/shared/components";
 import { useGetFoodsSearch } from "@/features/food/_hooks/query";
+import { usePostDietsLogsMe } from "@/features/diet/_hooks/mutation";
+import { useGetDietsRecommendationsApi } from "@/features/diet/_hooks/query";
+import dayjs from "dayjs";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { MealType, SourceType } from "@/features/diet/types/base";
+import { useUiStore } from "@/shared/stores/ui.store";
 
 /**
  *@description 식단 등록 페이지
@@ -14,11 +20,31 @@ function DietLogReigsterPage() {
   // 선택된 음식들 state
   const [selectedLog, setSelectedLog] = useState<
     {
-      name: string;
+      foodName: string;
       id: string;
     }[]
   >([]);
   const loaderRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const { showToast } = useUiStore();
+
+  const timeKorText = ["아침", "점심", "저녁"];
+  const timeEngText = ["BREAKFAST", "LUNCH", "DINNER"];
+
+  const searchParams = useSearchParams();
+
+  const date = searchParams.get("date");
+  const tab = searchParams.get("tab"); // 0: 아침, 1: 점심, 2 : 저녁
+
+  useEffect(() => {
+    if (tab === null) {
+      if (window.history.length > 1) {
+        router.back();
+      } else {
+        router.push("/");
+      }
+    }
+  }, [tab, router]);
 
   // 검색어
   const [keyword, setKeyword] = useState<string>();
@@ -26,7 +52,20 @@ function DietLogReigsterPage() {
   // 음식 목록 조회 api 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFoodsSearch(10, keyword);
 
+  // 식단 기록 등록 api 호출
+  const { mutateAsync: mutateCreateDietsLogs } = usePostDietsLogsMe();
+
   const foodsData = data?.pages.flatMap((page) => page.data.items) ?? [];
+
+  // 식단 추천 목록 조회 호출
+  const { data: recommendationDatas } = useGetDietsRecommendationsApi({
+    date,
+  });
+
+  // 날짜, 시간대 필터한 데이터
+  const filteredData = (recommendationDatas?.data ?? []).filter(
+    (item) => item.recommendedDate === dayjs(date).format("YYYY-MM-DD"),
+  )[tab as any];
 
   // 기록 추가/삭제
   const onFoodAction = (id: string, name: string, isAdd: boolean) => {
@@ -42,7 +81,7 @@ function DietLogReigsterPage() {
     setSelectedLog((prev) => [
       ...prev,
       {
-        name,
+        foodName: name,
         id,
       },
     ]);
@@ -51,6 +90,29 @@ function DietLogReigsterPage() {
   // 기록 제거
   const onDeleteLog = (id: string) => {
     setSelectedLog((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  /**
+   * 식단 기록 등록 이벤트
+   */
+  const onCreateDietsLogs = () => {
+    if (date === null) return;
+
+    const body = {
+      mealType: timeEngText[tab as any] as MealType,
+      logDate: date,
+      source: "USER" as SourceType,
+      items: selectedLog,
+    };
+    mutateCreateDietsLogs(body).then((response) => {
+      if (response.status === 201) {
+        showToast({
+          message: "정상적으로 식단 등록되었습니다.",
+          type: "success",
+        });
+        router.back();
+      }
+    });
   };
 
   // 무한스크롤링 하단 체크
@@ -142,20 +204,40 @@ function DietLogReigsterPage() {
         </Column>
 
         <Column className={styles.bottom_action_sheet}>
-          <Row className={styles.selected_foods_wrapper}>
-            {selectedLog.map((log) => (
-              <Row key={log.id}>
-                <button className={styles.selected_food} onClick={() => onDeleteLog(log.id)}>
-                  <Text>{log.name}</Text>
+          <Column className={styles.recommend_view}>
+            <Text className={styles.recommend_title}>금일 추천 식단</Text>
 
-                  <IconButton iconName={"Close"} size={20} />
-                </button>
-              </Row>
-            ))}
-          </Row>
+            <Row className={styles.recommend_inner_wrapper}>
+              {(filteredData?.foods ?? []).map((item, i) => (
+                <Center>
+                  <Text>
+                    {i + 1}. {item.foodName}
+                  </Text>
+                </Center>
+              ))}
+            </Row>
+          </Column>
+
+          <Column className={styles.recommend_view}>
+            <Text className={styles.recommend_title}>기록한 식단</Text>
+
+            <Row className={styles.selected_foods_wrapper}>
+              {selectedLog.map((log) => (
+                <Row key={log.id}>
+                  <button className={styles.selected_food} onClick={() => onDeleteLog(log.id)}>
+                    <Text>{log.foodName}</Text>
+
+                    <IconButton iconName={"Close"} size={20} />
+                  </button>
+                </Row>
+              ))}
+            </Row>
+          </Column>
 
           <Column className={styles.bottom_view}>
-            <Button className={styles.ok_button}>아침 식단 기록</Button>
+            <Button onClick={onCreateDietsLogs} className={styles.ok_button}>
+              {timeKorText[tab as any]} 식단 기록
+            </Button>
           </Column>
         </Column>
       </Column>

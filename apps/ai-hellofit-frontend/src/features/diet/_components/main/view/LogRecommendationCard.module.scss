@@ -43,3 +43,23 @@
 .tabs_wrapper {
   @include flex-row;
 }
+
+.no_log_view {
+  width: 100%;
+  padding-top: 1rem;
+  gap: 1.6rem;
+  flex-direction: column;
+
+  // 금일 식단 기록 없는 경우 텍스트
+  .no_today_log_text {
+    text-align: center;
+  }
+
+  .no_today_log_btn {
+    font-size: 1.2rem;
+    color: $color-positive-0;
+    font-weight: bold;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid $color-positive-0;
+  }
+}

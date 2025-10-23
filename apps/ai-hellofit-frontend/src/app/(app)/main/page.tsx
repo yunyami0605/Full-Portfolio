@@ -1,11 +1,10 @@
 "use client";
 
 import styles from "./MainPage.module.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RecommendationInfoCard from "@/features/diet/_components/RecommendationInfoCard";
 import { Header, IconButton } from "@/shared/components";
 import MainTopView from "@/features/diet/_components/main/view/MainTopView";
-import Recently7DietView from "@/features/diet/_components/main/view/Recently7DietView";
 import { Column } from "@my/ui";
 import WeeklyCalendar from "@/features/diet/_components/main/calendar/WeeklyCalendar";
 import dayjs from "dayjs";

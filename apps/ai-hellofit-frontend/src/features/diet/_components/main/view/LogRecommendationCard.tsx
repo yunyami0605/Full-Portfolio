@@ -2,7 +2,7 @@
 
 import styles from "./LogRecommendationCard.module.scss";
 import React, { useState } from "react";
-import { Column, Row, Text } from "@my/ui";
+import { Button, Center, Column, Row, Text } from "@my/ui";
 import { Card, IconButton, Tab } from "@/shared/components";
 import dayjs from "dayjs";
 import { useGetDietsLogsApi } from "../../../_hooks/query";
@@ -30,7 +30,7 @@ function LogRecommendationCard({ title, date }: Props) {
   )[tab];
 
   const onMoveLogRegisterPage = () => {
-    router.push("/diet/recommendation");
+    router.push(`/diet/log/register?date=${date}&tab=${tab}`);
   };
 
   return (
@@ -48,6 +48,16 @@ function LogRecommendationCard({ title, date }: Props) {
       </section>
 
       <Column justify="between" className={styles.data_wrapper}>
+        {!filteredData?.foods && (
+          <Center className={styles.no_log_view}>
+            <Text className={styles.no_today_log_text}>오늘 식단을 기록하지 않았어요.</Text>
+
+            <Button onClick={onMoveLogRegisterPage}>
+              <Text className={styles.no_today_log_btn}>식단 기록하러 가기</Text>
+            </Button>
+          </Center>
+        )}
+
         {(filteredData?.foods ?? []).map((item, i) => (
           <Row className={styles.data} key={i} justify="between">
             <Row className={styles.data_left_view}>
