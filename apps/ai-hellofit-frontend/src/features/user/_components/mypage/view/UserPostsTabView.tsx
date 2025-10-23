@@ -22,7 +22,12 @@ function UserPostsTabView({ data }: Props) {
   return (
     <Column className={styles.tab_view}>
       {data.map((item) => (
-        <Row role="button" onClick={() => onClick(item.id)} className={styles.my_post_item_wrapper}>
+        <Row
+          key={item.id}
+          role="button"
+          onClick={() => onClick(item.id)}
+          className={styles.my_post_item_wrapper}
+        >
           <Center className={styles.post_image}>
             <PostImage imageUrl={item.images[0]} alt={item.title} />
           </Center>

@@ -6,6 +6,11 @@
   gap: 32px;
   margin-bottom: 40px;
   padding: 0 20px;
+  height: 100%;
+
+  .profile_wrapper {
+    gap: 1rem;
+  }
 }
 
 .bottom_info_container {

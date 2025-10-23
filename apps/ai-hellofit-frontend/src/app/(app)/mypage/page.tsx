@@ -84,7 +84,7 @@ function Mypage() {
   return (
     <PageWrapper withHeader={false}>
       <Row className={styles.top_info_container}>
-        <Column align="center">
+        <Column align="center" className={styles.profile_wrapper}>
           <ProfileImageRegisterButton />
 
           <ProfileEditButton />
