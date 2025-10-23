@@ -9,6 +9,7 @@ import { BottomTab, Header } from "@/shared/components";
 import { queryClient } from "@/shared/setups/reactQuery";
 import { Loading } from "@/shared/components/loading/Loading";
 import { useUiStore } from "@/shared/stores/ui.store";
+import Toast from "@/shared/components/toast/Toast";
 
 type HeaderMapValue = { title: string; noHeader?: boolean; back: boolean; tab: boolean };
 
@@ -60,6 +61,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </BaseLayout>
 
       {loading && <Loading />}
+      <Toast />
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
