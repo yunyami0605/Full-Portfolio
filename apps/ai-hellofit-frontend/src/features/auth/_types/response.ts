@@ -1,5 +1,9 @@
 export type AuthTokenResponse = {
   access: string;
+  provider?: string;
+  socialId?: string;
+  message?: string;
+  status?: string;
 };
 
 /**

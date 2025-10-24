@@ -3,7 +3,7 @@
 import styles from "./SignupForm.module.scss";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Checkbox, Row, Text } from "@my/ui";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LabeledInput } from "@/shared/components/input/LabeledInput";
@@ -11,14 +11,15 @@ import { ActiveButton } from "@/shared/components";
 import {
   authConstant,
   signupSchema,
+  SocialType,
   useAuthSignupStore,
   useCheckNicknameDuplicateApi,
-  useSignupApi,
 } from "../..";
 import { debounce } from "lodash";
 import { useAccessTokenStore } from "../../_stores/accessToken.store";
 import { isAxiosError } from "@/libs/typeGuard";
 import { ErrorResponse } from "@/shared/types/api";
+import { usePostSocialSignupApi, useSignupApi } from "../../_hooks/mutation";
 
 /**
  *@description 회원가입 폼
@@ -28,9 +29,15 @@ function SignupForm() {
   const router = useRouter();
   const { form, setForm } = useAuthSignupStore();
   const { setToken } = useAccessTokenStore();
+  const params = useSearchParams();
+  const provider = params.get("provider");
+  const socialId = params.get("socialId");
 
   // 회원가입 체크 api 호출
   const signupApi = useSignupApi();
+
+  // 소셜 회원가입 일때,
+  const postSocialSignupApi = usePostSocialSignupApi();
 
   // 중복 닉네임 체크 api 호출
   const checkNicknameDuplicateApi = useCheckNicknameDuplicateApi(form.nickname);
@@ -82,14 +89,29 @@ function SignupForm() {
     setServerError(initServerError);
 
     try {
-      const response = await signupApi.mutateAsync({
-        ...form,
-      });
+      if (socialId && provider) {
+        const _provider = provider as SocialType;
+        const response = await postSocialSignupApi.mutateAsync({
+          ...form,
+          socialId,
+          provider: _provider,
+        });
 
-      if (response.status === 201) {
-        setToken(response.data.access);
+        if (response.status === 200) {
+          setToken(response.data.access);
 
-        router.push("/user/register");
+          router.push("/user/register");
+        }
+      } else {
+        const response = await signupApi.mutateAsync({
+          ...form,
+        });
+
+        if (response.status === 201) {
+          setToken(response.data.access);
+
+          router.push("/user/register");
+        }
       }
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {

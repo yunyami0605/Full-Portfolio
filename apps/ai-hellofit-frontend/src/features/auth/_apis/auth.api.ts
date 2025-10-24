@@ -7,8 +7,9 @@ import {
   PostRefresshTokenApiApiResponse,
   SignupApiBody,
   SignupApiResponse,
+  SocialLoginBody,
+  SocialSignupBody,
 } from "..";
-import { SocialLoginQuery } from "../_types/query";
 
 /**
  *@description [API] nickname 중복체크
@@ -66,11 +67,11 @@ export const postXsrfTokenApi = () => {
 /**
  *@description [API] 소셜 로그인
  */
-export const postSocialLogin = (query: SocialLoginQuery) => {
+export const postSocialLogin = (body: SocialLoginBody) => {
   return apiCall<LoginApiResponse>({
     url: "/auth/login/social",
     method: "POST",
-    params: query,
+    data: body,
   });
 };
 
@@ -80,5 +81,16 @@ export const postSocialLogin = (query: SocialLoginQuery) => {
 export const getAuthInfo = () => {
   return apiCall<GetAuthInfoResponse>({
     url: "/auth/info/me",
+  });
+};
+
+/**
+ *@description [API] 소셜 회원가입
+ */
+export const postSocialSignupApi = (body: SocialSignupBody) => {
+  return apiCall({
+    url: "/auth/social/signup",
+    data: body,
+    method: "POST",
   });
 };
