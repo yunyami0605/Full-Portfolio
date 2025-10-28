@@ -37,8 +37,6 @@ describe("apiCall interceptor", () => {
     const res = await apiCall.get("/test");
     const headers = mock.history.get[0].headers!;
 
-    console.log(res);
-    console.log(headers);
     expect(res.data).toEqual({ success: true });
   });
 });

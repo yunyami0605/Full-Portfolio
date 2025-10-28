@@ -22,6 +22,11 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./vitest.setup.ts",
     css: true,
+    include: [
+      "src/**/*.{test,spec}.{js,jsx,ts,tsx}",
+      "src/**/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}",
+      "src/**/_test*/**/*.{test,spec}.{js,jsx,ts,tsx}",
+    ],
   },
   esbuild: {
     jsx: "automatic", // React 17+ 자동 JSX 변환
