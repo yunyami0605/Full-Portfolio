@@ -40,8 +40,8 @@ function LoginForm() {
     resolver: zodResolver(loginSchema),
     mode: "onSubmit",
     defaultValues: {
-      email: "test4@test.com",
-      password: "test1234",
+      email: "",
+      password: "",
     },
   });
 

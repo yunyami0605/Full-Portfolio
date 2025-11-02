@@ -4,16 +4,20 @@
 
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 /**
  *@description refresh 토큰 만료 로직 처리 -> at 제거 및 로그인페이지로 이동
  */
 function handleAuthError(error: Error) {
-  if (axios.isAxiosError(error) && error.response?.status === 401) {
-    useAccessTokenStore.getState().reset();
-    if (typeof window !== "undefined") {
-      window.location.href = "/login";
+  if (axios.isAxiosError(error)) {
+    const message = (error.response?.data as { message: string })?.message;
+
+    if (error.response?.status === 401 && message === "유효하지 않은 토큰입니다.") {
+      useAccessTokenStore.getState().reset();
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
   }
 }

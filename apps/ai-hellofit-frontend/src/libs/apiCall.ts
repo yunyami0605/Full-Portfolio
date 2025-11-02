@@ -31,8 +31,14 @@ apiCall.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
+    const message = (error.response?.data as { message: string })?.message;
+
     // rf 토큰 재발급 경우
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      message === "토큰이 만료되었습니다."
+    ) {
       // 1. 재요청 설정
       originalRequest._retry = true;
 
