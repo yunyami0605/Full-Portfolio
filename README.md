@@ -1,12 +1,35 @@
-### 0. 앱 서버, LLM 서버, 프론트 깃 링크
+### 0. 참고사항
 
-[프론트 깃 https://github.com/yunyami0605/Full-Portfolio](https://github.com/yunyami0605/Full-Portfolio)
+- 현재 ai-hellofit-frontend 헬로핏 프로젝트만 개발 중입니다.
+- 다른 프로젝트는 모노레포 구성을 위한 더미 프로젝트입니다.
 
-[앱 서버 깃 https://github.com/yunyami0605/hellofit_server](https://github.com/yunyami0605/hellofit_server)
+### 1. 앱 서버, LLM 서버, 프론트 깃 링크
 
-[LLM 서버 깃 https://github.com/yunyami0605/hellofit_llm](https://github.com/yunyami0605/hellofit_llm)
+1. [프론트 깃 링크](https://github.com/yunyami0605/Full-Portfolio)
 
-### 1. 폴더 구조 (모노레포식 프로젝트 개발)
+<br />
+
+2. [앱 서버 깃 링크](https://github.com/yunyami0605/hellofit_server)
+
+<br />
+
+3. [LLM 서버 깃 링크](https://github.com/yunyami0605/hellofit_llm)
+
+### 2. 산출물
+
+1. [헬로핏 프로젝트 기획서 링크](https://cookiejy.notion.site/29e75abb802d808ab2afd94e32524708?source=copy_link)
+
+<br />
+
+2. [시스템 아키텍처 설계서 링크](https://cookiejy.notion.site/29f75abb802d803b8ffedb2a1af0915f?source=copy_link)
+
+<br />
+
+3. [데이터베이스 설계서 링크](https://cookiejy.notion.site/29f75abb802d8006b09dc395b8797c6c?source=copy_link)
+
+<br />
+
+### 3. 폴더 구조 (모노레포식 프로젝트 개발)
 
 - apps: 프로젝트폴더
 - packages:
@@ -18,7 +41,7 @@
 .
 ├── apps : 프로젝트 폴더
 │ ├── ai-hellofit-frontend : 헬로핏 프로젝트
-│ └── ai-img-shop
+│ └── ... : 다른 프로젝트
 ├── backend
 ├── packages : 공통 설정/훅/ui 프로젝트 폴더
 │ ├── config
@@ -28,16 +51,17 @@
 │ └── create-feature.sh
 '''
 
-### 2. 주요 기술
+### 4. 주요 기술
 
 - Yarn 4 Workspaces\*\*
 - Next.js 15 + React 19
 - TypeScript
+- React-query, zustand
 - Vitest + React Testing Library
 - SCSS
 - MSW(Mock Service Worker)
 
-### 3. 실행 방법
+### 5. 실행 방법
 
 - 루트에서 다음 명령어를 실행합니다.
 
@@ -56,7 +80,7 @@ yarn lint:fit
 
 ```
 
-### 4. 브랜치 전략
+### 6. 브랜치 전략
 
 1. 형태
 
@@ -79,7 +103,7 @@ yarn lint:fit
 - refactor: 서비스 로직 수정
 - style: ui 추가/수정
 
-### 5. 코드 컨벤션
+### 7. 코드 컨벤션
 
 #### 파일 및 폴더 구조
 
