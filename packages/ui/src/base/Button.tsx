@@ -13,9 +13,9 @@ type ButtonProps = {
 /**
  *@description 공통 컴포넌트 버튼
  */
-export const Button = ({ children, onClick, className = "" }: ButtonProps) => {
+export const Button = ({ children, onClick, className = "", ...props }: ButtonProps) => {
   return (
-    <button onClick={onClick} className={clsx(styles.button, className)}>
+    <button onClick={onClick} className={clsx(styles.button, className)} {...props}>
       {children}
     </button>
   );
