@@ -21,16 +21,20 @@
     "lint:fit": "yarn workspace ai-hellofit-frontend lint",
     "build:diary": "yarn workspace ai-diary build",
     "build:shop": "yarn workspace ai-img-shop build",
-    "build:fit": "yarn workspace ai-hellofit-frontend build"
+    "build:fit": "yarn workspace ai-hellofit-frontend build",
+    "test:e2e:fit": "yarn workspace ai-hellofit-frontend cypress open",
+    "test:e2e:fit:ci": "yarn workspace ai-hellofit-frontend cypress run --headless"
   },
   "packageManager": "yarn@4.9.2",
   "devDependencies": {
     "@my-config/eslint": "workspace:^",
+    "@testing-library/cypress": "^10.1.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/lodash": "^4",
+    "cypress": "^15.5.0",
     "eslint": "^9.30.1",
     "eslint-config-next": "^15.3.5",
     "eslint-config-prettier": "^10.1.5",
