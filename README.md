@@ -29,6 +29,10 @@
 
 <br />
 
+4. [기능 명세서 링크](https://cookiejy.notion.site/29f75abb802d80158670fee0596f4e82?v=29f75abb802d8028b2ab000c5e6efc0d)
+
+<br />
+
 ### 3. 폴더 구조 (모노레포식 프로젝트 개발)
 
 - apps: 프로젝트폴더
