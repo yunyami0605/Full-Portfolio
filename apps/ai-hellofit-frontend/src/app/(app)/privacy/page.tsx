@@ -20,7 +20,7 @@ function PrivacyPolicyPage() {
 
   return (
     <PageWrapper>
-      <section className={styles.policy_content}>
+      <section className={styles.policy_content} data-testid="policy-content">
         <p>
           {`개인정보처리방침
 
@@ -80,12 +80,7 @@ function PrivacyPolicyPage() {
 `}
         </p>
 
-        <ActiveButton
-          name={"동의"}
-          activeType={form.isPrivacyAgree ? "positive" : "disabled"}
-          onClick={onAgree}
-          type={"button"}
-        />
+        <ActiveButton name={"동의"} activeType={"positive"} onClick={onAgree} type={"button"} />
       </section>
     </PageWrapper>
   );
