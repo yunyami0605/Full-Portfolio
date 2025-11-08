@@ -36,7 +36,7 @@ function PostRegisterPage() {
       const res = await createPostApi.mutateAsync(formData);
 
       if (res.status === 201) {
-        router.back();
+        router.replace(`/post/${res.data.id}`);
       }
     } catch (error: unknown) {
       if (isAxiosError<ErrorResponse>(error)) {

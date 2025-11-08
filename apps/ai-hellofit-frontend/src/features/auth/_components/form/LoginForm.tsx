@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import styles from "./LoginForm.module.scss";
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import KakaoRoundedButton from "../button/KakaoRoundedButton";
 import AppleRoundedButton from "../button/AppleRoundedButton";
 import { useRouter } from "next/navigation";
@@ -46,33 +46,38 @@ function LoginForm() {
   });
 
   // 로그인 이벤트
-  const onSubmit = async (data: LoginFormSchema) => {
-    if (isPending) return;
-    setServerError(undefined);
+  const onSubmit = useCallback(
+    async (data: LoginFormSchema) => {
+      if (isPending) return;
+      setServerError(undefined);
 
-    try {
-      const response = await loginMutate(data);
-      const { access } = response.data;
-      setToken(access);
-
-      router.push("/main");
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        const message =
-          error?.response?.data?.message ||
-          error?.message ||
-          "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
-
-        setServerError(message);
+      try {
+        const response = await loginMutate(data);
+        const { access } = response.data;
+        setToken(access);
+        router.push("/main");
+      } catch (error) {
+        if (isAxiosError<ErrorResponse>(error)) {
+          const message =
+            error?.response?.data?.message ||
+            error?.message ||
+            "로그인에 실패했습니다. 잠시 후 다시 시도해주세요.";
+          setServerError(message);
+        }
       }
-    }
-  };
+    },
+    [isPending, loginMutate, setToken, router],
+  );
 
-  const onMoveSignupPagePage = () => router.push("/signup");
+  const onMoveSignupPagePage = useCallback(() => {
+    router.push("/signup");
+  }, [router]);
 
-  const onKakaoLogin = () => {
+  const onKakaoLogin = useCallback(() => {
     window.location.href = KAKAO_AUTH_URL;
-  };
+  }, []);
+
+  const hasServerError = useMemo(() => !!serverError, [serverError]);
 
   return (
     <section className={clsx(styles.wrapper)}>
@@ -90,7 +95,7 @@ function LoginForm() {
             type="password"
             placeholder="비밀번호"
             {...register("password")}
-            error={serverError ?? errors.password?.message}
+            error={hasServerError ? serverError : errors.password?.message}
           />
         </Column>
 

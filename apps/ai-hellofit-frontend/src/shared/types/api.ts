@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 
 export type MutationResponse = {
   success: boolean;
+  id: string;
 };
 
 export type ErrorResponse = {
