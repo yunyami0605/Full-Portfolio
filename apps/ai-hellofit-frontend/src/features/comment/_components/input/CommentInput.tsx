@@ -135,7 +135,7 @@ export function CommentInput({
           onKeyDown={(e) => e.key === "Enter" && onSubmitComment()}
         />
 
-        <button onClick={onSubmitComment}>
+        <button data-testid="comment-submit" onClick={onSubmitComment}>
           {selectedCommentItem?.action === "update" ? "수정" : "등록"}
         </button>
       </div>

@@ -12,6 +12,10 @@
   gap: 0.8rem;
 
   z-index: 10;
+
+  @media (min-width: 768px) {
+    width: 768px;
+  }
 }
 
 .recomment_target {
