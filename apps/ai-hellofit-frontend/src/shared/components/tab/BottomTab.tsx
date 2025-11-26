@@ -19,7 +19,7 @@ export function BottomTab() {
       <div className={styles.tab_button}>
         <Link href="/main">
           <IconButton
-            size={16}
+            size={20}
             className={clsx(styles.default, pathname == "/main" && styles.active)}
             iconName={"Home"}
           />
@@ -39,6 +39,20 @@ export function BottomTab() {
           <Text className={clsx(styles.default, pathname == "/record" && styles.active)}>기록</Text>
         </Link>
       </div> */}
+
+      <div className={styles.tab_button}>
+        <Link href="/chat">
+          <IconButton
+            size={20}
+            className={clsx(styles.default, pathname == "/chat" && styles.active)}
+            iconName={"ChatbubbleOutline"}
+          />
+
+          <Text className={clsx(styles.default, pathname == "/chat" && styles.active)}>
+            AI 채팅
+          </Text>
+        </Link>
+      </div>
 
       <div className={styles.tab_button}>
         <Link href="/post">

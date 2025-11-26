@@ -22,6 +22,7 @@ import {
   IoChevronBackOutline,
   IoSearchOutline,
   IoAddOutline,
+  IoChatbubbleEllipsesOutline,
 } from "react-icons/io5";
 import { MdHomeFilled } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
@@ -45,6 +46,7 @@ const Icon = {
   Close: IoIosClose,
   SearchOutline: IoSearchOutline,
   AddOutline: IoAddOutline,
+  ChatbubbleOutline: IoChatbubbleEllipsesOutline,
 } as const;
 
 type IconKey = keyof typeof Icon;
