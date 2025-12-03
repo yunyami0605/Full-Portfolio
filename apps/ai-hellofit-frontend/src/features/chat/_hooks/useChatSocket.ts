@@ -22,27 +22,40 @@ export function useChatSocket(options?: UseChatSocketOptions) {
   const socketRef = React.useRef<WebSocket | null>(null);
 
   React.useEffect(() => {
+    if (!accessToken) {
+      // 액세스 토큰이 준비되지 않았으면 연결 시도하지 않음
+      setIsConnected(false);
+      return;
+    }
+
     const base =
       process.env.NEXT_PUBLIC_CHAT_WS_URL ||
       (typeof window !== "undefined" && window.location.origin.replace(/^http/, "ws")) ||
-      "ws://localhost:4000";
+      "ws://localhost:8084";
 
-    // 예: ws://host/ws/chat?roomId=...&token=...
-    const url = new URL("/ws/chat", base);
+    const url = new URL("/api/ws/chat", base);
+
     if (options?.roomId) url.searchParams.set("roomId", options.roomId);
-    if (accessToken) url.searchParams.set("token", accessToken);
+    url.searchParams.set("token", accessToken);
 
     const ws = new WebSocket(url.toString());
     socketRef.current = ws;
 
-    ws.onopen = () => setIsConnected(true);
-    ws.onclose = () => setIsConnected(false);
-    ws.onerror = () => setIsConnected(false);
+    ws.onopen = () => {
+      setIsConnected(true);
+    };
+    ws.onclose = () => {
+      setIsConnected(false);
+    };
+    ws.onerror = () => {
+      setIsConnected(false);
+    };
     ws.onmessage = (event: MessageEvent) => {
       try {
         const data = JSON.parse(event.data) as ChatMessage | { type: string; payload: unknown };
         if ("role" in (data as ChatMessage) && "content" in (data as ChatMessage)) {
-          setMessages((prev) => [...prev, data as ChatMessage]);
+          const msg = data as ChatMessage;
+          setMessages((prev) => (prev.some((p) => p.id === msg.id) ? prev : [...prev, msg]));
         }
       } catch {
         // ignore parse error
