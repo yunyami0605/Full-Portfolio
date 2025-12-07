@@ -19,6 +19,12 @@ function ChatPage() {
   const { showToast } = useUiStore();
   const listRef = React.useRef<HTMLDivElement | null>(null);
 
+  const scrollToBottom = React.useCallback(() => {
+    const el = listRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, []);
+
   // 초기 채팅 내역 불러오기 (백엔드 준비 이전까지 실패해도 무시)
   React.useEffect(() => {
     getChatHistoryApi({ size: 20, cursorId: null })
@@ -32,9 +38,7 @@ function ChatPage() {
 
   // 신규 메시지 도착 시 스크롤 하단 고정
   React.useEffect(() => {
-    if (listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [history, messages]);
 
   const onSend = async () => {
@@ -44,6 +48,8 @@ function ChatPage() {
 
     // WebSocket 전송 (실시간)
     sendJson({ type: "user_message", content });
+    // 전송 직후 즉시 하단으로 스크롤
+    requestAnimationFrame(scrollToBottom);
 
     // REST 백업 전송 (백엔드 준비 전까지 실패 무시)
     try {

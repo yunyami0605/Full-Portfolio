@@ -56,6 +56,11 @@
   background: #4f46e5; // indigo-600
   color: #ffffff;
 }
+.user .role,
+.user .content,
+.user a {
+  color: #ffffff !important;
+}
 .role {
   display: block;
   font-size: 12px;
