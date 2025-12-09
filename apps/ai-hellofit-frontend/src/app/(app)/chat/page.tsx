@@ -18,11 +18,11 @@ function ChatPage() {
   const { isConnected, messages, sendJson } = useChatSocket();
   const { showToast } = useUiStore();
   const listRef = React.useRef<HTMLDivElement | null>(null);
+  const bottomRef = React.useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = React.useCallback(() => {
-    const el = listRef.current;
-    if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+    // 가장 하단 앵커로 스크롤(렌더 타이밍에 강건)
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, []);
 
   // 초기 채팅 내역 불러오기 (백엔드 준비 이전까지 실패해도 무시)
@@ -46,17 +46,9 @@ function ChatPage() {
     if (!content) return;
     setInput("");
 
-    // WebSocket 전송 (실시간)
     sendJson({ type: "user_message", content });
     // 전송 직후 즉시 하단으로 스크롤
     requestAnimationFrame(scrollToBottom);
-
-    // REST 백업 전송 (백엔드 준비 전까지 실패 무시)
-    try {
-      await postChatMessageApi({ content });
-    } catch {
-      // ignore
-    }
   };
 
   const allMessages = React.useMemo(() => {
@@ -68,6 +60,7 @@ function ChatPage() {
       <div className={styles.container}>
         <div className={styles.headerRow}>
           <Text className={styles.status}>{isConnected ? "실시간 연결됨" : "연결 대기중"}</Text>
+          <div ref={bottomRef} />
         </div>
 
         <div className={styles.messages} ref={listRef}>
@@ -84,6 +77,8 @@ function ChatPage() {
               </div>
             </div>
           ))}
+
+          <div className={styles.bottomAnchor} ref={bottomRef} />
         </div>
 
         <div className={styles.inputBar}>
@@ -92,7 +87,12 @@ function ChatPage() {
             placeholder="AI에게 식단 및 건강 정보에 대해 물어보세요..."
             value={input}
             onChange={(e) => setInput((e.target as HTMLInputElement).value)}
-            onKeyDown={(e) => e.key === "Enter" && onSend()}
+            onKeyDown={(e) => {
+              const ne = e.nativeEvent as unknown as { isComposing?: boolean };
+              if (e.key === "Enter" && !ne?.isComposing) {
+                onSend();
+              }
+            }}
           />
           <Button className={styles.sendButton} onClick={onSend}>
             보내기
