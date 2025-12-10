@@ -1,7 +1,7 @@
 "use client";
 
 import { Input, Label } from "@my/ui";
-import { InputHTMLAttributes } from "react";
+import React, { InputHTMLAttributes, forwardRef } from "react";
 import clsx from "clsx";
 import styles from "./LabeledInput.module.scss";
 
@@ -18,37 +18,32 @@ export type LabeledInputProps = InputHTMLAttributes<HTMLInputElement> & {
 /**
  *@description label + input + error 폼 형식 컴포넌트
  */
-export const LabeledInput = ({
-  id,
-  required,
-  error,
-  label,
-  classNameWrapper,
-  className,
-  success,
-  ...inputProps
-}: LabeledInputProps) => {
-  return (
-    <div className={clsx(styles.input_wrapper, classNameWrapper)}>
-      {label && (
-        <Label htmlFor={id} required={required} className={styles.label}>
-          {label}
-        </Label>
-      )}
-
-      <Input
-        {...inputProps}
-        id={id}
-        className={clsx(
-          styles.input,
-          error && styles.error,
-          inputProps.type === "button" && styles.input_button,
-          className,
+export const LabeledInput = forwardRef<HTMLInputElement, LabeledInputProps>(
+  ({ id, required, error, label, classNameWrapper, className, success, ...inputProps }, ref) => {
+    return (
+      <div className={clsx(styles.input_wrapper, classNameWrapper)}>
+        {label && (
+          <Label htmlFor={id} required={required} className={styles.label}>
+            {label}
+          </Label>
         )}
-      />
 
-      {error && <p className={clsx(styles.label, styles.error)}>{error}</p>}
-      {!error && success && <p className={clsx(styles.label, styles.success)}>{success}</p>}
-    </div>
-  );
-};
+        <Input
+          {...inputProps}
+          ref={ref}
+          id={id}
+          className={clsx(
+            styles.input,
+            error && styles.error,
+            inputProps.type === "button" && styles.input_button,
+            className,
+          )}
+        />
+
+        {error && <p className={clsx(styles.label, styles.error)}>{error}</p>}
+        {!error && success && <p className={clsx(styles.label, styles.success)}>{success}</p>}
+      </div>
+    );
+  },
+);
+LabeledInput.displayName = "LabeledInput";
