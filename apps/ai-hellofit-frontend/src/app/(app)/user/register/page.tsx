@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { Header, IconButton } from "@/shared/components";
 import { PostUserProfileBody, usePostUserProfileApi, useUserProfileStore } from "@/features/user";
 import { userProfileSchema } from "@/features/user/_schemas/userProfile.schema";
+import { useGenerateDailyRecommendations } from "@/features/diet/_hooks/mutation";
+import { useUiStore } from "@/shared/stores/ui.store";
 
 const steps = [
   (onMove: () => void) => <Intro onMove={onMove} />,
@@ -36,14 +38,27 @@ function UserInfoRegister() {
   const postUserProfileApi = usePostUserProfileApi();
   const { form } = useUserProfileStore();
   const [step, setStep] = useState(0);
+  const generateDaily = useGenerateDailyRecommendations();
+  const { showToast } = useUiStore();
 
-  const onMove = () => {
+  const onMove = async () => {
     if (step === steps.length - 1) {
       const checkForm = userProfileSchema.safeParse(form);
 
       if (checkForm.success) {
-        postUserProfileApi.mutateAsync(form as PostUserProfileBody);
-        router.push("/main");
+        try {
+          const res = await postUserProfileApi.mutateAsync(form as PostUserProfileBody);
+          if ((res as any)?.status === 200) {
+            // 프로필 저장 성공 시 식단 추천 즉시 생성
+            await generateDaily.mutateAsync();
+            showToast({ type: "success", message: "프로필 등록이 완료되었습니다." });
+            router.push("/main");
+          } else {
+            showToast({ type: "error", message: "프로필 등록에 실패했습니다." });
+          }
+        } catch (e) {
+          showToast({ type: "error", message: "프로필 등록에 실패했습니다." });
+        }
       } else {
         console.error(checkForm.error.format());
       }

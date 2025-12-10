@@ -5,6 +5,16 @@ import { PostDietsLogsMeBody } from "../types/body";
 import { MutationResponse } from "@/shared/types/api";
 
 /**
+ *@description 회원가입/프로필 저장 직후 오늘~2일치 추천 생성 트리거
+ */
+export const postDietsRecommendationsGenerateDailyApi = () => {
+  return apiCall<void>({
+    url: `/diets/recommendations/generate/daily`,
+    method: "POST",
+  });
+};
+
+/**
  *@description 자신 식단 추천 조회
  */
 export const getDietsRecommendationsApi = (query: GetDietsRecommendationsQuery) => {

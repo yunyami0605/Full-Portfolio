@@ -72,7 +72,6 @@ export default function EditProfilePage() {
   const { data: authInfo, isLoading: isLoadingAuth, refetch: refetchAuthInfo } = useGetAuthInfo();
   const patchProfile = usePatchUserProfile();
   const patchAccount = usePatchUserAccount();
-  console.log(authInfo);
   const { showToast } = useUiStore();
 
   // 닉네임 중복 검사 (디바운스 내장)
