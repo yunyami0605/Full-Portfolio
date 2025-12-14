@@ -5,7 +5,9 @@ import React from "react";
 type Props = {
   isOpen: boolean;
   title?: string;
-  options: {
+  header?: React.ReactNode;
+  children?: React.ReactNode;
+  options?: {
     label: string;
     onClick: () => void;
     isWarning?: boolean;
@@ -17,7 +19,7 @@ type Props = {
  *@description 하단 액션 시트
  *@params optoins: 각 버튼 라벨, onclick, isWraning = 경고
  */
-export function ActionSheet({ isOpen, title, options, onClose }: Props) {
+export function ActionSheet({ isOpen, title, header, children, options = [], onClose }: Props) {
   if (!isOpen) return null;
 
   return (
@@ -25,22 +27,28 @@ export function ActionSheet({ isOpen, title, options, onClose }: Props) {
       <div className={clsx(styles.sheet)} onClick={(e) => e.stopPropagation()}>
         {title && <div className={styles.title}>{title}</div>}
 
-        <div className={styles.options}>
-          {options.map((opt, idx) => (
-            <button
-              key={idx}
-              className={clsx(styles.option, {
-                [styles.warn]: opt.isWarning,
-              })}
-              onClick={() => {
-                opt.onClick();
-                onClose();
-              }}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+        {header && <div className={styles.header}>{header}</div>}
+
+        {children ? (
+          <div className={styles.content}>{children}</div>
+        ) : (
+          <div className={styles.options}>
+            {options.map((opt, idx) => (
+              <button
+                key={idx}
+                className={clsx(styles.option, {
+                  [styles.warn]: opt.isWarning,
+                })}
+                onClick={() => {
+                  opt.onClick();
+                  onClose();
+                }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -13,6 +13,7 @@
 .sheet {
   width: 100%;
   max-width: 500px;
+  min-height: 280px;
   margin: 0 auto;
   background: $color-grayscale-0;
   border-top-left-radius: 16px;
@@ -27,6 +28,20 @@
   color: $color-grayscale-80;
   text-align: center;
   border-bottom: 1px solid $color-grayscale-30;
+}
+
+// 커스텀 헤더 영역 (탭 등)
+.header {
+  padding: 10px 14px;
+  border-bottom: 1px solid $color-grayscale-30;
+  background: $color-grayscale-0;
+}
+
+// 커스텀 콘텐츠 영역
+.content {
+  padding: 12px 14px 16px;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 // 선택지 버튼
