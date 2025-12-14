@@ -35,6 +35,46 @@
   }
 }
 
+// 날짜 네비게이터
+.date_nav {
+  width: 100%;
+  padding: 0 2rem;
+  margin: 8px 0;
+
+  .date_label {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+
+  // 네비게이터 버튼 공통
+  .nav_btn {
+    height: 34px;
+    padding: 0 1.2rem;
+    border-radius: 20px;
+    font-weight: 600;
+    border: 1px solid $color-grayscale-30;
+    background-color: $color-grayscale-0;
+    color: $color-grayscale-80;
+    transition: all 0.12s ease;
+
+    &:hover {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+
+  // 날짜 칩
+  .date_label_chip {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: $color-grayscale-80;
+  }
+}
+
 // 검색 음식 목록
 .foods_list {
   width: 100%;
@@ -132,8 +172,29 @@
     color: $color-positive--10;
   }
 
+  .meal_selector {
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .meal_chip {
+    height: 28px;
+    padding: 0 0.8rem;
+    border-radius: 9999px;
+    border: 1px solid $color-grayscale-30;
+    background-color: $color-grayscale-0;
+    color: $color-grayscale-70;
+    font-weight: 600;
+  }
+
+  .meal_chip_active {
+    background-color: $color-positive--10;
+    color: $color-grayscale-0;
+    border-color: transparent;
+  }
+
   .recommend_inner_wrapper {
-    gap: 0.8rem;
+    gap: 1rem;
   }
 }
 
@@ -144,8 +205,8 @@
 
 .selected_food {
   @include flex-row;
-  padding: 0.2rem 1rem;
-  background-color: $color-grayscale-40;
+  padding: 0.2rem 0.6rem;
+  background-color: $color-grayscale-50;
   border-radius: 24px;
   gap: 0.4rem;
 

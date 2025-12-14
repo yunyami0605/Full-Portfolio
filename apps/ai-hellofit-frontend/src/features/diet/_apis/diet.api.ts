@@ -1,6 +1,14 @@
 import { apiCall } from "@/libs/apiCall";
-import { GetDietsLogsApiResponse, GetDietsRecommendationsResponse } from "../types/response";
-import { GetDietsLogsApiQuery, GetDietsRecommendationsQuery } from "../types/query";
+import {
+  GetDietsLogsApiResponse,
+  GetDietsRecommendationsResponse,
+  GetDietsMacrosDailyResponse,
+} from "../types/response";
+import {
+  GetDietsLogsApiQuery,
+  GetDietsRecommendationsQuery,
+  GetDietsMacrosDailyQuery,
+} from "../types/query";
 import { PostDietsLogsMeBody } from "../types/body";
 import { MutationResponse } from "@/shared/types/api";
 
@@ -31,6 +39,17 @@ export const getDietsRecommendationsApi = (query: GetDietsRecommendationsQuery) 
 export const getDietsLogsApi = (query: GetDietsLogsApiQuery) => {
   return apiCall<GetDietsLogsApiResponse>({
     url: `/diets/logs/me/range`,
+    method: "GET",
+    params: query,
+  });
+};
+
+/**
+ *@description 기간 내 일자별 영양소 합계 조회
+ */
+export const getDietsMacrosDailyApi = (query: GetDietsMacrosDailyQuery) => {
+  return apiCall<GetDietsMacrosDailyResponse>({
+    url: `/diets/logs/me/macros/daily`,
     method: "GET",
     params: query,
   });

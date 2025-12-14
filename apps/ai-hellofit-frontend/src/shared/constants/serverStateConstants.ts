@@ -20,6 +20,7 @@ export const serverStateConstants = {
     },
     logs: {
       getDietsLogs: "get-diets-logs",
+      getDietsMacrosDaily: "get-diets-macros-daily",
     },
   },
 

@@ -7,6 +7,6 @@ export type PostDietsLogsMeBody = {
   mealType: MealType;
   logDate: string;
   source: SourceType;
-  items: { foodName: string }[];
+  items?: { id: string; foodName?: string }[];
   recommendationId?: string;
 };

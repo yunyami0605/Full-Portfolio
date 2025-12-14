@@ -1,0 +1,197 @@
+@use "@/styles/mixin" as *;
+@use "@/styles/variables" as *;
+
+.container {
+  padding: 16px;
+}
+
+.header_row {
+  margin-bottom: 12px;
+}
+
+.month_text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 12px;
+  color: $color-grayscale-70;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.cell {
+  width: 100%;
+  // 높이를 기존 대비 1.5배(세로가 더 길게)
+  aspect-ratio: 2 / 3; // width / height
+  border: 1px solid $color-grayscale-30;
+  background: $color-grayscale-0;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.today {
+  box-shadow: 0 0 0 2px $color-positive--10 inset;
+}
+
+.disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.date_text {
+  font-size: 14px;
+}
+
+.cell_header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 8px 0 8px;
+}
+
+.cell_date_badge {
+  font-size: 12px;
+  color: $color-grayscale-80;
+}
+
+.cell_date_badge_today {
+  background: $color-positive--10;
+  color: $color-grayscale-0;
+  border-radius: 9999px;
+  padding: 2px 6px;
+}
+
+.cell_body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px 8px 8px;
+}
+
+.meal_marks {
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.meal_badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  min-width: 18px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: $color-grayscale-80;
+  background: $color-grayscale-10;
+  border: 1px solid $color-grayscale-30;
+}
+
+.badge_breakfast {
+  background: $color-grayscale-10;
+  border-color: $color-grayscale-30;
+}
+
+.badge_lunch {
+  background: $color-grayscale-10;
+  border-color: $color-grayscale-30;
+}
+
+.badge_dinner {
+  background: $color-grayscale-10;
+  border-color: $color-grayscale-30;
+}
+
+.weekend {
+  background: $color-grayscale-10;
+}
+
+// ActionSheet 헤더 탭 래퍼 (메인 LogRecommendationCard 탭 형식과 유사)
+.tabs_wrapper {
+  display: flex;
+  // gap: 8px;
+  justify-content: center;
+  padding: 6px 0;
+  width: 160px;
+}
+
+// 시트 헤더
+.sheet_header {
+  width: 100%;
+  justify-content: space-between !important;
+  gap: 8px;
+  padding-right: 1.2rem;
+}
+
+// 기록 리스트 래퍼
+.record_list {
+  display: flex;
+  min-height: 200px;
+  flex-direction: column;
+  justify-content: space-between !important;
+  gap: 6px;
+}
+
+// 한 줄의 음식 정보
+.record_row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+// 오른쪽 메타(칼로리 + 영양)
+.record_meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// 영양소 줄
+.nutrition_row {
+  display: flex;
+  gap: 8px;
+}
+
+// 합계 줄
+.totals_row {
+  width: 100%;
+  padding: 12px 0;
+  border-top: 1px solid $color-grayscale-30;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.totals_values {
+  display: flex;
+  gap: 8px;
+}
+
+// 비어있는 상태
+.empty_state {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}

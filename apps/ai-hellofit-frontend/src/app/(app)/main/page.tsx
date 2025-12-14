@@ -9,9 +9,11 @@ import { Column } from "@my/ui";
 import WeeklyCalendar from "@/features/diet/_components/main/calendar/WeeklyCalendar";
 import dayjs from "dayjs";
 import LogRecommendationCard from "@/features/diet/_components/main/view/LogRecommendationCard";
+import MonthlyMacrosChart from "@/features/diet/_components/main/view/MonthlyMacrosChart";
 
 function MainPage() {
   const [selectedDate, setSelectedDate] = useState(dayjs().format("YYYY-MM-DD"));
+  const monthStr = dayjs(selectedDate).format("YYYY-MM");
 
   return (
     <section className={styles.page_layout}>
@@ -28,6 +30,8 @@ function MainPage() {
         <LogRecommendationCard title="오늘 기록한 식단" date={selectedDate} />
 
         <RecommendationInfoCard title="오늘 추천 식단" date={selectedDate} />
+
+        <MonthlyMacrosChart title="월간 섭취 추이" month={monthStr} />
 
         {/* <Recently7DietView title="최근 일주일 동안 식단" /> */}
       </Column>

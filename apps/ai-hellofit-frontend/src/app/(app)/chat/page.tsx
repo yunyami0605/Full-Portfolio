@@ -15,6 +15,8 @@ import { useUiStore } from "@/shared/stores/ui.store";
 function ChatPage() {
   const [input, setInput] = React.useState("");
   const [history, setHistory] = React.useState<ChatMessage[]>([]);
+  const [nextCursor, setNextCursor] = React.useState<string | null>(null);
+  const [loadingOlder, setLoadingOlder] = React.useState(false);
   const { isConnected, messages, sendJson } = useChatSocket();
   const { showToast } = useUiStore();
   const listRef = React.useRef<HTMLDivElement | null>(null);
@@ -28,7 +30,11 @@ function ChatPage() {
   // 초기 채팅 내역 불러오기 (백엔드 준비 이전까지 실패해도 무시)
   React.useEffect(() => {
     getChatHistoryApi({ size: 20, cursorId: null })
-      .then((res) => setHistory(res.data.items))
+      .then((res) => {
+        // 서버는 최신순(내림차순) → 화면용으로 오래된→최신(오름차순) 정규화
+        setHistory([...res.data.items].reverse());
+        setNextCursor(res.data.nextCursor);
+      })
       .catch((error) => {
         if (error.response?.status === 403) {
           showToast({ message: "잘못된 접근입니다.", type: "error" });
@@ -41,6 +47,29 @@ function ChatPage() {
     scrollToBottom();
   }, [history, messages]);
 
+  // 상단 도달 시 과거 페이지 프리펜드
+  const onScroll = React.useCallback(async () => {
+    const el = listRef.current;
+    if (!el || loadingOlder) return;
+    if (el.scrollTop <= 24 && nextCursor) {
+      try {
+        setLoadingOlder(true);
+        const prevHeight = el.scrollHeight;
+        const res = await getChatHistoryApi({ size: 20, cursorId: nextCursor });
+        const olderAsc = [...res.data.items].reverse();
+        setHistory((prev) => [...olderAsc, ...prev]);
+        setNextCursor(res.data.nextCursor);
+        // 스크롤 위치 보정 (기존 위치 유지)
+        requestAnimationFrame(() => {
+          const newHeight = el.scrollHeight;
+          el.scrollTop = newHeight - prevHeight + el.scrollTop;
+        });
+      } finally {
+        setLoadingOlder(false);
+      }
+    }
+  }, [nextCursor, loadingOlder]);
+
   const onSend = async () => {
     const content = input.trim();
     if (!content) return;
@@ -52,6 +81,7 @@ function ChatPage() {
   };
 
   const allMessages = React.useMemo(() => {
+    // history(오래된→최신) 뒤에 실시간 메시지(도착순)를 이어 붙임
     return [...history, ...messages];
   }, [history, messages]);
 
@@ -63,7 +93,7 @@ function ChatPage() {
           <div ref={bottomRef} />
         </div>
 
-        <div className={styles.messages} ref={listRef}>
+        <div className={styles.messages} ref={listRef} onScroll={onScroll}>
           {allMessages.map((m) => (
             <div
               key={m.id}

@@ -29,12 +29,25 @@ function DietLogReigsterPage() {
   const { showToast } = useUiStore();
 
   const timeKorText = ["아침", "점심", "저녁"];
-  const timeEngText = ["BREAKFAST", "LUNCH", "DINNER"];
+  const mealKorByType: Record<MealType, string> = {
+    BREAKFAST: "아침",
+    LUNCH: "점심",
+    DINNER: "저녁",
+  };
+  const mealIndexByType: Record<MealType, number> = {
+    BREAKFAST: 0,
+    LUNCH: 1,
+    DINNER: 2,
+  };
+  const typeByTabIndex: MealType[] = ["BREAKFAST", "LUNCH", "DINNER"];
 
   const searchParams = useSearchParams();
 
   const date = searchParams.get("date");
   const tab = searchParams.get("tab"); // 0: 아침, 1: 점심, 2 : 저녁
+  const currentDay = dayjs(date ?? dayjs().format("YYYY-MM-DD"));
+  const initialMealType = typeByTabIndex[Number(tab ?? 0)] ?? "BREAKFAST";
+  const [mealType, setMealType] = useState<MealType>(initialMealType);
 
   useEffect(() => {
     if (tab === null) {
@@ -45,6 +58,14 @@ function DietLogReigsterPage() {
       }
     }
   }, [tab, router]);
+
+  // 날짜 이동
+  const navigateToDate = (nextDateStr: string) => {
+    const nextTab = tab ?? "0";
+    router.replace(`/diet/log/register?date=${nextDateStr}&tab=${nextTab}`);
+  };
+  const movePrevDay = () => navigateToDate(currentDay.subtract(1, "day").format("YYYY-MM-DD"));
+  const moveNextDay = () => navigateToDate(currentDay.add(1, "day").format("YYYY-MM-DD"));
 
   // 검색어
   const [keyword, setKeyword] = useState<string>();
@@ -65,7 +86,7 @@ function DietLogReigsterPage() {
   // 날짜, 시간대 필터한 데이터
   const filteredData = (recommendationDatas?.data ?? []).filter(
     (item) => item.recommendedDate === dayjs(date).format("YYYY-MM-DD"),
-  )[tab as any];
+  )[mealIndexByType[mealType]];
 
   // 기록 추가/삭제
   const onFoodAction = (id: string, name: string, isAdd: boolean) => {
@@ -99,7 +120,7 @@ function DietLogReigsterPage() {
     if (date === null) return;
 
     const body = {
-      mealType: timeEngText[tab as any] as MealType,
+      mealType,
       logDate: date,
       source: "USER" as SourceType,
       items: selectedLog,
@@ -125,7 +146,7 @@ function DietLogReigsterPage() {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }, // 100% 보일 때 실행
+      { threshold: 0.5 },
     );
 
     observer.observe(loaderRef.current);
@@ -139,6 +160,17 @@ function DietLogReigsterPage() {
     <PageWrapper>
       {/* 검색바 */}
       <Column as="section" className={styles.page_inner_wrapper}>
+        {/* 날짜 네비게이터 */}
+        <Row justify="between" align="center" className={styles.date_nav}>
+          <Button className={`${styles.nav_btn} ${styles.prev}`} onClick={movePrevDay}>
+            <Text>이전</Text>
+          </Button>
+          <Text className={styles.date_label_chip}>{currentDay.format("YYYY년 M월 D일")}</Text>
+          <Button className={`${styles.nav_btn} ${styles.next}`} onClick={moveNextDay}>
+            <Text>다음</Text>
+          </Button>
+        </Row>
+
         <Row as="section" className={styles.search_top_view}>
           <Row className={styles.search_wrapper}>
             <IconButton iconName={"SearchOutline"} />
@@ -162,7 +194,7 @@ function DietLogReigsterPage() {
                     <Text className={styles.index}>{i + 1}</Text>
 
                     <Column className={styles.food_data}>
-                      <Text className={styles.food_name}>{item.repFoodName}</Text>
+                      <Text className={styles.food_name}>{item.foodName}</Text>
 
                       <Row className={styles.infos}>
                         {/* <Text>1공기 (210g)</Text> */}
@@ -189,7 +221,7 @@ function DietLogReigsterPage() {
 
                   <Button
                     className={styles.add_button}
-                    onClick={() => onFoodAction(item.id, item.repFoodName, !isSelected)}
+                    onClick={() => onFoodAction(item.id, item.foodName, !isSelected)}
                   >
                     <Center className={styles.add_button_wrapper}>
                       <IconButton iconName={isSelected ? "Close" : "AddOutline"} />
@@ -205,7 +237,38 @@ function DietLogReigsterPage() {
 
         <Column className={styles.bottom_action_sheet}>
           <Column className={styles.recommend_view}>
-            <Text className={styles.recommend_title}>금일 추천 식단</Text>
+            <Row justify="between" align="center">
+              <Row className={styles.meal_selector}>
+                <Button
+                  className={`${styles.meal_chip} ${
+                    mealType === "BREAKFAST" ? styles.meal_chip_active : ""
+                  }`}
+                  onClick={() => setMealType("BREAKFAST")}
+                >
+                  <Text>아침</Text>
+                </Button>
+                <Button
+                  className={`${styles.meal_chip} ${
+                    mealType === "LUNCH" ? styles.meal_chip_active : ""
+                  }`}
+                  onClick={() => setMealType("LUNCH")}
+                >
+                  <Text>점심</Text>
+                </Button>
+                <Button
+                  className={`${styles.meal_chip} ${
+                    mealType === "DINNER" ? styles.meal_chip_active : ""
+                  }`}
+                  onClick={() => setMealType("DINNER")}
+                >
+                  <Text>저녁</Text>
+                </Button>
+              </Row>
+            </Row>
+
+            <Row justify="between" align="center">
+              <Text className={styles.recommend_title}>금일 추천 식단</Text>
+            </Row>
 
             <Row className={styles.recommend_inner_wrapper}>
               {(filteredData?.foods ?? []).map((item, i) => (
@@ -236,7 +299,7 @@ function DietLogReigsterPage() {
 
           <Column className={styles.bottom_view}>
             <Button onClick={onCreateDietsLogs} className={styles.ok_button}>
-              {timeKorText[tab as any]} 식단 기록
+              {mealKorByType[mealType]} 식단 기록
             </Button>
           </Column>
         </Column>

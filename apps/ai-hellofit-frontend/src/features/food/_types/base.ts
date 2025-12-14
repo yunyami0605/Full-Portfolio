@@ -3,6 +3,7 @@
  */
 export type FoodItem = {
   id: string;
+  foodName: string;
   repFoodName: string;
   category: string | null;
   kcal: number | null;

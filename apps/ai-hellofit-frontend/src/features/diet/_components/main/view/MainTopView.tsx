@@ -4,16 +4,22 @@ import { Button, Column, Row, Text } from "@my/ui";
 import { IconButton, Tab } from "@/shared/components";
 import ActiveRoundedButton from "../../button/ActiveRoundedButton";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 function MainTopView() {
   const [isMeal, setIsMeal] = useState(true);
+  const router = useRouter();
 
   return (
     <Column className={styles.main_top_view}>
       <Row className={styles.main_top_view_wrapper} justify="between">
         <Text as="h2">나의 기록 및 추천</Text>
 
-        <Button className={styles.calendar_show_button}>
+        <Button
+          className={styles.calendar_show_button}
+          onClick={() => router.push("/diet/log/calendar")}
+          aria-label="캘린더 보기"
+        >
           <Row>
             <Text as="p">캘린더 보기</Text>
 
