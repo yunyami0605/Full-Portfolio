@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./DietLogReigsterPage.module.scss";
+import styles from "./DietLogRegisterPage.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 import { PageWrapper } from "@/shared/components/layout/PageWrapper";
 import { Button, Center, Column, Input, Row, Text } from "@my/ui";
@@ -16,7 +16,7 @@ import { useUiStore } from "@/shared/stores/ui.store";
 /**
  *@description 식단 등록 페이지
  */
-function DietLogReigsterPage() {
+function DietLogRegisterPage() {
   // 선택된 음식들 state
   const [selectedLog, setSelectedLog] = useState<
     {
@@ -28,7 +28,6 @@ function DietLogReigsterPage() {
   const router = useRouter();
   const { showToast } = useUiStore();
 
-  const timeKorText = ["아침", "점심", "저녁"];
   const mealKorByType: Record<MealType, string> = {
     BREAKFAST: "아침",
     LUNCH: "점심",
@@ -68,7 +67,7 @@ function DietLogReigsterPage() {
   const moveNextDay = () => navigateToDate(currentDay.add(1, "day").format("YYYY-MM-DD"));
 
   // 검색어
-  const [keyword, setKeyword] = useState<string>();
+  const [keyword, setKeyword] = useState<string>("");
 
   // 음식 목록 조회 api 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFoodsSearch(10, keyword);
@@ -272,7 +271,7 @@ function DietLogReigsterPage() {
 
             <Row className={styles.recommend_inner_wrapper}>
               {(filteredData?.foods ?? []).map((item, i) => (
-                <Center>
+                <Center key={item.id}>
                   <Text>
                     {i + 1}. {item.foodName}
                   </Text>
@@ -308,4 +307,4 @@ function DietLogReigsterPage() {
   );
 }
 
-export default DietLogReigsterPage;
+export default DietLogRegisterPage;

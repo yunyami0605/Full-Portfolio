@@ -37,6 +37,7 @@ export type SourceType = "AI" | "USER";
  *@description 추천된 음식 항목
  */
 export type RecommdedFoodItem = {
+  id: string;
   foodName: string;
   calories: number;
   protein: number;
