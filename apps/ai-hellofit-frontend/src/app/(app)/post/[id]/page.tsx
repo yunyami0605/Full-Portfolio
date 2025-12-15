@@ -9,7 +9,7 @@ import { ActionSheet, Column, Popup, Row, Text } from "@my/ui";
 import { useRouter } from "next/navigation";
 import PostItem from "@/features/post/_components/item/PostItem";
 import CommentsView from "@/features/comment/_components/view/CommentsView";
-import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
+import { useUserId } from "@/features/user/_hooks/useUserId";
 /**
  *@description 게시글 컨텐츠 페이지
  */
@@ -18,7 +18,7 @@ function PostContentPage() {
   const { id } = params;
   const router = useRouter();
 
-  const { userId } = useAccessTokenStore();
+  const userId = useUserId();
 
   // 삭제/수정 액션시트 on/off
   const [isMoreActionSheetOpen, setMoreActionSheetOpen] = useState(false);

@@ -16,7 +16,6 @@ import {
   useCheckNicknameDuplicateApi,
 } from "../..";
 import { debounce } from "lodash";
-import { useAccessTokenStore } from "../../_stores/accessToken.store";
 import { isAxiosError } from "@/libs/typeGuard";
 import { ErrorResponse } from "@/shared/types/api";
 import { usePostSocialSignupApi, useSignupApi } from "../../_hooks/mutation";
@@ -28,7 +27,6 @@ import { usePostSocialSignupApi, useSignupApi } from "../../_hooks/mutation";
 function SignupForm() {
   const router = useRouter();
   const { form, setForm } = useAuthSignupStore();
-  const { setToken } = useAccessTokenStore();
   const params = useSearchParams();
   const provider = params.get("provider");
   const socialId = params.get("socialId");
@@ -98,8 +96,6 @@ function SignupForm() {
         });
 
         if (response.status === 200) {
-          setToken(response.data.access);
-
           router.push("/user/register");
         }
       } else {
@@ -108,8 +104,6 @@ function SignupForm() {
         });
 
         if (response.status === 201) {
-          setToken(response.data.access);
-
           router.push("/user/register");
         }
       }

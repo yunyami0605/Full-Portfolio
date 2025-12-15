@@ -1,7 +1,6 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
 import { usePostSocialLogin } from "@/features/auth/_hooks/mutation";
 
 export default function KakaoCallbackPage() {
@@ -9,7 +8,6 @@ export default function KakaoCallbackPage() {
   const code = params.get("code");
   const router = useRouter();
   const { mutateAsync: mustateSocialLogin } = usePostSocialLogin();
-  const { setToken } = useAccessTokenStore();
 
   const onSocialLogin = async () => {
     if (!code) return alert("잘못된 접근입니다.");
@@ -22,8 +20,6 @@ export default function KakaoCallbackPage() {
       if (res.data.status === "SIGNUP_REQUIRED") {
         router.replace(`/signup?provider=${res.data.provider}&socialId=${res.data.socialId}`);
       } else {
-        const { access } = res.data;
-        setToken(access);
         router.replace("/main");
       }
     } catch (error) {

@@ -3,7 +3,6 @@
  */
 
 import { QueryCache, QueryClient } from "@tanstack/react-query";
-import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
 import axios, { isAxiosError } from "axios";
 
 /**
@@ -14,7 +13,6 @@ function handleAuthError(error: Error) {
     const message = (error.response?.data as { message: string })?.message;
 
     if (error.response?.status === 401 && message === "유효하지 않은 토큰입니다.") {
-      useAccessTokenStore.getState().reset();
       if (typeof window !== "undefined") {
         window.location.href = "/login";
       }

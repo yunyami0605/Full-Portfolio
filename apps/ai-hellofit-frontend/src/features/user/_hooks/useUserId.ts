@@ -1,34 +1,9 @@
-import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
-
-type JwtPayload = {
-  sub?: string;
-  userId?: number;
-  exp?: number;
-  iat?: number;
-};
-
+import { useGetAuthInfo } from "@/features/auth/_hooks/query";
 /**
- *@description jwt에서 user id 조회
+ *@description 서버의 자기 정보 조회 결과에서 userId를 반환
  */
-export function useUserId() {
-  const { accessToken } = useAccessTokenStore();
-  const [userId, setUserId] = useState<string | null | undefined>(null);
-
-  useEffect(() => {
-    if (!accessToken) {
-      setUserId(null);
-      return;
-    }
-
-    try {
-      const decoded = jwtDecode<JwtPayload>(accessToken);
-      setUserId(decoded.sub);
-    } catch (e) {
-      setUserId(null);
-    }
-  }, [accessToken]);
-
-  return userId;
+export function useUserId(): string | null {
+  const { data } = useGetAuthInfo();
+  // 기대 구조: { data: { id: string, ... } }
+  return (data as any)?.data?.id ?? null;
 }

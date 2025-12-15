@@ -1,4 +1,3 @@
-import { useAccessTokenStore } from "@/features/auth/_stores/accessToken.store";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { getCookie } from "./cookie";
 
@@ -10,11 +9,9 @@ export const apiCall = axios.create({
 
 apiCall.interceptors.request.use(
   (config) => {
-    const token = useAccessTokenStore.getState().accessToken;
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-      config.headers["X-XSRF-TOKEN"] = getCookie("xsrftk");
+    const xsrf = getCookie("xsrftk");
+    if (xsrf) {
+      config.headers["X-XSRF-TOKEN"] = xsrf;
     }
     return config;
   },
@@ -23,8 +20,8 @@ apiCall.interceptors.request.use(
 
 let isRefreshing = false;
 
-// rt 재발급 요청동안, 이후 요청 대기 array
-let pendingRequests: ((token: string) => void)[] = [];
+// 재발급 동안, 이후 요청 대기 큐 (토큰 전달 불필요)
+let pendingRequests: Array<() => void> = [];
 
 apiCall.interceptors.response.use(
   (response) => response,
@@ -35,11 +32,10 @@ apiCall.interceptors.response.use(
     const message = data?.message;
     const code = data?.code;
 
-    // rf 토큰 재발급 경우
+    // 401 처리 및 재발급
     if (error.response?.status === 401 && !originalRequest._retry) {
       const isExpired = message === "토큰이 만료되었습니다." || code === "TOKEN_EXPIRED";
-      const isUnauthorizedBootstrap =
-        (code === "UNAUTHORIZED" || !message) && !useAccessTokenStore.getState().accessToken;
+      const isUnauthorizedBootstrap = code === "UNAUTHORIZED" || !message;
 
       // 1. 재요청 설정
       originalRequest._retry = true;
@@ -47,19 +43,14 @@ apiCall.interceptors.response.use(
       // 2. 재발급 요청 동안, 들어오는 다른 요청 담기
       if (isRefreshing) {
         return new Promise((resolve) => {
-          pendingRequests.push((token) => {
-            if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-            }
-            resolve(apiCall(originalRequest));
-          });
+          pendingRequests.push(() => resolve(apiCall(originalRequest)));
         });
       }
 
       // 3. 요청
       isRefreshing = true;
       try {
-        // 부팅 시 토큰 없는 401(UNAUTHORIZED)이라면 XSRF 세팅부터
+        // 부팅 시 XSRF가 없을 수 있으므로 초기화
         if (isUnauthorizedBootstrap) {
           await axios.post(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/xc`,
@@ -77,18 +68,12 @@ apiCall.interceptors.response.use(
           },
         );
 
-        const newAccessToken = (res.data as any).access || (res.data as any).accessToken;
-        useAccessTokenStore.getState().setToken(newAccessToken);
-
+        // 쿠키 기반: 서버가  쿠키로 갱신. 응답 바디 토큰은 사용하지 않음.
         // 3-1. 대기 중이던 요청들 실행
-        pendingRequests.forEach((cb) => cb(newAccessToken));
+        pendingRequests.forEach((cb) => cb());
         pendingRequests = [];
 
-        // 3-2. 기존에 rt 재발급 요청에 실행한 실패 요청 재시도
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        }
-
+        // 3-2. 기존 실패 요청 재시도 (Authorization 없이)
         return apiCall(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
