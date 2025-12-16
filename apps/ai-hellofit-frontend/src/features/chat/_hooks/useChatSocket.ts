@@ -1,4 +1,5 @@
 import React from "react";
+import { apiCall } from "@/libs/apiCall";
 import { ChatMessage } from "../_types/chat";
 
 type UseChatSocketOptions = {
@@ -16,86 +17,31 @@ export function useChatSocket(options?: UseChatSocketOptions) {
   // 채팅 소켓 연결 상태
   const [isConnected, setIsConnected] = React.useState(false);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
-  const socketRef = React.useRef<WebSocket | null>(null);
+  const esRef = React.useRef<EventSource | null>(null);
   const streamingRef = React.useRef<{ tempId: string | null }>({ tempId: null });
-  // StrictMode 이중 마운트로 인한 중복 연결 방지
-  const startedRef = React.useRef(false);
-  // 중복 id 레이스 방지
+  // 중복 id 방지
   const seenIdsRef = React.useRef<Set<string>>(new Set());
-  // 재연결/백오프
-  const reconnectTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const attemptRef = React.useRef<number>(0);
-  // Heartbeat
-  const heartbeatTimerRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
-  const lastActivityRef = React.useRef<number>(Date.now());
-  const IDLE_TIMEOUT_MS = 90_000; // 일정 시간 활동 없으면 재연결 시도
-  const HEARTBEAT_INTERVAL_MS = 30_000; // 주기적으로 앱 레벨 ping 전송
 
   React.useEffect(() => {
-    // 쿠키 기반 세션 가정: 토큰 없이도 핸드셰이크에서 인증
-    if (startedRef.current) {
-      return;
-    }
-    startedRef.current = true;
-
     const connect = () => {
-      // 기존 타이머 초기화
-      if (reconnectTimerRef.current) {
-        clearTimeout(reconnectTimerRef.current);
-        reconnectTimerRef.current = null;
-      }
+      const base = "http://localhost:8084";
 
-      const base =
-        process.env.NEXT_PUBLIC_CHAT_WS_URL ||
-        (typeof window !== "undefined" && window.location.origin.replace(/^http/, "ws")) ||
-        "ws://localhost:8084";
+      // 슬래시로 시작하면 base의 경로(/api)가 날아가므로 상대경로로 지정
+      const url = new URL("/api/chat/stream", base);
+      // roomId는 SSE에서는 사용하지 않음(단일 사용자 스트림)
 
-      const url = new URL("/api/ws/chat", base);
-      // roomId는 계속 쿼리로 전달 (서버에서 handshake attr 매핑 가정)
-      if (options?.roomId) url.searchParams.set("roomId", options.roomId);
+      const es = new EventSource(url.toString(), { withCredentials: true });
+      esRef.current = es;
 
-      const ws = new WebSocket(url.toString());
-      socketRef.current = ws;
-
-      ws.onopen = () => {
+      es.onopen = () => {
         setIsConnected(true);
-        attemptRef.current = 0; // 성공 시 백오프 초기화
-        lastActivityRef.current = Date.now();
-        // Heartbeat 시작
-        if (heartbeatTimerRef.current) {
-          clearInterval(heartbeatTimerRef.current);
-        }
-        heartbeatTimerRef.current = setInterval(() => {
-          // 앱 레벨 ping: 서버는 typing을 no-op으로 처리하므로 keep-alive 용도로 사용
-          sendJson({ type: "typing", value: true });
-          // 유휴 연결 감지
-          if (Date.now() - lastActivityRef.current > IDLE_TIMEOUT_MS) {
-            try {
-              ws.close();
-            } catch {}
-          }
-        }, HEARTBEAT_INTERVAL_MS);
       };
 
-      ws.onclose = () => {
+      es.onerror = () => {
         setIsConnected(false);
-        // Heartbeat 종료
-        if (heartbeatTimerRef.current) {
-          clearInterval(heartbeatTimerRef.current);
-          heartbeatTimerRef.current = null;
-        }
-        // 재연결 스케줄
-        scheduleReconnect();
       };
-      ws.onerror = () => {
-        setIsConnected(false);
-        // 오류 즉시 닫고 재연결
-        try {
-          ws.close();
-        } catch {}
-      };
-      ws.onmessage = (event: MessageEvent) => {
-        lastActivityRef.current = Date.now();
+
+      es.onmessage = (event: MessageEvent) => {
         try {
           const data = JSON.parse(event.data) as
             | ChatMessage
@@ -176,45 +122,23 @@ export function useChatSocket(options?: UseChatSocketOptions) {
       };
     };
 
-    const scheduleReconnect = () => {
-      // 이미 스케줄된 경우 무시
-      if (reconnectTimerRef.current) return;
-      const attempt = attemptRef.current + 1;
-      attemptRef.current = attempt;
-      // 지수 백오프 + 지터 (0.5~1.5배)
-      const baseDelay = Math.min(20_000, 500 * Math.pow(2, attempt - 1));
-      const jitter = baseDelay * (0.5 + Math.random());
-      reconnectTimerRef.current = setTimeout(() => {
-        reconnectTimerRef.current = null;
-        connect();
-      }, jitter);
-    };
-
     connect();
 
     return () => {
-      if (reconnectTimerRef.current) {
-        clearTimeout(reconnectTimerRef.current);
-        reconnectTimerRef.current = null;
-      }
-      if (heartbeatTimerRef.current) {
-        clearInterval(heartbeatTimerRef.current);
-        heartbeatTimerRef.current = null;
-      }
       try {
-        socketRef.current?.close();
+        esRef.current?.close();
       } catch {}
-      socketRef.current = null;
-      startedRef.current = false;
+      esRef.current = null;
       seenIdsRef.current.clear();
       streamingRef.current.tempId = null;
       setIsConnected(false);
     };
   }, [options?.roomId]);
 
-  const sendJson = React.useCallback((payload: unknown) => {
-    if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) return;
-    socketRef.current.send(JSON.stringify(payload));
+  const sendJson = React.useCallback(async (payload: any) => {
+    // 지원: { type: "user_message", content: string }
+    if (!payload || payload.type !== "user_message" || !payload.content) return;
+    await apiCall.post("/chat/message", { content: payload.content });
   }, []);
 
   return { isConnected, messages, sendJson };
