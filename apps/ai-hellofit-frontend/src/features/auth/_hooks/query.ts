@@ -9,5 +9,8 @@ export const useGetAuthInfo = () => {
   return useQuery({
     queryKey: [serverStateConstants.auth.getInfo],
     queryFn: () => getAuthInfo(),
+    staleTime: 15 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
   });
 };

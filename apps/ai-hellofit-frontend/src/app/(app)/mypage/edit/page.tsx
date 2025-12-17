@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 import { useGetAuthInfo } from "@/features/auth/_hooks/query";
 import { LabeledInput } from "@/shared/components/input/LabeledInput";
 import { useUiStore } from "@/shared/stores/ui.store";
+import { useQueryClient } from "@tanstack/react-query";
+import { serverStateConstants } from "@/shared/constants/serverStateConstants";
 
 type FormValues = {
   nickname: string;
@@ -69,10 +71,11 @@ export default function EditProfilePage() {
 
   const userId = useUserId();
   const { data: profile, isLoading: isLoadingProfile } = useUserProfileQuery();
-  const { data: authInfo, isLoading: isLoadingAuth, refetch: refetchAuthInfo } = useGetAuthInfo();
+  const { data: authInfo, isLoading: isLoadingAuth } = useGetAuthInfo();
   const patchProfile = usePatchUserProfile();
   const patchAccount = usePatchUserAccount();
   const { showToast } = useUiStore();
+  const queryClient = useQueryClient();
 
   // 닉네임 중복 검사 (디바운스 내장)
   const nicknameValue = watch("nickname") || "";
@@ -86,8 +89,8 @@ export default function EditProfilePage() {
   );
 
   useEffect(() => {
-    refetchAuthInfo();
-  }, []);
+    queryClient.invalidateQueries({ queryKey: [serverStateConstants.auth.getInfo] });
+  }, [queryClient]);
 
   // 서버 프로필 초기값 반영
   React.useEffect(() => {
@@ -121,7 +124,7 @@ export default function EditProfilePage() {
       const res = await patchProfile.mutateAsync(payload);
 
       if (res.status === 200) {
-        refetchAuthInfo();
+        queryClient.invalidateQueries({ queryKey: [serverStateConstants.auth.getInfo] });
         showToast({ type: "success", message: "프로필이 수정되었습니다." });
       }
     } catch (e) {
