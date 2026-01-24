@@ -17,7 +17,7 @@ function ChatPage() {
   const [history, setHistory] = React.useState<ChatMessage[]>([]);
   const [nextCursor, setNextCursor] = React.useState<string | null>(null);
   const [loadingOlder, setLoadingOlder] = React.useState(false);
-  const { isConnected, messages, sendJson } = useChatSocket();
+  const { isAwaitingAssistant, messages, sendJson } = useChatSocket();
   const { showToast } = useUiStore();
   const listRef = React.useRef<HTMLDivElement | null>(null);
   const bottomRef = React.useRef<HTMLDivElement | null>(null);
@@ -71,11 +71,16 @@ function ChatPage() {
   }, [nextCursor, loadingOlder]);
 
   const onSend = async () => {
+    if (isAwaitingAssistant) return;
     const content = input.trim();
     if (!content) return;
     setInput("");
 
-    sendJson({ type: "user_message", content });
+    try {
+      await sendJson({ type: "user_message", content });
+    } catch {
+      showToast({ message: "메시지 전송에 실패했습니다.", type: "error" });
+    }
     // 전송 직후 즉시 하단으로 스크롤
     requestAnimationFrame(scrollToBottom);
   };
@@ -88,11 +93,6 @@ function ChatPage() {
   return (
     <PageWrapper>
       <div className={styles.container}>
-        <div className={styles.headerRow}>
-          <Text className={styles.status}>{isConnected ? "실시간 연결됨" : "연결 대기중"}</Text>
-          <div ref={bottomRef} />
-        </div>
-
         <div className={styles.messages} ref={listRef} onScroll={onScroll}>
           {allMessages.map((m) => (
             <div
@@ -102,7 +102,6 @@ function ChatPage() {
               <div
                 className={`${styles.bubble} ${m.role === "user" ? styles.user : styles.assistant}`}
               >
-                <span className={styles.role}>[{m.role}]</span>
                 <p className={styles.content}>{m.content}</p>
               </div>
             </div>
@@ -114,7 +113,11 @@ function ChatPage() {
         <div className={styles.inputBar}>
           <Input
             className={styles.input}
-            placeholder="AI에게 식단 및 건강 정보에 대해 물어보세요..."
+            placeholder={
+              isAwaitingAssistant
+                ? "답변 생성 중입니다. 완료 후 메시지를 보내세요..."
+                : "AI에게 식단 및 건강 정보에 대해 물어보세요..."
+            }
             value={input}
             onChange={(e) => setInput((e.target as HTMLInputElement).value)}
             onKeyDown={(e) => {
@@ -124,8 +127,8 @@ function ChatPage() {
               }
             }}
           />
-          <Button className={styles.sendButton} onClick={onSend}>
-            보내기
+          <Button className={styles.sendButton} onClick={onSend} disabled={isAwaitingAssistant}>
+            {isAwaitingAssistant ? "답변 생성 중..." : "보내기"}
           </Button>
         </div>
       </div>

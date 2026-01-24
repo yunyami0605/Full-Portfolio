@@ -2,10 +2,6 @@ import React from "react";
 import { apiCall } from "@/libs/apiCall";
 import { ChatMessage } from "../_types/chat";
 
-type UseChatSocketOptions = {
-  roomId?: string;
-};
-
 /**
  *@description [Hook] 채팅 소켓 연결
  * @param options - 채팅 소켓 옵션
@@ -13,14 +9,22 @@ type UseChatSocketOptions = {
  * @returns {ChatMessage[]} messages - 채팅 메시지 목록
  * @returns {Function} sendJson - 채팅 메시지 전송 함수
  */
-export function useChatSocket(options?: UseChatSocketOptions) {
+export function useChatSocket() {
   // 채팅 소켓 연결 상태
   const [isConnected, setIsConnected] = React.useState(false);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+  // assistant 응답 스트리밍/생성 중이면 전송 잠금
+  const [isAwaitingAssistant, _setIsAwaitingAssistant] = React.useState(false);
   const esRef = React.useRef<EventSource | null>(null);
   const streamingRef = React.useRef<{ tempId: string | null }>({ tempId: null });
   // 중복 id 방지
   const seenIdsRef = React.useRef<Set<string>>(new Set());
+  const awaitingRef = React.useRef(false);
+
+  const setIsAwaitingAssistant = React.useCallback((next: boolean) => {
+    awaitingRef.current = next;
+    _setIsAwaitingAssistant(next);
+  }, []);
 
   React.useEffect(() => {
     const connect = () => {
@@ -39,6 +43,7 @@ export function useChatSocket(options?: UseChatSocketOptions) {
 
       es.onerror = () => {
         setIsConnected(false);
+        setIsAwaitingAssistant(false);
       };
 
       es.onmessage = (event: MessageEvent) => {
@@ -60,12 +65,20 @@ export function useChatSocket(options?: UseChatSocketOptions) {
             if (seenIdsRef.current.has(msg.id)) return;
             seenIdsRef.current.add(msg.id);
             setMessages((prev) => (prev.some((p) => p.id === msg.id) ? prev : [...prev, msg]));
+
+            // 스트리밍(done) 없이 최종 assistant 메시지만 오는 케이스 대비
+            if (msg.role === "assistant" && awaitingRef.current && !streamingRef.current.tempId) {
+              setIsAwaitingAssistant(false);
+            }
             return;
           }
 
           // 스트리밍 청크
           if ((data as any).type === "assistant_chunk") {
             const delta = (data as any).delta as string;
+
+            // 스트리밍이 시작되면 전송 잠금
+            if (!awaitingRef.current) setIsAwaitingAssistant(true);
             setMessages((prev) => {
               // 이미 진행 중인 임시 메시지가 있으면 내용만 누적
               const tempId = streamingRef.current.tempId ?? `cm_streaming_${Date.now()}`;
@@ -114,6 +127,9 @@ export function useChatSocket(options?: UseChatSocketOptions) {
               seenIdsRef.current.add(finalId);
               return next;
             });
+
+            // assistant 응답 완료 → 전송 잠금 해제
+            setIsAwaitingAssistant(false);
             return;
           }
         } catch {
@@ -125,21 +141,30 @@ export function useChatSocket(options?: UseChatSocketOptions) {
     connect();
 
     return () => {
-      try {
-        esRef.current?.close();
-      } catch {}
+      if (esRef.current) {
+        esRef.current.close();
+      }
       esRef.current = null;
       seenIdsRef.current.clear();
       streamingRef.current.tempId = null;
+      setIsAwaitingAssistant(false);
       setIsConnected(false);
     };
-  }, [options?.roomId]);
+  }, []);
 
   const sendJson = React.useCallback(async (payload: any) => {
     // 지원: { type: "user_message", content: string }
     if (!payload || payload.type !== "user_message" || !payload.content) return;
-    await apiCall.post("/chat/message", { content: payload.content });
+    // assistant 응답이 끝나기 전에는 추가 전송 방지
+    if (awaitingRef.current) return;
+    setIsAwaitingAssistant(true);
+    try {
+      await apiCall.post("/chat/message", { content: payload.content });
+    } catch (e) {
+      setIsAwaitingAssistant(false);
+      throw e;
+    }
   }, []);
 
-  return { isConnected, messages, sendJson };
+  return { isConnected, isAwaitingAssistant, messages, sendJson };
 }
