@@ -28,7 +28,7 @@ export function useChatSocket() {
 
   React.useEffect(() => {
     const connect = () => {
-      const base = "http://localhost:8084";
+      const base = process.env.NEXT_PUBLIC_CHAT_WS_URL;
 
       // 슬래시로 시작하면 base의 경로(/api)가 날아가므로 상대경로로 지정
       const url = new URL("/api/chat/stream", base);

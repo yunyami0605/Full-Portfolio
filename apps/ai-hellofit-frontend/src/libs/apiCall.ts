@@ -21,7 +21,12 @@ apiCall.interceptors.request.use(
 let isRefreshing = false;
 
 // 재발급 동안, 이후 요청 대기 큐 (토큰 전달 불필요)
-let pendingRequests: Array<() => void> = [];
+type PendingRequest = {
+  resolve: (value: unknown) => void;
+  reject: (reason?: unknown) => void;
+  request: AxiosRequestConfig & { _retry?: boolean };
+};
+let pendingRequests: PendingRequest[] = [];
 
 apiCall.interceptors.response.use(
   (response) => response,
@@ -42,9 +47,9 @@ apiCall.interceptors.response.use(
 
       // 2. 재발급 요청 동안, 들어오는 다른 요청 담기
       if (isRefreshing) {
-        return new Promise((resolve) => {
-          pendingRequests.push(() => resolve(apiCall(originalRequest)));
-        });
+        return new Promise((resolve, reject) => {
+          pendingRequests.push({ resolve, reject, request: originalRequest });
+        }) as any;
       }
 
       // 3. 요청
@@ -59,7 +64,7 @@ apiCall.interceptors.response.use(
           );
         }
         const xsrf = getCookie("xsrftk");
-        const res = await axios.post(
+        await axios.post(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh`,
           {},
           {
@@ -70,12 +75,17 @@ apiCall.interceptors.response.use(
 
         // 쿠키 기반: 서버가  쿠키로 갱신. 응답 바디 토큰은 사용하지 않음.
         // 3-1. 대기 중이던 요청들 실행
-        pendingRequests.forEach((cb) => cb());
+        const queued = pendingRequests;
         pendingRequests = [];
+        queued.forEach(({ resolve, request }) => resolve(apiCall(request)));
 
         // 3-2. 기존 실패 요청 재시도 (Authorization 없이)
         return apiCall(originalRequest);
       } catch (refreshError) {
+        // refresh 실패 시, 대기 중이던 요청들이 영원히 pending 상태가 되지 않도록 모두 reject
+        const queued = pendingRequests;
+        pendingRequests = [];
+        queued.forEach(({ reject }) => reject(refreshError));
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
