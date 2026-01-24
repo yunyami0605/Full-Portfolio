@@ -2,12 +2,17 @@
   max-width: 768px;
   width: 100%;
   margin: 0 auto;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
   padding: 12px 16px;
   box-sizing: border-box;
   gap: 12px;
+
+  // BottomTab 높이(디자인 기준) + 입력바 높이(대략치)
+  --bottom-tab-height: 80px;
+  --chat-input-height: 64px;
 }
 
 .headerRow {
@@ -27,6 +32,7 @@
   flex-direction: column;
   gap: 20px;
   overflow-y: auto;
+  min-height: 0;
   padding: 4px 0 8px;
 }
 
@@ -73,17 +79,26 @@
 }
 
 .bottomAnchor {
-  height: 10vh;
+  // fixed 입력바 + 하단탭에 가려지지 않도록 여백 확보
+  height: calc(var(--bottom-tab-height) + var(--chat-input-height) + 16px);
 }
 
 .inputBar {
-  position: sticky;
-  bottom: 0;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: var(--bottom-tab-height);
+  width: 100%;
+  max-width: 768px;
+  z-index: 20;
+
   background: #ffffff;
   display: flex;
   gap: 8px;
-  padding: 8px 0;
+  padding: 8px 16px;
+  box-sizing: border-box;
   border-top: 1px solid #e5e7eb; // gray-200
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
 }
 .input {
   flex: 1;

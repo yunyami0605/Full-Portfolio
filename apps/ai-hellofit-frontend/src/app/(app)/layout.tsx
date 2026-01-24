@@ -24,7 +24,7 @@ const headerMap = {
   "/diet/recommendation": { title: "추천 식단", back: true, tab: true },
   "/diet/log/calendar": { title: "식단 캘린더", back: true, tab: false },
   "/diet/log/register": { title: "식단 기록 등록", back: true, tab: false },
-  "/chat": { title: "AI 채팅", back: true, tab: false },
+  "/chat": { title: "AI 채팅", back: true, tab: true },
   "/mypage": { title: "", noHeader: true, back: false, tab: true },
   "/login": { title: "", noHeader: true, back: false, tab: false },
   "/social": { title: "", noHeader: true, back: false, tab: false },

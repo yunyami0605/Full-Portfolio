@@ -21,10 +21,11 @@ function ChatPage() {
   const { showToast } = useUiStore();
   const listRef = React.useRef<HTMLDivElement | null>(null);
   const bottomRef = React.useRef<HTMLDivElement | null>(null);
+  const didInitialScrollRef = React.useRef(false);
 
-  const scrollToBottom = React.useCallback(() => {
+  const scrollToBottom = React.useCallback((behavior: ScrollBehavior = "smooth") => {
     // 가장 하단 앵커로 스크롤(렌더 타이밍에 강건)
-    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    bottomRef.current?.scrollIntoView({ behavior, block: "end" });
   }, []);
 
   // 초기 채팅 내역 불러오기 (백엔드 준비 이전까지 실패해도 무시)
@@ -34,6 +35,12 @@ function ChatPage() {
         // 서버는 최신순(내림차순) → 화면용으로 오래된→최신(오름차순) 정규화
         setHistory([...res.data.items].reverse());
         setNextCursor(res.data.nextCursor);
+
+        // 진입 시에는 최신/입력영역이 보이도록 1회 바닥으로 이동
+        requestAnimationFrame(() => {
+          didInitialScrollRef.current = true;
+          scrollToBottom("auto");
+        });
       })
       .catch((error) => {
         if (error.response?.status === 403) {
@@ -42,10 +49,12 @@ function ChatPage() {
       });
   }, []);
 
-  // 신규 메시지 도착 시 스크롤 하단 고정
+  // 신규 메시지 도착 시(실시간) 스크롤 하단 고정
+  // - 과거 페이지 프리펜드(history 변경)에서는 강제 스크롤하지 않음
   React.useEffect(() => {
+    if (!didInitialScrollRef.current) return;
     scrollToBottom();
-  }, [history, messages]);
+  }, [messages, scrollToBottom]);
 
   // 상단 도달 시 과거 페이지 프리펜드
   const onScroll = React.useCallback(async () => {
@@ -82,7 +91,7 @@ function ChatPage() {
       showToast({ message: "메시지 전송에 실패했습니다.", type: "error" });
     }
     // 전송 직후 즉시 하단으로 스크롤
-    requestAnimationFrame(scrollToBottom);
+    requestAnimationFrame(() => scrollToBottom());
   };
 
   const allMessages = React.useMemo(() => {
