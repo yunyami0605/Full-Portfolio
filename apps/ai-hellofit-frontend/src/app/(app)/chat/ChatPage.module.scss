@@ -1,3 +1,10 @@
+.page {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+}
+
 .container {
   max-width: 768px;
   width: 100%;
@@ -33,7 +40,8 @@
   gap: 20px;
   overflow-y: auto;
   min-height: 0;
-  padding: 4px 0 8px;
+  // fixed 입력바 + 하단탭에 가려지지 않도록 하단 패딩 확보
+  padding: 4px 0 calc(var(--bottom-tab-height) + var(--chat-input-height) + 24px);
 }
 
 .messageRow {
@@ -79,8 +87,9 @@
 }
 
 .bottomAnchor {
-  // fixed 입력바 + 하단탭에 가려지지 않도록 여백 확보
-  height: calc(var(--bottom-tab-height) + var(--chat-input-height) + 16px);
+  height: 1px;
+  // scrollIntoView로 내렸을 때 fixed 입력바/하단탭에 가려지지 않도록
+  scroll-margin-bottom: calc(var(--bottom-tab-height) + var(--chat-input-height) + 24px);
 }
 
 .inputBar {

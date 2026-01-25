@@ -3,20 +3,17 @@
 import React from "react";
 import { PageWrapper } from "@/shared/components";
 import { useChatSocket } from "@/features/chat/_hooks/useChatSocket";
-import { getChatHistoryApi, postChatMessageApi } from "@/features/chat/_apis/chat.api";
 import { ChatMessage } from "@/features/chat/_types/chat";
 import { Text, Button, Input } from "@my/ui";
 import styles from "./ChatPage.module.scss";
 import { useUiStore } from "@/shared/stores/ui.store";
+import { useGetChatHistoryInfiniteApi } from "@/features/chat/_hooks/query";
 
 /**
  * 채팅 페이지
  */
 function ChatPage() {
   const [input, setInput] = React.useState("");
-  const [history, setHistory] = React.useState<ChatMessage[]>([]);
-  const [nextCursor, setNextCursor] = React.useState<string | null>(null);
-  const [loadingOlder, setLoadingOlder] = React.useState(false);
   const { isAwaitingAssistant, messages, sendJson } = useChatSocket();
   const { showToast } = useUiStore();
   const listRef = React.useRef<HTMLDivElement | null>(null);
@@ -24,30 +21,41 @@ function ChatPage() {
   const didInitialScrollRef = React.useRef(false);
 
   const scrollToBottom = React.useCallback((behavior: ScrollBehavior = "smooth") => {
-    // 가장 하단 앵커로 스크롤(렌더 타이밍에 강건)
+    const el = listRef.current;
+    // 1) 메시지 리스트가 스크롤 컨테이너인 경우
+    if (el && el.scrollHeight > el.clientHeight) {
+      const top = Math.max(0, el.scrollHeight - el.clientHeight);
+      el.scrollTo({ top, behavior });
+    }
+    // 2) 실제 스크롤이 window/body에서 일어나는 경우까지 커버
     bottomRef.current?.scrollIntoView({ behavior, block: "end" });
+
+    // 3) 최후의 보루: bottomRef가 아직 없거나, 스크롤 컨테이너가 특이한 경우
+    if (!el && typeof window !== "undefined") {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
+    }
   }, []);
 
-  // 초기 채팅 내역 불러오기 (백엔드 준비 이전까지 실패해도 무시)
+  const pageSize = 20;
+  const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetChatHistoryInfiniteApi(pageSize);
+
+  // 초기 히스토리 로드가 끝나면(0건이어도) 1회 바닥으로 이동
   React.useEffect(() => {
-    getChatHistoryApi({ size: 20, cursorId: null })
-      .then((res) => {
-        // 서버는 최신순(내림차순) → 화면용으로 오래된→최신(오름차순) 정규화
-        setHistory([...res.data.items].reverse());
-        setNextCursor(res.data.nextCursor);
+    if (didInitialScrollRef.current) return;
+    if (isLoading) return;
+    didInitialScrollRef.current = true;
+    requestAnimationFrame(() => scrollToBottom("auto"));
+  }, [isLoading, scrollToBottom]);
 
-        // 진입 시에는 최신/입력영역이 보이도록 1회 바닥으로 이동
-        requestAnimationFrame(() => {
-          didInitialScrollRef.current = true;
-          scrollToBottom("auto");
-        });
-      })
-      .catch((error) => {
-        if (error.response?.status === 403) {
-          showToast({ message: "잘못된 접근입니다.", type: "error" });
-        }
-      });
-  }, []);
+  // (옵션) 기존과 동일하게 403만 토스트 처리
+  React.useEffect(() => {
+    if (!isError) return;
+    const anyErr = error as any;
+    if (anyErr?.response?.status === 403) {
+      showToast({ message: "잘못된 접근입니다.", type: "error" });
+    }
+  }, [isError, error, showToast]);
 
   // 신규 메시지 도착 시(실시간) 스크롤 하단 고정
   // - 과거 페이지 프리펜드(history 변경)에서는 강제 스크롤하지 않음
@@ -59,25 +67,20 @@ function ChatPage() {
   // 상단 도달 시 과거 페이지 프리펜드
   const onScroll = React.useCallback(async () => {
     const el = listRef.current;
-    if (!el || loadingOlder) return;
-    if (el.scrollTop <= 24 && nextCursor) {
+    if (!el || isFetchingNextPage || !hasNextPage) return;
+    if (el.scrollTop <= 24) {
       try {
-        setLoadingOlder(true);
         const prevHeight = el.scrollHeight;
-        const res = await getChatHistoryApi({ size: 20, cursorId: nextCursor });
-        const olderAsc = [...res.data.items].reverse();
-        setHistory((prev) => [...olderAsc, ...prev]);
-        setNextCursor(res.data.nextCursor);
+        await fetchNextPage();
         // 스크롤 위치 보정 (기존 위치 유지)
         requestAnimationFrame(() => {
           const newHeight = el.scrollHeight;
           el.scrollTop = newHeight - prevHeight + el.scrollTop;
         });
       } finally {
-        setLoadingOlder(false);
       }
     }
-  }, [nextCursor, loadingOlder]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const onSend = async () => {
     if (isAwaitingAssistant) return;
@@ -94,13 +97,38 @@ function ChatPage() {
     requestAnimationFrame(() => scrollToBottom());
   };
 
+  const historyMessages = React.useMemo(() => {
+    // 서버는 최신순(내림차순)으로 페이지를 내려줌
+    // UI는 오래된→최신(오름차순)으로 보여야 하므로:
+    // - 페이지 순서를 뒤집고(가장 과거 페이지부터),
+    // - 각 페이지의 items를 reverse(오래된→최신)로 변환
+    const pages = data?.pages ?? [];
+    const orderedPages = [...pages].reverse();
+    const flat: ChatMessage[] = [];
+    for (const p of orderedPages) {
+      const itemsAsc = [...p.items].reverse();
+      flat.push(...itemsAsc);
+    }
+    return flat;
+  }, [data?.pages]);
+
   const allMessages = React.useMemo(() => {
-    // history(오래된→최신) 뒤에 실시간 메시지(도착순)를 이어 붙임
-    return [...history, ...messages];
-  }, [history, messages]);
+    // history(오래된→최신) + 실시간(도착순)
+    // id 기준으로 중복 제거(추천1): 마지막 값을 우선(실시간이 history를 덮어씀)
+    const combined = [...historyMessages, ...messages];
+    const seen = new Set<string>();
+    const outRev: ChatMessage[] = [];
+    for (let i = combined.length - 1; i >= 0; i--) {
+      const m = combined[i];
+      if (seen.has(m.id)) continue;
+      seen.add(m.id);
+      outRev.push(m);
+    }
+    return outRev.reverse();
+  }, [historyMessages, messages]);
 
   return (
-    <PageWrapper>
+    <PageWrapper withHeader={false} topPadding={false} className={styles.page}>
       <div className={styles.container}>
         <div className={styles.messages} ref={listRef} onScroll={onScroll}>
           {allMessages.map((m) => (

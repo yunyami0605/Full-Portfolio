@@ -27,4 +27,8 @@ export const serverStateConstants = {
   foods: {
     getFoodsSearch: "get-foods-search",
   },
+
+  chat: {
+    getChatHistory: "get-chat-history",
+  },
 } as const;
