@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./PostList.module.scss";
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { PageWrapper } from "@/shared/components";
 import { Column } from "@my/ui";
 import PostItemComponent from "@/features/post/_components/item/PostItem";
@@ -44,9 +44,12 @@ function PostList({ initialPosts }: Props) {
 
   const posts = data?.pages.flatMap((page) => page.items) ?? [];
 
-  const onMoveContent = (id: string) => {
-    router.push(`/post/${id}`);
-  };
+  const onMoveContent = useCallback(
+    (id: string) => {
+      router.push(`/post/${id}`);
+    },
+    [router],
+  );
 
   return (
     <PageWrapper withHeader={false}>
@@ -54,9 +57,7 @@ function PostList({ initialPosts }: Props) {
         {posts.map((item) => (
           <PostItemComponent
             key={item.id}
-            onClick={(id: string) => {
-              onMoveContent(id);
-            }}
+            onClick={onMoveContent}
             {...item}
           />
         ))}

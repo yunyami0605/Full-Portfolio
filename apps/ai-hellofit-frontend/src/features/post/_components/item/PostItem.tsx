@@ -1,5 +1,5 @@
 import styles from "./PostItem.module.scss";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, Center, Column, Row, Text } from "@my/ui";
 import { PostItem as PostItemType } from "../../_types/data";
 import ActionView from "../info/ActionView";
@@ -19,10 +19,10 @@ type Props = PostItemType & {
 function PostItem(props: Props) {
   const [expand, setExpand] = useState(props.isExpand);
 
-  const onExpand = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const onExpand = useCallback((e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.stopPropagation();
     setExpand((prev) => !prev);
-  };
+  }, []);
 
   return (
     <Column className={styles.post_container}>
@@ -76,4 +76,4 @@ function PostItem(props: Props) {
   );
 }
 
-export default PostItem;
+export default React.memo(PostItem);
