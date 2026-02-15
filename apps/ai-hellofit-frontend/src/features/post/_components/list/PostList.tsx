@@ -23,24 +23,33 @@ function PostList({ initialPosts }: Props) {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPostsApi(10, initialPosts);
 
+  const fetchNextPageRef = useRef(fetchNextPage);
+  const hasNextPageRef = useRef(hasNextPage);
+  const isFetchingNextPageRef = useRef(isFetchingNextPage);
+
+  fetchNextPageRef.current = fetchNextPage;
+  hasNextPageRef.current = hasNextPage;
+  isFetchingNextPageRef.current = isFetchingNextPage;
+
   useEffect(() => {
-    if (!loaderRef.current) return;
+    const currentLoader = loaderRef.current;
+    if (!currentLoader) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
+        if (entries[0].isIntersecting && hasNextPageRef.current && !isFetchingNextPageRef.current) {
+          fetchNextPageRef.current();
         }
       },
-      { threshold: 1.0 }, // 100% 보일 때 실행
+      { threshold: 1.0 },
     );
 
-    observer.observe(loaderRef.current);
+    observer.observe(currentLoader);
 
     return () => {
-      if (loaderRef.current) observer.unobserve(loaderRef.current);
+      observer.unobserve(currentLoader);
     };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, []);
 
   const posts = data?.pages.flatMap((page) => page.items) ?? [];
 
@@ -55,11 +64,7 @@ function PostList({ initialPosts }: Props) {
     <PageWrapper withHeader={false}>
       <Column className={styles.posts_container}>
         {posts.map((item) => (
-          <PostItemComponent
-            key={item.id}
-            onClick={onMoveContent}
-            {...item}
-          />
+          <PostItemComponent key={item.id} onClick={onMoveContent} {...item} />
         ))}
 
         <div ref={loaderRef} style={{ height: 20 }} />

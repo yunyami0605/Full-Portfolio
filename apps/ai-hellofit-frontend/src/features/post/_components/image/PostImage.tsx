@@ -1,9 +1,9 @@
 "use client";
 
+import React, { useState } from "react";
 import { ImageUrl } from "@/shared/types/base";
 import { Center } from "@my/ui";
 import Image from "next/image";
-import { useState } from "react";
 import styles from "./PostImage.module.scss";
 
 type Props = {
@@ -14,12 +14,10 @@ type Props = {
 /**
  *@description 게시글 이미지
  */
-export default function PostImage({ imageUrl, alt }: Props) {
+function PostImage({ imageUrl, alt }: Props) {
   if (!imageUrl) return null;
 
   const [error, setError] = useState(false);
-
-  console.log(error);
 
   return (
     <Center className={styles.image_wrapper}>
@@ -32,3 +30,5 @@ export default function PostImage({ imageUrl, alt }: Props) {
     </Center>
   );
 }
+
+export default React.memo(PostImage);

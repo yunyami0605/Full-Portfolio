@@ -17,7 +17,7 @@ type Props = {
 /**
  *@description 작성자 정보
  */
-export function AuthorInfoView({ authorImage, authorName, date, onMoreClick }: Props) {
+const AuthorInfoViewComponent = ({ authorImage, authorName, date, onMoreClick }: Props) => {
   return (
     <Row justify="between" className={styles.author_info_view}>
       <Row className={styles.author_info_view_wrapper}>
@@ -41,4 +41,6 @@ export function AuthorInfoView({ authorImage, authorName, date, onMoreClick }: P
       )}
     </Row>
   );
-}
+};
+
+export const AuthorInfoView = React.memo(AuthorInfoViewComponent);

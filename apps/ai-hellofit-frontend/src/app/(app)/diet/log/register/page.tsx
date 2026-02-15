@@ -77,6 +77,8 @@ function DietLogRegisterPage() {
 
   const foodsData = data?.pages.flatMap((page) => page.data.items) ?? [];
 
+  console.log(foodsData);
+
   // 식단 추천 목록 조회 호출
   const { data: recommendationDatas } = useGetDietsRecommendationsApi({
     date,

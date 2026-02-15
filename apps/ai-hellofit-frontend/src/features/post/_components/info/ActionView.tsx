@@ -49,4 +49,4 @@ function ActionView({
   );
 }
 
-export default ActionView;
+export default React.memo(ActionView);
