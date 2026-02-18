@@ -13,9 +13,18 @@ function CommentsView() {
   const params = useParams<{ id: string }>();
   const { id: postId } = params;
   const commentsLoaderRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   //  댓글 목록 데이터 요청
   const { data: commentsData, ...commentsApiState } = useGetCommentsApi(postId, 10, !!postId);
+
+  const fetchNextPageRef = useRef(commentsApiState.fetchNextPage);
+  const hasNextPageRef = useRef(commentsApiState.hasNextPage);
+  const isFetchingNextPageRef = useRef(commentsApiState.isFetchingNextPage);
+
+  fetchNextPageRef.current = commentsApiState.fetchNextPage;
+  hasNextPageRef.current = commentsApiState.hasNextPage;
+  isFetchingNextPageRef.current = commentsApiState.isFetchingNextPage;
 
   // 댓글 목록
   const commentsList = commentsData?.pages.flatMap((page) => page.data.items);
@@ -35,31 +44,37 @@ function CommentsView() {
   };
 
   useEffect(() => {
-    if (!commentsLoaderRef.current) return;
+    const element = commentsLoaderRef.current;
+    if (!element) return;
+
+    // 기존 observer가 있으면 정리
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (
-          entries[0].isIntersecting &&
-          commentsApiState.hasNextPage &&
-          !commentsApiState.isFetchingNextPage
+          entries[0]?.isIntersecting &&
+          hasNextPageRef.current &&
+          !isFetchingNextPageRef.current
         ) {
-          commentsApiState.fetchNextPage();
+          fetchNextPageRef.current();
         }
       },
       { threshold: 1 },
     );
 
-    observer.observe(commentsLoaderRef.current);
+    observerRef.current = observer;
+    observer.observe(element);
 
     return () => {
-      if (commentsLoaderRef.current) observer.unobserve(commentsLoaderRef.current);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
     };
-  }, [
-    commentsApiState.fetchNextPage,
-    commentsApiState.hasNextPage,
-    commentsApiState.isFetchingNextPage,
-  ]);
+  }, []);
 
   return (
     <Column as="section" className={styles.comments_view}>
