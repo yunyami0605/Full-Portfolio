@@ -1,7 +1,8 @@
 "use client";
 
 import styles from "./DietLogRegisterPage.module.scss";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { PageWrapper } from "@/shared/components/layout/PageWrapper";
 import { Button, Center, Column, Input, Row, Text } from "@my/ui";
 import { IconButton } from "@/shared/components";
@@ -12,6 +13,9 @@ import dayjs from "dayjs";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { MealType, SourceType } from "@/features/diet/types/base";
 import { useUiStore } from "@/shared/stores/ui.store";
+
+const FOOD_ITEM_HEIGHT = 88;
+const LIST_HEIGHT_OFFSET = 320;
 
 /**
  *@description 식단 등록 페이지
@@ -24,7 +28,7 @@ function DietLogRegisterPage() {
       id: string;
     }[]
   >([]);
-  const loaderRef = useRef<HTMLDivElement | null>(null);
+  const listRef = useRef<FixedSizeList>(null);
   const router = useRouter();
   const { showToast } = useUiStore();
 
@@ -72,12 +76,19 @@ function DietLogRegisterPage() {
   // 음식 목록 조회 api 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFoodsSearch(10, keyword);
 
+  const fetchNextPageRef = useRef(fetchNextPage);
+  const hasNextPageRef = useRef(hasNextPage);
+  const isFetchingNextPageRef = useRef(isFetchingNextPage);
+  fetchNextPageRef.current = fetchNextPage;
+  hasNextPageRef.current = hasNextPage;
+  isFetchingNextPageRef.current = isFetchingNextPage;
+
   // 식단 기록 등록 api 호출
   const { mutateAsync: mutateCreateDietsLogs } = usePostDietsLogsMe();
 
   const foodsData = data?.pages.flatMap((page) => page.data.items) ?? [];
-
-  console.log(foodsData);
+  const foodsRef = useRef(foodsData);
+  foodsRef.current = foodsData;
 
   // 식단 추천 목록 조회 호출
   const { data: recommendationDatas } = useGetDietsRecommendationsApi({
@@ -137,25 +148,103 @@ function DietLogRegisterPage() {
     });
   };
 
-  // 무한스크롤링 하단 체크
-  useEffect(() => {
-    if (!loaderRef.current) return;
+  const onItemsRendered = useCallback(
+    ({ visibleStopIndex }: { visibleStopIndex: number }) => {
+      const threshold = Math.max(0, foodsData.length - 3);
+      if (
+        visibleStopIndex >= threshold &&
+        hasNextPageRef.current &&
+        !isFetchingNextPageRef.current
+      ) {
+        fetchNextPageRef.current();
+      }
+    },
+    [foodsData.length],
+  );
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.5 },
-    );
+  const itemData = { foodsData, selectedLog };
 
-    observer.observe(loaderRef.current);
+  const FoodRow = useCallback(
+    ({
+      index,
+      style,
+      data,
+    }: ListChildComponentProps<{
+      foodsData: typeof foodsData;
+      selectedLog: typeof selectedLog;
+    }>) => {
+      const rowStyle = style as React.CSSProperties;
+      const foods = data?.foodsData ?? [];
+      const selected = data?.selectedLog ?? [];
 
-    return () => {
-      if (loaderRef.current) observer.unobserve(loaderRef.current);
-    };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+      // 마지막 항목 로딩
+      if (index >= foods.length) {
+        if (!hasNextPageRef.current) return null;
+        return (
+          <div
+            style={{
+              ...rowStyle,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {isFetchingNextPageRef.current ? "로딩 중..." : null}
+          </div>
+        );
+      }
+
+      const item = foods[index];
+      const isSelected = !!selected.find((log) => log.id === item.id);
+
+      return (
+        <div style={rowStyle}>
+          <Row className={styles.food_item}>
+            <Row justify="between" className={styles.food_item_wrapper}>
+              <Row className={styles.food_info_wrapper}>
+                <Text className={styles.index}>{index + 1}</Text>
+
+                <Column className={styles.food_data}>
+                  <Text className={styles.food_name}>{item.foodName}</Text>
+
+                  <Row className={styles.infos}>
+                    <Text>{item.kcal}kcal</Text>
+                    <Row justify="between" className={styles.nutrition_wrapper}>
+                      <Text>
+                        <span className={styles.nutrition_name}>탄</span>
+                        {item.carbs}g
+                      </Text>
+                      <Text>
+                        <span className={styles.nutrition_name}>단</span>
+                        {item.protein}g
+                      </Text>
+                      <Text>
+                        <span className={styles.nutrition_name}>지</span>
+                        {item.fat}g
+                      </Text>
+                    </Row>
+                  </Row>
+                </Column>
+              </Row>
+
+              <Button
+                className={styles.add_button}
+                onClick={() => onFoodAction(item.id, item.foodName, !isSelected)}
+              >
+                <Center className={styles.add_button_wrapper}>
+                  <IconButton iconName={isSelected ? "Close" : "AddOutline"} />
+                </Center>
+              </Button>
+            </Row>
+          </Row>
+        </div>
+      );
+    },
+    [onFoodAction],
+  );
+
+  const listHeight =
+    typeof window !== "undefined" ? Math.max(200, window.innerHeight - LIST_HEIGHT_OFFSET) : 400;
 
   return (
     <PageWrapper>
@@ -185,55 +274,18 @@ function DietLogRegisterPage() {
         </Row>
 
         <Column className={styles.foods_list}>
-          {/* 음식 목록 */}
-          {foodsData.map((item, i) => {
-            const isSelected = !!selectedLog.find((log) => log.id === item.id);
-            return (
-              <Row className={styles.food_item} key={item.id}>
-                <Row justify="between" className={styles.food_item_wrapper}>
-                  <Row className={styles.food_info_wrapper}>
-                    <Text className={styles.index}>{i + 1}</Text>
-
-                    <Column className={styles.food_data}>
-                      <Text className={styles.food_name}>{item.foodName}</Text>
-
-                      <Row className={styles.infos}>
-                        {/* <Text>1공기 (210g)</Text> */}
-                        <Text>{item.kcal}kcal</Text>
-                        <Row justify="between" className={styles.nutrition_wrapper}>
-                          <Text>
-                            <span className={styles.nutrition_name}>탄</span>
-                            {item.carbs}g
-                          </Text>
-
-                          <Text>
-                            <span className={styles.nutrition_name}>단</span>
-                            {item.protein}g
-                          </Text>
-
-                          <Text>
-                            <span className={styles.nutrition_name}>지</span>
-                            {item.fat}g
-                          </Text>
-                        </Row>
-                      </Row>
-                    </Column>
-                  </Row>
-
-                  <Button
-                    className={styles.add_button}
-                    onClick={() => onFoodAction(item.id, item.foodName, !isSelected)}
-                  >
-                    <Center className={styles.add_button_wrapper}>
-                      <IconButton iconName={isSelected ? "Close" : "AddOutline"} />
-                    </Center>
-                  </Button>
-                </Row>
-              </Row>
-            );
-          })}
-
-          <div ref={loaderRef} style={{ height: 20 }} />
+          <FixedSizeList
+            ref={listRef}
+            height={listHeight}
+            itemCount={foodsData.length + (hasNextPage ? 1 : 0)}
+            itemSize={FOOD_ITEM_HEIGHT}
+            width="100%"
+            itemData={itemData}
+            onItemsRendered={onItemsRendered}
+            overscanCount={2}
+          >
+            {FoodRow}
+          </FixedSizeList>
         </Column>
 
         <Column className={styles.bottom_action_sheet}>

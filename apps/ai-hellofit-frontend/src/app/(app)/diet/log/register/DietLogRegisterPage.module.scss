@@ -75,13 +75,13 @@
   }
 }
 
-// 검색 음식 목록
+// 검색 음식 목록 (react-window 사용)
 .foods_list {
   width: 100%;
   height: calc(100vh - 320px);
   gap: 1.4rem;
   padding: 1.4rem 1.2rem 4rem;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
 // 검색된 음식 항목
