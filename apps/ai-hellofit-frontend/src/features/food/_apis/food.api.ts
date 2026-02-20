@@ -7,7 +7,7 @@ import { GetFoodsSearchResponse } from "../_types/response";
  */
 export const getFoodsSearch = (query: GetFoodsSearchQuery) => {
   return apiCall<GetFoodsSearchResponse>({
-    url: `/foods/search`,
+    url: `/admin/foods/search`,
     method: "GET",
     params: query,
   });
