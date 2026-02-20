@@ -4,6 +4,7 @@ import { Column } from "@my/ui";
 import { CommentItem } from "../item/CommentItem";
 import { SelectedCommentItemType, useGetCommentsApi } from "../..";
 import { CommentInput } from "../input/CommentInput";
+import CommentEmptyState from "../empty/CommentEmptyState";
 import { useParams } from "next/navigation";
 
 /**
@@ -76,19 +77,26 @@ function CommentsView() {
     };
   }, []);
 
+  const hasComments = (commentsList ?? []).length > 0;
+
   return (
     <Column as="section" className={styles.comments_view}>
-      {(commentsList ?? []).map((item) => (
-        <Column key={item.id} className={styles.comments_wrapper}>
-          <CommentItem
-            onChange={(value) => setCommentInput(value)}
-            data={item}
-            onSelectComment={onSelectComment}
-          />
-        </Column>
-      ))}
-
-      <div ref={commentsLoaderRef} style={{ height: 20 }} />
+      {hasComments ? (
+        <>
+          {(commentsList ?? []).map((item) => (
+            <Column key={item.id} className={styles.comments_wrapper}>
+              <CommentItem
+                onChange={(value) => setCommentInput(value)}
+                data={item}
+                onSelectComment={onSelectComment}
+              />
+            </Column>
+          ))}
+          <div ref={commentsLoaderRef} style={{ height: 20 }} />
+        </>
+      ) : (
+        <CommentEmptyState />
+      )}
 
       <CommentInput
         onInitSelectedComment={onInitSelectedComment}

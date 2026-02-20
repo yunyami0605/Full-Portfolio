@@ -9,6 +9,7 @@ import PostItemComponent from "@/features/post/_components/item/PostItem";
 import { useGetPostsApi } from "@/features/post/_hooks/query";
 import { useRouter } from "next/navigation";
 import RegisterButton from "@/features/post/_components/buttons/RegisterButton";
+import PostEmptyState from "@/features/post/_components/empty/PostEmptyState";
 import { Cursor } from "@/shared/types/api";
 import { GetPostsResponse } from "../../_types/response";
 
@@ -223,6 +224,23 @@ function PostList({ initialPosts }: Props) {
     },
     [onMoveContent, measureItem],
   );
+
+  // 게시글 작성 페이지로 이동
+  const onMoveToCreate = useCallback(() => {
+    router.push("/post/create");
+  }, [router]);
+
+  // 게시글이 없을 때 empty state 표시
+  if (posts.length === 0 && !isFetchingNextPage) {
+    return (
+      <PageWrapper withHeader={false}>
+        <Column className={styles.posts_container}>
+          <PostEmptyState onCreateClick={onMoveToCreate} />
+        </Column>
+        <RegisterButton />
+      </PageWrapper>
+    );
+  }
 
   return (
     <PageWrapper withHeader={false}>
