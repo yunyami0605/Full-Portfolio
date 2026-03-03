@@ -2,6 +2,7 @@
 
 import styles from "./CommentInput.module.scss";
 import {
+  CommentItemType,
   SelectedCommentItemType,
   useGetCommentsApi,
   useGetRecommentsApi,
@@ -10,6 +11,9 @@ import {
 } from "../..";
 import { isAxiosError } from "axios";
 import { useUiStore } from "@/shared/stores/ui.store";
+import { useGetAuthInfo } from "@/features/auth/_hooks/query";
+import { startTransition } from "react";
+
 type Props = {
   selectedCommentItem?: SelectedCommentItemType;
 
@@ -17,6 +21,7 @@ type Props = {
   onChange: (value: string) => void;
   postId: string;
   onInitSelectedComment: () => void;
+  onAddOptimistic?: (comment: CommentItemType) => void;
 };
 
 /**
@@ -28,8 +33,10 @@ export function CommentInput({
   onChange,
   postId,
   onInitSelectedComment,
+  onAddOptimistic,
 }: Props) {
-  const { showToast, showLoading } = useUiStore();
+  const { showToast } = useUiStore();
+  const { data: authData } = useGetAuthInfo();
   const { mutateAsync: mutateCreate, isPending: isPendingCreate } = usePostCommentApi(postId);
   const { mutateAsync: mutateUpdate, isPending: isPendingUpdate } = usePatchCommentApi(
     selectedCommentItem?.id,
@@ -42,10 +49,9 @@ export function CommentInput({
     false,
   );
 
-  // 댓글 등록/수정/답글
-  const onSubmitComment = async () => {
+  // 댓글 등록/수정/답글 입력에 대한 엔트리 포인트
+  const onSubmitComment = () => {
     if (isPendingCreate || isPendingUpdate) return;
-    // if (isPendingCreate || isPendingUpdate || isPendingDelete) return;
 
     if (comment.length === 0) {
       showToast({ message: "댓글을 입력해주세요.", type: "error" });
@@ -57,28 +63,57 @@ export function CommentInput({
       return;
     }
 
-    try {
-      if (selectedCommentItem?.action === "update") {
-        // # 댓글 수정
-        const res = await mutateUpdate({
-          content: comment,
-        });
-        if (res.status === 200) {
-          if (selectedCommentItem.type === "comment") {
-            refetchComments();
-          } else {
-            refetchRecomments();
-          }
+    // 수정 모드일 때는 기존 방식으로 처리
+    if (selectedCommentItem?.action === "update") {
+      mutateUpdate({ content: comment })
+        .then((res) => {
+          if (res.status === 200) {
+            if (selectedCommentItem.type === "comment") {
+              refetchComments();
+            } else {
+              refetchRecomments();
+            }
 
-          showToast({
-            message: `${selectedCommentItem.type === "comment" ? "댓글" : "답글"}이 수정되었습니다.`,
-            type: "success",
-          });
-          onInitSelectedComment();
-          onChange("");
-        }
-      } else {
-        // # 댓글 등록 / 답글 등록
+            showToast({
+              message: `${selectedCommentItem.type === "comment" ? "댓글" : "답글"}이 수정되었습니다.`,
+              type: "success",
+            });
+            onInitSelectedComment();
+            onChange("");
+          }
+        })
+        .catch((error) => {
+          if (isAxiosError(error)) {
+            showToast({ message: error.message ?? "", type: "error" });
+          }
+        });
+      return;
+    }
+
+    // 댓글 등록 / 답글 등록 (최상위 댓글만 낙관적 UI 적용)
+    const isTopLevelComment = !selectedCommentItem || selectedCommentItem?.type === "comment";
+
+    // 실제 등록 요청과 낙관적 업데이트를 함께 처리
+    const runCreate = async () => {
+      if (isTopLevelComment && onAddOptimistic && authData?.data) {
+        const optimisticComment: CommentItemType = {
+          id: `optimistic-${Date.now()}`,
+          postId,
+          content: comment,
+          author: {
+            id: authData.data.id,
+            nickname: authData.data.nickname,
+            imageUrl: null,
+          },
+          likeCount: 0,
+          recommentCount: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        onAddOptimistic(optimisticComment);
+      }
+
+      try {
         const res = await mutateCreate({
           content: comment,
           parentId: selectedCommentItem?.parentId ?? null,
@@ -87,14 +122,14 @@ export function CommentInput({
 
         if (res.status === 201) {
           if (selectedCommentItem?.type === "recomment") {
-            refetchRecomments();
+            await refetchRecomments();
           } else {
-            refetchComments();
+            await refetchComments();
           }
 
           showToast({
             message:
-              selectedCommentItem?.type === "comment"
+              selectedCommentItem?.type === "comment" || isTopLevelComment
                 ? "댓글이 등록되었습니다."
                 : "답글이 등록되었습니다.",
             type: "success",
@@ -102,12 +137,16 @@ export function CommentInput({
           onInitSelectedComment();
           onChange("");
         }
+      } catch (error) {
+        if (isAxiosError(error)) {
+          showToast({ message: error.message ?? "", type: "error" });
+        }
       }
-    } catch (error) {
-      if (isAxiosError(error)) {
-        showToast({ message: error.message ?? "", type: "error" });
-      }
-    }
+    };
+
+    startTransition(() => {
+      runCreate();
+    });
   };
 
   return (

@@ -11,7 +11,7 @@ import {
   useGetCommentsApi,
   useGetRecommentsApi,
 } from "../..";
-import { useState } from "react";
+import { useState, startTransition } from "react";
 import clsx from "clsx";
 
 type Props = {
@@ -20,6 +20,7 @@ type Props = {
   onSelectComment: (selectedComment: SelectedCommentItemType) => void;
   onChange: (value: string) => void;
   isActionsViewShow?: boolean;
+  onRemoveOptimistic?: (id: string) => void;
 };
 
 /**
@@ -33,6 +34,7 @@ export function CommentItem({
   onSelectComment,
   onChange,
   isActionsViewShow = true,
+  onRemoveOptimistic,
 }: Props) {
   const userId = useUserId();
 
@@ -90,18 +92,35 @@ export function CommentItem({
     });
   };
 
-  // 댓글/답글 삭제
+  // 댓글/답글 삭제 (최상위 댓글 삭제 시 낙관적 업데이트)
   const onDelete = () => {
-    if (window.confirm("삭제하시겠습니까?")) {
-      mutateDelete().then((response) => {
+    if (!window.confirm("삭제하시겠습니까?")) return;
+
+    const runDeleteApi = async () => {
+      if (!isRecomment && onRemoveOptimistic) {
+        // 댓글 삭제 시 낙관적 업데이트
+        onRemoveOptimistic(data.id);
+      }
+
+      try {
+        const response = await mutateDelete();
         if (response.status === 200) {
           if (isRecomment) {
-            refetchRecomments();
+            await refetchRecomments();
           } else {
-            refetchComments();
+            await refetchComments();
           }
         }
-      });
+      } catch {
+        // 실패 시 useOptimistic이 자동 롤백 -> 따로 코드 작성x
+      }
+    };
+
+    if (!isRecomment && onRemoveOptimistic) {
+      startTransition(() => runDeleteApi());
+    } else {
+      // 답글일 경우
+      runDeleteApi();
     }
   };
 
