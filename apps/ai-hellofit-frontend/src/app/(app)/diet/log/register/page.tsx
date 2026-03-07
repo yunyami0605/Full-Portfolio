@@ -10,7 +10,7 @@ import { useGetFoodsSearch } from "@/features/food/_hooks/query";
 import { usePostDietsLogsMe } from "@/features/diet/_hooks/mutation";
 import { useGetDietsRecommendationsApi } from "@/features/diet/_hooks/query";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MealType, SourceType } from "@/features/diet/types/base";
 import { useUiStore } from "@/shared/stores/ui.store";
 
@@ -52,6 +52,12 @@ function DietLogRegisterPage() {
   const initialMealType = typeByTabIndex[Number(tab ?? 0)] ?? "BREAKFAST";
   const [mealType, setMealType] = useState<MealType>(initialMealType);
 
+  // URL 탭과 로컬 mealType 동기화 (뒤로가기 등)
+  useEffect(() => {
+    const tabMealType = typeByTabIndex[Number(tab ?? 0)];
+    if (tabMealType) setMealType(tabMealType);
+  }, [tab]);
+
   useEffect(() => {
     if (tab === null) {
       if (window.history.length > 1) {
@@ -84,7 +90,7 @@ function DietLogRegisterPage() {
   isFetchingNextPageRef.current = isFetchingNextPage;
 
   // 식단 기록 등록 api 호출
-  const { mutateAsync: mutateCreateDietsLogs } = usePostDietsLogsMe();
+  const { mutateAsync: mutateCreateDietsLogs, isPending: isCreatingLog } = usePostDietsLogsMe();
 
   const foodsData = data?.pages.flatMap((page) => page.data.items) ?? [];
   const foodsRef = useRef(foodsData);
@@ -95,10 +101,11 @@ function DietLogRegisterPage() {
     date,
   });
 
-  // 날짜, 시간대 필터한 데이터
-  const filteredData = (recommendationDatas?.data ?? []).filter(
-    (item) => item.recommendedDate === dayjs(date).format("YYYY-MM-DD"),
-  )[mealIndexByType[mealType]];
+  // 해당 날짜, 식사 유형에 맞는 추천 식단 (날짜 없으면 오늘 기준)
+  const dateStr = date ? currentDay.format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD");
+  const filteredData = (recommendationDatas?.data ?? []).find(
+    (item) => item.recommendedDate === dateStr && item.mealType === mealType,
+  );
 
   // 기록 추가/삭제
   const onFoodAction = (id: string, name: string, isAdd: boolean) => {
@@ -130,6 +137,10 @@ function DietLogRegisterPage() {
    */
   const onCreateDietsLogs = () => {
     if (date === null) return;
+    if (selectedLog.length === 0) {
+      showToast({ message: "음식을 한 가지 이상 선택해 주세요.", type: "error" });
+      return;
+    }
 
     const body = {
       mealType,
@@ -137,15 +148,19 @@ function DietLogRegisterPage() {
       source: "USER" as SourceType,
       items: selectedLog,
     };
-    mutateCreateDietsLogs(body).then((response) => {
-      if (response.status === 201) {
-        showToast({
-          message: "정상적으로 식단 등록되었습니다.",
-          type: "success",
-        });
-        router.back();
-      }
-    });
+    mutateCreateDietsLogs(body)
+      .then((response) => {
+        if (response.status === 201) {
+          showToast({
+            message: "정상적으로 식단 등록되었습니다.",
+            type: "success",
+          });
+          router.back();
+        }
+      })
+      .catch(() => {
+        showToast({ message: "식단 등록에 실패했습니다. 다시 시도해 주세요.", type: "error" });
+      });
   };
 
   const onItemsRendered = useCallback(
@@ -351,8 +366,12 @@ function DietLogRegisterPage() {
           </Column>
 
           <Column className={styles.bottom_view}>
-            <Button onClick={onCreateDietsLogs} className={styles.ok_button}>
-              {mealKorByType[mealType]} 식단 기록
+            <Button
+              onClick={onCreateDietsLogs}
+              className={styles.ok_button}
+              disabled={selectedLog.length === 0 || isCreatingLog}
+            >
+              {isCreatingLog ? "등록 중..." : `${mealKorByType[mealType]} 식단 기록`}
             </Button>
           </Column>
         </Column>
