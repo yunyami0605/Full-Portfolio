@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import PostItem from "@/features/post/_components/item/PostItem";
 import CommentsView from "@/features/comment/_components/view/CommentsView";
 import { useUserId } from "@/features/user/_hooks/useUserId";
+import { usePostLikeToggleApi } from "@/features/like";
 /**
  *@description 게시글 컨텐츠 페이지
  */
@@ -28,6 +29,7 @@ function PostContentPage() {
 
   // 게시글 데이터 요청
   const { data: postsData } = useGetPostOneApi(id);
+  const { mutateAsync: toggleLike } = usePostLikeToggleApi();
 
   const isAuthor = React.useMemo(() => {
     if (!postsData?.data?.author?.id || !userId) return false;
@@ -100,7 +102,14 @@ function PostContentPage() {
       <Column as="section" className={styles.container}>
         {/* 게시글 상세 내용 뷰 */}
         <Column as="section" className={styles.post_wrapper}>
-          {postsData?.data && <PostItem {...postsData?.data} isExpand onMoreOpen={onMoreOpen} />}
+          {postsData?.data && (
+            <PostItem
+              {...postsData?.data}
+              isExpand
+              onMoreOpen={onMoreOpen}
+              onLike={() => toggleLike({ targetType: "POST", targetId: id })}
+            />
+          )}
         </Column>
 
         {/* 댓글 목록 뷰 */}

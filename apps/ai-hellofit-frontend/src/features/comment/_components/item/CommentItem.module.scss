@@ -48,6 +48,7 @@
 /* 액션 버튼 묶음 뷰 */
 .actions_view {
   display: flex;
+  align-items: center;
   gap: 1.6rem;
   font-size: 1.4rem;
   color: $color-grayscale-70;
@@ -55,6 +56,31 @@
   @include media(sm) {
     font-size: 1.6rem;
   }
+}
+
+.like_action {
+  @include flex-row;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.6rem 0;
+  color: $color-grayscale-70;
+
+  @include hover {
+    color: $color-grayscale-90;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.like_count {
+  font-size: 1.3rem;
+  min-width: 1.6rem;
 }
 
 /* 액션 버튼 (답글달기, 삭제) */

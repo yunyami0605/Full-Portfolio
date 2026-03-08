@@ -29,7 +29,22 @@ function ActionView({
   return (
     <Row className={styles.subinfo_wrapper}>
       <Row className={clsx(styles.info_wrapper, styles[size])}>
-        <IconButton disabled={!onLike} onClick={onLike} iconName={"HeartOutline"} size={iconSize} />
+        <span
+          role="button"
+          tabIndex={onLike ? 0 : undefined}
+          onClick={(e) => {
+            e.stopPropagation();
+            onLike?.();
+          }}
+          onKeyDown={(e) => {
+            if (onLike && (e.key === "Enter" || e.key === " ")) {
+              e.preventDefault();
+              onLike();
+            }
+          }}
+        >
+          <IconButton disabled={!onLike} iconName={"HeartOutline"} size={iconSize} />
+        </span>
 
         <Text className={styles[size]}>{likeCount ?? 0}</Text>
       </Row>

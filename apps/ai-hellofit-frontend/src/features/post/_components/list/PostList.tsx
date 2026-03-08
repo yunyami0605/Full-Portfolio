@@ -10,6 +10,7 @@ import { useGetPostsApi } from "@/features/post/_hooks/query";
 import { useRouter } from "next/navigation";
 import RegisterButton from "@/features/post/_components/buttons/RegisterButton";
 import PostEmptyState from "@/features/post/_components/empty/PostEmptyState";
+import { usePostLikeToggleApi } from "@/features/like";
 import { Cursor } from "@/shared/types/api";
 import { GetPostsResponse } from "../../_types/response";
 
@@ -30,6 +31,7 @@ function PostList({ initialPosts }: Props) {
   const [itemHeights, setItemHeights] = useState<Map<number, number>>(new Map());
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPostsApi(10, initialPosts);
+  const { mutateAsync: toggleLike } = usePostLikeToggleApi();
 
   const fetchNextPageRef = useRef(fetchNextPage);
   const hasNextPageRef = useRef(hasNextPage);
@@ -189,7 +191,7 @@ function PostList({ initialPosts }: Props) {
   const Row = useCallback(
     ({ index, style }: ListChildComponentProps) => {
       const currentPosts = postsRef.current;
-      
+
       if (index >= currentPosts.length) {
         // 다음 페이지가 없으면 로딩 행을 표시하지 않음
         if (!hasNextPageRef.current) return null;
@@ -218,11 +220,16 @@ function PostList({ initialPosts }: Props) {
           }}
           style={style as React.CSSProperties}
         >
-          <PostItemComponent key={item.id} onClick={onMoveContent} {...item} />
+          <PostItemComponent
+            key={item.id}
+            onClick={onMoveContent}
+            onLike={() => toggleLike({ targetType: "POST", targetId: item.id })}
+            {...item}
+          />
         </div>
       );
     },
-    [onMoveContent, measureItem],
+    [onMoveContent, measureItem, toggleLike],
   );
 
   // 게시글 작성 페이지로 이동

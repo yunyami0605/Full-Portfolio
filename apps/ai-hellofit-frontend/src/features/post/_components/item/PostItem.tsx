@@ -9,6 +9,7 @@ import clsx from "clsx";
 
 type Props = PostItemType & {
   onClick?: (id: string) => void;
+  onLike?: () => void;
   isExpand?: boolean;
   onMoreOpen?: () => void;
 };

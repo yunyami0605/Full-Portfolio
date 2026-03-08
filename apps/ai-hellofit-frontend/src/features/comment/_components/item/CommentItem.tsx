@@ -11,6 +11,8 @@ import {
   useGetCommentsApi,
   useGetRecommentsApi,
 } from "../..";
+import { usePostLikeToggleApi } from "@/features/like";
+import { IconButton } from "@/shared/components";
 import { useState, startTransition } from "react";
 import clsx from "clsx";
 
@@ -51,6 +53,7 @@ export function CommentItem({
     isFetchingNextPage,
     fetchNextPage,
   } = useGetRecommentsApi(data.id, 10, isRecommentsShow);
+  const { mutateAsync: toggleLike, isPending: isLikePending } = usePostLikeToggleApi();
 
   // 답글 목록
   const recommentsList = (recommentsData?.pages ?? []).flatMap((page) => page.data.items);
@@ -150,7 +153,23 @@ export function CommentItem({
 
           {isActionsViewShow && (
             <div className={styles.actions_view}>
-              <button className={styles.action} onClick={onReply}>
+              <button
+                type="button"
+                className={styles.like_action}
+                onClick={() =>
+                  toggleLike({
+                    targetType: "COMMENT",
+                    targetId: data.id,
+                    postId: data.postId,
+                    parentId: data.parentId ?? undefined,
+                  })
+                }
+                disabled={isLikePending}
+              >
+                <IconButton iconName="HeartOutline" size={14} />
+                <span className={styles.like_count}>{data.likeCount}</span>
+              </button>
+              <button type="button" className={styles.action} onClick={onReply}>
                 답글달기
               </button>
 
