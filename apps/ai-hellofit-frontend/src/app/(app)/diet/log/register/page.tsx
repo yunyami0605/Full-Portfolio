@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./DietLogRegisterPage.module.scss";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, useDeferredValue } from "react";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { PageWrapper } from "@/shared/components/layout/PageWrapper";
 import { Button, Center, Column, Input, Row, Text } from "@my/ui";
@@ -79,8 +79,13 @@ function DietLogRegisterPage() {
   // 검색어
   const [keyword, setKeyword] = useState<string>("");
 
-  // 음식 목록 조회 api 호출
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFoodsSearch(10, keyword);
+  const deferredKeyword = useDeferredValue(keyword);
+
+  // 음식 목록 조회 api 호출 (지연된 검색어 기준)
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFoodsSearch(
+    10,
+    deferredKeyword,
+  );
 
   const fetchNextPageRef = useRef(fetchNextPage);
   const hasNextPageRef = useRef(hasNextPage);
