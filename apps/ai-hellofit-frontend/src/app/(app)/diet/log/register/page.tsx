@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MealType, SourceType } from "@/features/diet/types/base";
 import { useUiStore } from "@/shared/stores/ui.store";
+import { useDebouncedValue } from "@my/hooks";
 
 const FOOD_ITEM_HEIGHT = 88;
 const LIST_HEIGHT_OFFSET = 320;
@@ -78,10 +79,10 @@ function DietLogRegisterPage() {
 
   // 검색어
   const [keyword, setKeyword] = useState<string>("");
+  const debouncedKeyword = useDebouncedValue(keyword, 300);
+  const deferredKeyword = useDeferredValue(debouncedKeyword);
 
-  const deferredKeyword = useDeferredValue(keyword);
-
-  // 음식 목록 조회 api 호출 (지연된 검색어 기준)
+  // 음식 목록 조회 api 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFoodsSearch(
     10,
     deferredKeyword,
